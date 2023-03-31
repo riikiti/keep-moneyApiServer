@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('title');
             $table->unsignedInteger('categories_id');
             $table->unsignedDouble('price');
-            $table->datetimes('date');
+            $table->timestamp('date');
             $table->unsignedInteger('user_id');
             $table->timestamps();
         });

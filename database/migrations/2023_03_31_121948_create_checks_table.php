@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->unsignedDouble('total_price');
-            $table->datetimes('date');
+            $table->timestamp('date');
             $table->timestamps();
         });
     }

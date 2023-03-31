@@ -18,8 +18,8 @@ return new class extends Migration
             $table->id();
             $table->text('title');
             $table->unsignedInteger('categories_id');
-            $table->datetimes('period_start');
-            $table->datetimes('period_finish');
+            $table->timestamp('period_start');
+            $table->timestamp('period_finish');
             $table->unsignedInteger('max_price');
             $table->unsignedInteger('user_id');
             $table->timestamps();
