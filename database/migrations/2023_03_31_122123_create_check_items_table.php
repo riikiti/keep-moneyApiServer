@@ -13,13 +13,12 @@ return new class extends Migration
     {
 
 
-        Schema::create('expenses', function (Blueprint $table) {
+        Schema::create('check_items', function (Blueprint $table) {
 
             $table->id();
-            $table->unsignedInteger('user_id');
+            $table->string('name');
+            $table->unsignedDouble('price');
             $table->unsignedInteger('check_id');
-            $table->unsignedInteger('magazine_id');
-            $table->unsignedInteger('categories_id');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('expenses');
+        Schema::dropIfExists('check_items');
     }
 };

@@ -11,8 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+
+
         Schema::create('plans', function (Blueprint $table) {
+
             $table->id();
+            $table->text('title');
+            $table->unsignedInteger('categories_id');
+            $table->datetimes('period_start');
+            $table->datetimes('period_finish');
+            $table->unsignedInteger('max_price');
+            $table->unsignedInteger('user_id');
             $table->timestamps();
         });
     }
