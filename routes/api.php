@@ -18,6 +18,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('students', function () {
-    return "hello gay";
-});
+Route::get('plan', 'App\Http\Controllers\Api\PlanController@index');
