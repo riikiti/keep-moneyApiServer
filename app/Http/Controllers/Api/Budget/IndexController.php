@@ -12,6 +12,6 @@ class IndexController extends Controller
     {
         $budget = Budget::all();
         dd($budget);
-        return view('w');
+
     }
 }

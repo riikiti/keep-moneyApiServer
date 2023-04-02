@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api\Category;
+namespace App\Http\Controllers\Api\Categories;
 
 use App\Http\Controllers\Controller;
 
 
-class DestroyController extends Controller
+class UpdateController extends Controller
 {
     public function __invoke()
     {

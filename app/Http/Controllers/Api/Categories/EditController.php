@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api\Category;
+namespace App\Http\Controllers\Api\Categories;
 
 use App\Http\Controllers\Controller;
 
 
-class ShowController extends Controller
+class EditController extends Controller
 {
     public function __invoke()
     {

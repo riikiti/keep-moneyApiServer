@@ -1,9 +1,10 @@
 <?php
-namespace App\Http\Controllers\Api\Budget;
-
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+
 
 
 /*
@@ -17,16 +18,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+Route::get('/budget', Budget\IndexController::class)->name('budget.index');
+
+Route::get('/categories', Categories\IndexController::class)->name('categories.index');
 
 
-Route::group(['namespace'=>'Budget'],function (){
 
-});
-
-Route::get('/budget', IndexController::class)->name('budget.index');
 
 
 
