@@ -15,14 +15,19 @@ return new class extends Migration
 
         Schema::create('plans', function (Blueprint $table) {
 
-            $table->id();
+            $table->bigIncrements('id');
             $table->text('title');
-            $table->unsignedInteger('categories_id');
+            $table->unsignedBigInteger('categories_id');
             $table->timestamp('period_start');
             $table->timestamp('period_finish');
-            $table->unsignedInteger('max_price');
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('max_price');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+
+            $table->index('categories_id', 'categories_idx');
+
+            $table->foreign('categories_id', 'categories_fk')->on('categories')->references('id') ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 

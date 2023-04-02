@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('income_categories', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->unsignedInteger('user_id');
+        Schema::create('plan_budgets', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('card_id');
+            $table->unsignedBigInteger('value');
+            $table->timestamp('period_start');
+            $table->timestamp('period_finish');
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('income_categories');
+        Schema::dropIfExists('plan_budgets');
     }
 };

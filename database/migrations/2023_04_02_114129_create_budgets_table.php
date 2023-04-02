@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('budgets', function (Blueprint $table) {
-            $table->id();
+            $table->bigIncrements('id');
             //'bank','type','number','budget','last_date'
             $table->string('bank');
             $table->string('type');
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->char('numbers',4);
-            $table->unsignedInteger('budget');
+            $table->unsignedDouble('budget');
             $table->char('last_date',4);
             $table->timestamps();
         });

@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plan_budgets', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedInteger('card_id');
-            $table->unsignedInteger('value');
-            $table->timestamp('period_start');
-            $table->timestamp('period_finish');
+
+
+        Schema::create('checks', function (Blueprint $table) {
+
+            $table->bigIncrements('id');
+            $table->string('title');
+            $table->unsignedDouble('total_price');
+            $table->timestamp('date');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('plan_budgets');
+        Schema::dropIfExists('checks');
     }
 };
