@@ -23,7 +23,6 @@ return new class extends Migration
 
 
             $table->index('check_id', 'check_full_idx');
-
             $table->foreign('check_id', 'check_full_fk')->on('checks')->references('id') ->onUpdate('cascade')
                 ->onDelete('cascade');
         });

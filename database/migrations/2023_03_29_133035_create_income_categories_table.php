@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('name');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
+
+            $table->index('user_id', 'user_income_categories_idx');
+            $table->foreign('user_id', 'user_income_categories_fk')->on('users')->references('id') ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 

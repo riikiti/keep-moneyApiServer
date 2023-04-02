@@ -28,6 +28,11 @@ return new class extends Migration
 
             $table->foreign('categories_id', 'categories_fk')->on('categories')->references('id') ->onUpdate('cascade')
                 ->onDelete('cascade');
+
+
+            $table->index('user_id', 'user_plan_idx');
+            $table->foreign('user_id', 'user_plan_fk')->on('users')->references('id') ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 

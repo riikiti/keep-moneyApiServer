@@ -21,6 +21,10 @@ return new class extends Migration
             $table->unsignedDouble('budget');
             $table->char('last_date',4);
             $table->timestamps();
+
+            $table->index('user_id', 'user_budget_idx');
+            $table->foreign('user_id', 'user_budget_fk')->on('users')->references('id') ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 

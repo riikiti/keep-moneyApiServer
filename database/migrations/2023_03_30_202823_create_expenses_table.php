@@ -35,6 +35,10 @@ return new class extends Migration
             $table->index('check_id', 'check_idx');
             $table->foreign('check_id', 'check_fk')->on('checks')->references('id') ->onUpdate('cascade')
                 ->onDelete('cascade');
+
+            $table->index('user_id', 'user_expenses_idx');
+            $table->foreign('user_id', 'user_expenses_fk')->on('users')->references('id') ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 

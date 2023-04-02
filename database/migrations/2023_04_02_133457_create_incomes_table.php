@@ -23,6 +23,10 @@ return new class extends Migration {
 
             $table->foreign('categories_id', 'income_categories_fk')->on('income_categories')->references('id')->onUpdate('cascade')
                 ->onDelete('cascade');
+
+            $table->index('user_id', 'user_income_idx');
+            $table->foreign('user_id', 'user_income_fk')->on('users')->references('id') ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 

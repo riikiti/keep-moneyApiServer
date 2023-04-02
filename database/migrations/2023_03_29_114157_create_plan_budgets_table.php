@@ -13,11 +13,16 @@ return new class extends Migration
     {
         Schema::create('plan_budgets', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('card_id');
+            $table->unsignedBigInteger('budget_id');
             $table->unsignedBigInteger('value');
             $table->timestamp('period_start');
             $table->timestamp('period_finish');
             $table->timestamps();
+
+
+            $table->index('budget_id', 'budget_idx');
+            $table->foreign('budget_id', 'budget_fk')->on('budgets')->references('id') ->onUpdate('cascade')
+                ->onDelete('cascade');
         });
     }
 
