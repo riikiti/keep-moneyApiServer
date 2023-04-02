@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api\Budget;
+namespace App\Http\Controllers\Api\Category;
 
 use App\Http\Controllers\Controller;
 
 
-class IndexController extends Controller
+class CreateController extends Controller
 {
     public function __invoke()
     {

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api\Budget;
+namespace App\Http\Controllers\Api\CheckItem;
 
 use App\Http\Controllers\Controller;
 
 
-class IndexController extends Controller
+class ShowController extends Controller
 {
     public function __invoke()
     {

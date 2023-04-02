@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Budget;
 use App\Http\Controllers\Controller;
 
 
-class IndexController extends Controller
+class UpdateController extends Controller
 {
     public function __invoke()
     {
