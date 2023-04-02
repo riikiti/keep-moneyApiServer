@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('plan_budgets', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('card_id');
-            $table->unsignedInteger('value');
+            $table->unsignedBigInteger('card_id');
+            $table->unsignedDouble('value');
             $table->timestamp('period_start');
             $table->timestamp('period_finish');
             $table->timestamps();

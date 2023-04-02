@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedDouble('price');
-            $table->unsignedInteger('check_id');
+            $table->unsignedBigInteger('check_id');
             $table->timestamps();
         });
     }

@@ -15,10 +15,10 @@ return new class extends Migration
 
             $table->id();
             $table->text('title');
-            $table->unsignedInteger('categories_id');
+            $table->unsignedBigInteger('categories_id');
             $table->unsignedDouble('price');
             $table->timestamp('date');
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
     }

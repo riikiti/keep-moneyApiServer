@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('expenses', function (Blueprint $table) {
 
             $table->id();
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('check_id');
-            $table->unsignedInteger('magazine_id');
-            $table->unsignedInteger('categories_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('check_id');
+            $table->unsignedBigInteger('magazine_id');
+            $table->unsignedBigInteger('categories_id');
             $table->timestamps();
         });
     }

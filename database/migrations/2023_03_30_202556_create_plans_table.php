@@ -17,11 +17,11 @@ return new class extends Migration
 
             $table->id();
             $table->text('title');
-            $table->unsignedInteger('categories_id');
+            $table->unsignedBigInteger('categories_id');
             $table->timestamp('period_start');
             $table->timestamp('period_finish');
-            $table->unsignedInteger('max_price');
-            $table->unsignedInteger('user_id');
+            $table->unsignedBigInteger('max_price');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
     }
