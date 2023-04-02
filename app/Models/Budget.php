@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Budget extends Model
 {
     use HasFactory;
-    protected $table = 'budget';
+    protected $table = 'budgets';
     protected $fillable =['bank','type','numbers','budget','last_date'];
 }

@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Api\Budget;
 
 use App\Http\Controllers\Controller;
+use App\Models\Budget;
 
 
 class IndexController extends Controller
 {
     public function __invoke()
     {
-        // TODO: Implement __invoke() method.
+        $budget = Budget::all();
+        dd($budget);
+        return view('w');
     }
 }
