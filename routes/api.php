@@ -1,6 +1,9 @@
 <?php
 namespace App\Http\Controllers\Api;
 
+use App\Models\CheckItem;
+use App\Models\Expenses;
+use App\Models\PlanBudget;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,12 +22,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/budget', Budget\IndexController::class)->name('budget.index');
 
-Route::get('/categories', Categories\IndexController::class)->name('categories.index');
-
-
-
+Route::apiResources([
+    'budget' => BudgetController::class,
+    'categories' =>CategoriesController::class,
+    'check' =>CheckController::class,
+    'check-item' =>CheckItemController::class,
+    'expenses' =>ExpensesController::class,
+    'income' => IncomeController::class,
+    'income-categories' =>IncomeCategoriesController::class,
+    'plan-budget' =>PlanBudgetController::class,
+    'plan' =>PlanController::class,
+    'shops' =>ShopsController::class,
+]);
 
 
 

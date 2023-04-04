@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('plan_budgets', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('budget_id');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('value');
             $table->timestamp('period_start');
             $table->timestamp('period_finish');
@@ -22,6 +23,10 @@ return new class extends Migration
 
             $table->index('budget_id', 'budget_idx');
             $table->foreign('budget_id', 'budget_fk')->on('budgets')->references('id') ->onUpdate('cascade')
+                ->onDelete('cascade');
+
+            $table->index('user_id', 'user_budget_plan_idx');
+            $table->foreign('user_id', 'user_budget_plan_fk')->on('users')->references('id') ->onUpdate('cascade')
                 ->onDelete('cascade');
         });
     }
