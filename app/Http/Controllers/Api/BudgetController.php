@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BudgetStoreRequest;
 use App\Http\Resources\BudgetResource;
 use App\Models\Budget;
 use Illuminate\Http\Request;
@@ -20,9 +21,11 @@ class BudgetController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BudgetStoreRequest $request)
     {
-        //
+        $created_budget = Budget::create($request->all());
+
+        return new BudgetResource($created_budget);
     }
 
     /**

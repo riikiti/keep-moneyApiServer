@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CheckItemStoreRequest;
 use App\Http\Resources\CheckItemResource;
 use App\Models\CheckItem;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class CheckItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CheckItemStoreRequest $request)
     {
         //
     }

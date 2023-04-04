@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\IncomeStoreRequest;
 use App\Http\Resources\IncomeResource;
 use App\Models\Income;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class IncomeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(IncomeStoreRequest $request)
     {
         //
     }

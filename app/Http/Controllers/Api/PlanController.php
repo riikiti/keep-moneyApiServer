@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PlanStoreRequest;
 use App\Http\Resources\PlanResource;
 use App\Models\Plan;
 use Illuminate\Http\Request;
@@ -20,7 +21,7 @@ class PlanController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PlanStoreRequest $request)
     {
         //
     }
