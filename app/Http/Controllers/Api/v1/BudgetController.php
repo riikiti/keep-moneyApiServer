@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BudgetStoreRequest;
 use App\Http\Resources\BudgetResource;
 use App\Models\Budget;
-use GuzzleHttp\Psr7\Response;
-use Illuminate\Http\Request;
 
 class BudgetController extends Controller
 {

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PlanBudgetStoreRequest;
 use App\Http\Resources\PlanBudgetResource;
 use App\Models\PlanBudget;
-use Illuminate\Http\Request;
 
 class PlanBudgetController extends Controller
 {

@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\IncomeCategoriesStoreRequest;
 use App\Http\Resources\IncomeCategoriesResource;
 use App\Models\IncomeCategories;
-use Illuminate\Http\Request;
 
 class IncomeCategoriesController extends Controller
 {

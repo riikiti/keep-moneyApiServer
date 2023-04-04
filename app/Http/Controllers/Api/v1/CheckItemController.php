@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CheckItemStoreRequest;
 use App\Http\Resources\CheckItemResource;
 use App\Models\CheckItem;
-use Illuminate\Http\Request;
 
 class CheckItemController extends Controller
 {
