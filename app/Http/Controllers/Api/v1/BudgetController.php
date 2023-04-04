@@ -14,7 +14,22 @@ class BudgetController extends Controller
      */
     public function index()
     {
-        return BudgetResource::collection(Budget::all());
+        $budget = BudgetResource::collection(Budget::all());
+
+
+        if ($budget->count() > 0) {
+            $data = [
+                'status' => 200,
+                'data' => $budget
+            ];
+        } else {
+            $data = [
+                'status' => 404,
+                'msg' => 'no record found'
+            ];
+        }
+
+        return $data;
     }
 
     /**
@@ -32,7 +47,7 @@ class BudgetController extends Controller
      */
     public function show(Budget $budget)
     {
-       return new BudgetResource($budget);
+        return new BudgetResource($budget);
     }
 
     /**
