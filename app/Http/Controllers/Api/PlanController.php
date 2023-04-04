@@ -23,30 +23,35 @@ class PlanController extends Controller
      */
     public function store(PlanStoreRequest $request)
     {
-        //
+        $created_plan = Plan::create($request->validated());
+
+        return new Plan($created_plan);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Plan $plan)
     {
-        return new PlanResource(Plan::findOrFail($id));
+        return new PlanResource($plan);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Plan $plan)
     {
-        //
+        $plan->update($request->validated());
+        return new PlanResource($plan);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Plan $plan)
     {
-        //
+        $plan->delete();
+
+        return response(null);
     }
 }

@@ -23,30 +23,35 @@ class CategoriesController extends Controller
      */
     public function store(CategoriesStoreRequest $request)
     {
-        //
+        $created_categories = Categories::create($request->validated());
+
+        return new CategoriesResource($created_categories);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Categories $categories)
     {
-        return new  CategoriesResource(Categories::findOrFail($id));
+        return new CategoriesResource($categories);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CategoriesStoreRequest $request, Categories $categories)
     {
-        //
+        $categories->update($request->validated());
+        return new CategoriesResource($categories);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Categories $categories)
     {
-        //
+        $categories->delete();
+
+        return response(null);
     }
 }

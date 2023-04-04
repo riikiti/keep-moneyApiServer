@@ -23,30 +23,35 @@ class IncomeCategoriesController extends Controller
      */
     public function store(IncomeCategoriesStoreRequest $request)
     {
-        //
+        $created_incomeCategories = IncomeCategories::create($request->validated());
+
+        return new IncomeCategories($created_incomeCategories);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(IncomeCategories $incomeCategories)
     {
-        return new  IncomeCategoriesResource(IncomeCategories::findOrFail($id));
+        return new  IncomeCategoriesResource($incomeCategories);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(IncomeCategoriesStoreRequest $request, IncomeCategories $incomeCategories)
     {
-        //
+        $incomeCategories->update($request->validated());
+        return new IncomeCategoriesResource($incomeCategories);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(IncomeCategories $incomeCategories)
     {
-        //
+        $incomeCategories->delete();
+
+        return response(null);
     }
 }

@@ -23,30 +23,35 @@ class CheckController extends Controller
      */
     public function store(CheckStoreRequest $request)
     {
-        //
+        $created_check = Check::create($request->validated());
+
+        return new CheckResource($created_check);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Check $check)
     {
-        return new  CheckResource(Check::findOrFail($id));
+        return new  CheckResource($check);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CheckStoreRequest $request, Check $check)
     {
-        //
+        $check->update($request->validated());
+        return new CheckResource($check);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Check $check)
     {
-        //
+        $check->delete();
+
+        return response(null);
     }
 }

@@ -23,30 +23,35 @@ class ShopsController extends Controller
      */
     public function store(ShopsStoreRequest $request)
     {
-        //
+        $created_shops = Shops::create($request->validated());
+
+        return new Shops($created_shops);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Shops $shops)
     {
-        return new ShopsResource(Shops::findOrFail($id));
+        return new ShopsResource($shops);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ShopsStoreRequest $request, Shops $shops)
     {
-        //
+        $shops->update($request->validated());
+        return new ShopsResource($shops);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Shops $shops)
     {
-        //
+        $shops->delete();
+
+        return response(null);
     }
 }

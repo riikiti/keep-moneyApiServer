@@ -23,30 +23,35 @@ class CheckItemController extends Controller
      */
     public function store(CheckItemStoreRequest $request)
     {
-        //
+        $created_checkItem = CheckItem::create($request->validated());
+
+        return new CheckItem($created_checkItem);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(CheckItem $checkItem)
     {
-        return new  CheckItemResource(CheckItem::findOrFail($id));
+        return new  CheckItemResource($checkItem);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CheckItemStoreRequest $request,CheckItem $checkItem)
     {
-        //
+        $checkItem->update($request->validated());
+        return new CheckItemResource($checkItem);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(CheckItem $checkItem)
     {
-        //
+        $checkItem->delete();
+
+        return response(null);
     }
 }
