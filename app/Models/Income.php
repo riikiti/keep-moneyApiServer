@@ -9,5 +9,5 @@ class Income extends Model
 {
     use HasFactory;
     protected $table = 'incomes';
-    protected $fillable =['name','categories_id	','price','date'];
+    protected $fillable =['name','categories_id	','price','date','user_id'];
 }

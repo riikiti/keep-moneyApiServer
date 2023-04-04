@@ -18,6 +18,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->unsignedDouble('price');
+            $table->unsignedSmallInteger('count');
             $table->unsignedBigInteger('check_id');
             $table->timestamps();
 

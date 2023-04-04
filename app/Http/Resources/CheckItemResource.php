@@ -18,6 +18,7 @@ class CheckItemResource extends JsonResource
             'id'=>$this->id,
             'name'=>$this->name,
             'price'=>$this->price,
+            'count'=>$this->count,
             'check_id'=>$this->check_id
         ];
     }

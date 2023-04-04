@@ -9,5 +9,5 @@ class Budget extends Model
 {
     use HasFactory;
     protected $table = 'budgets';
-    protected $fillable =['bank','type','numbers','budget','last_date'];
+    protected $fillable =['bank','type','numbers','budget','last_date','user_id'];
 }
