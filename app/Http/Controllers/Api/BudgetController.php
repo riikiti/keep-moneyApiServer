@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BudgetStoreRequest;
 use App\Http\Resources\BudgetResource;
 use App\Models\Budget;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 
 class BudgetController extends Controller
@@ -23,7 +24,7 @@ class BudgetController extends Controller
      */
     public function store(BudgetStoreRequest $request)
     {
-        $created_budget = Budget::create($request->all());
+        $created_budget = Budget::create($request->validated());
 
         return new BudgetResource($created_budget);
     }
@@ -31,24 +32,27 @@ class BudgetController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Budget $budget)
     {
-       return new BudgetResource(Budget::findOrFail($id));
+       return new BudgetResource($budget);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(BudgetStoreRequest $request, Budget $budget)
     {
-        //
+        $budget->update($request->validated());
+        return new BudgetResource($budget);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Budget $budget)
     {
-        //
+        $budget->delete();
+
+        return response(null);
     }
 }
