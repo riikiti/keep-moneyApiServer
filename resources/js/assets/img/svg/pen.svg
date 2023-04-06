@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<svg xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://web.resource.org/cc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:svg="http://www.w3.org/2000/svg" id="svg2" viewBox="0 0 16 16" version="1.0">
+  <path id="path2161" stroke-linejoin="bevel" d="m0.5 15.5v-4l11-11 4 4-11 11h-4z" stroke="#000" stroke-miterlimit="0" fill="#fff"/>
+  <path id="path3134" stroke-linejoin="bevel" stroke="#000" stroke-miterlimit="0" d="m0.5 15.5v-2l2 2h-2z"/>
+  <path id="path3136" stroke-linejoin="bevel" stroke="#000" stroke-miterlimit="0" d="m9.5 2.5l4 4"/>
+  <path id="path3140" stroke-linejoin="bevel" stroke="#000" stroke-miterlimit="0" d="m10.5 3.5l-8 8"/>
+  <path id="path3142" stroke-linejoin="bevel" stroke="#000" stroke-miterlimit="0" d="m12.5 5.5l-8 8"/>
+  <path id="path3144" stroke-linejoin="bevel" stroke="#000" stroke-miterlimit="0" d="m3.5 12.5l8-8"/>
+</svg>

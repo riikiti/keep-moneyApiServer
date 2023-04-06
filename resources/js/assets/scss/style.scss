@@ -1,0 +1,20 @@
+//default
+@import 'deafult';
+@import 'variables';
+@import 'mixins';
+@import 'fonts';
+@import 'button';
+
+//anywhere use
+@import 'modal';
+@import 'authorization';
+@import 'header';
+
+//page
+@import 'home';
+@import 'profile';
+@import 'profile-aside';
+
+//elements
+@import 'item';
+@import 'swiper';

@@ -1,0 +1,99 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    min-width: 600px;
+
+    @include vp-768() {
+        width: 100%;
+        min-width: 120px;
+    }
+
+    font-family: 'Roboto',
+    sans-serif;
+
+    .title--2 {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    &__block {
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        @include vp-768() {
+            width: 100%;
+        }
+
+        label {
+            color: $label-color;
+            margin-bottom: 10px;
+        }
+
+        input {
+            font-size: 18px;
+            line-height: 32px;
+            color: $label-color;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            width: 100%;
+            height: 55px;
+            padding: 0 20px;
+
+            @include vp-768() {
+                width: 100%;
+            }
+
+            &::placeholder {
+                font-size: 18px;
+                line-height: 32px;
+                color: $label-color;
+            }
+        }
+
+        span {
+            font-weight: 600;
+            margin-top: 5px;
+            color: $error-color;
+        }
+    }
+
+    &__btn {
+        background: $light-purple;
+        border-radius: 8px;
+        padding: 15px 25px;
+        text-align: center;
+        color: $white;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 24px;
+        margin: 0 auto;
+        width: 100%;
+
+        &:disabled {
+            background: $light-gray;
+        }
+
+    }
+
+    &__tree {
+        margin-top: 10px;
+        font-size: 18px;
+        line-height: 32px;
+        color: $light-black;
+        text-align: center;
+
+        a {
+            cursor: pointer;
+            font-size: 18px;
+            line-height: 32px;
+            color: $light-purple;
+
+            @include vp-768() {
+                font-size: 14px;
+                line-height: 16px;
+            }
+        }
+    }
+}

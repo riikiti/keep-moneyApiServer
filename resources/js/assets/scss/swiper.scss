@@ -1,0 +1,90 @@
+.swiper {
+    max-width: 100%;
+    overflow: hidden !important;
+    margin-top: 30px;
+    height: max-content;
+}
+
+.credit-card {
+    border-radius: 7px;
+    width: 800px;
+    height: 300px;
+    margin: 20 auto;
+    position: relative;
+    transition: all 0.4s ease;
+    box-shadow: 0 2px 4px 0 #cfd7df;
+    padding: 13px;
+    background: #1a1b1c;
+    color: #efefef;
+
+    .selectable:hover {
+        cursor: pointer;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    }
+
+    &-last4 {
+        font-family: "PT Mono", Helvetica, sans-serif;
+        font-size: 40px;
+        width: 100%;
+        position: relative;
+        left: 15px;
+        top: 30px;
+
+        &:before {
+            content: "**** **** **** ";
+            white-space: nowrap;
+            color: #4f4d4d;
+            font-size: 70px;
+            position: absolute;
+            left: 0;
+        }
+
+        span {
+            margin-left: 400px;
+        }
+
+    }
+
+    &-expiry {
+        font-family: "PT Mono", Helvetica, sans-serif;
+        font-size: 30px;
+        position: absolute;
+        bottom: 8px;
+        left: 15px;
+        bottom: 25px;
+        left: 30px;
+    }
+
+    &-logo {
+        position: absolute;
+        bottom: 25px;
+        right: 30px;
+
+        img {
+            object-fit: cover;
+            width: 100px;
+        }
+
+    }
+
+    &-total {
+        position: absolute;
+        font-family: "PT Mono", Helvetica, sans-serif;
+        font-size: 40px;
+        top: 150px;
+        overflow: hidden;
+        left: 30px;
+        width: max-content;
+    }
+
+}
+
+.swiper-horizontal>.swiper-pagination-bullets,
+.swiper-pagination-bullets.swiper-pagination-horizontal,
+.swiper-pagination-custom,
+.swiper-pagination-fraction {
+
+    position: relative !important;
+    top: 25px !important;
+    height: 50px !important;
+}

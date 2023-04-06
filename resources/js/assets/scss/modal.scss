@@ -1,0 +1,69 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    p {
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 24px;
+        color: $label-color;
+
+        @include vp-768() {
+            font-size: 14px;
+            line-height: 16px;
+        }
+    }
+
+    @include vp-768() {
+        padding: 20px;
+    }
+
+    &__backdrop {
+        position: absolute;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        background-color: $backdrop;
+        cursor: pointer;
+    }
+
+    &__content {
+        position: relative;
+        z-index: 2;
+        background: $white;
+        border-radius: 16px;
+        padding: 55px 55px;
+
+        @include vp-768() {
+            width: 100%;
+            padding: 40px 20px 20px 20px;
+            max-height: 95vh;
+            min-height: max-content;
+            overflow: scroll;
+        }
+    }
+
+    &__close {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        z-index: 3;
+        padding: 10px;
+        text-align: center;
+
+        @include vp-768() {
+            padding: 5px;
+        }
+    }
+}
+
+.dp__input_icon {
+    left: -7px!important;
+
+}

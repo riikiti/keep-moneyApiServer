@@ -1,0 +1,22 @@
+.profile__aside {
+    width: 100%;
+
+    li {
+        white-space: nowrap;
+        width: 100%;
+    }
+
+    a {
+        display: block;
+        color: $light-white;
+        width: 100%;
+        padding: 30px 0 30px 10px;
+
+        &.router-link-exact-active {
+            white-space: nowrap;
+            width: 100%;
+            background-color: $light-gray;
+            border-radius: 2px;
+        }
+    }
+}

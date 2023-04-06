@@ -1,0 +1,69 @@
+.profile {
+    display: grid;
+    grid-template-areas: "aside header header livetape"
+        "aside content content livetape";
+    height: max-content;
+    grid-template-columns: 1.1fr 3fr 3fr 2fr;
+    grid-template-rows: 50px auto;
+    
+    height: 100vh;
+
+    &__content {
+        grid-area: content;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-auto-rows: max-content;
+        background-color: $light-white;
+        border-right: 1px solid $light-gray;
+        grid-gap: 10px;
+       
+        &-item {
+            //border: 1px solid $light-gray;
+            border-radius: 4px;
+            height: max-content;
+            .vue-echarts {
+                height: 400px;
+            }
+            &__two-case{
+                grid-column: 1/3;
+            }
+        }
+
+
+
+    }
+
+    &__livetape {
+        grid-area: livetape;
+
+
+        &__header {
+            margin-bottom: 20px;
+        }
+
+        &-button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 50px;
+            border-bottom: 1px solid $light-gray;
+
+            button {
+                border-radius: 4px;
+
+            }
+        }
+    }
+
+    &__header {
+        grid-area: header;
+        border-bottom: 1px solid $light-gray;
+        height: 50px;
+    }
+
+    &__aside {
+        grid-area: aside;
+        background-color: $light-black;
+    }
+}

@@ -1,0 +1,43 @@
+.item {
+    width: 100%;
+    padding: 20px 10px;
+    background-color: $white;
+    height: max-content;
+    cursor: pointer;
+
+    &:hover {
+        .item-action {
+            opacity: 1;
+            display: flex;
+        }
+    }
+
+    &-action {
+        opacity: 0;
+        width: 60px;
+        display: none;
+        justify-content: space-between;
+        opacity: 1;
+
+        button {
+            padding: 0 10px;
+          
+        }
+
+        img {
+            width: 15px;
+            height: 15px;
+        }
+    }
+
+    &__content {
+        color: $light-black;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    &:nth-of-type(even) {
+        background-color: $light-white;
+    }
+}
