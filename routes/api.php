@@ -11,21 +11,12 @@ use App\Http\Controllers\Api\v1\IncomeController;
 use App\Http\Controllers\Api\v1\PlanBudgetController;
 use App\Http\Controllers\Api\v1\PlanController;
 use App\Http\Controllers\Api\v1\ShopsController;
+use App\Http\Controllers\Api\v1\UsersController;
 use Illuminate\Support\Facades\Route;
 
+Route::group(['middleware' =>'auth:sanctum'],function (){
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
-
-
+});
 
 Route::apiResources([
     'budget' => BudgetController::class,
@@ -38,6 +29,5 @@ Route::apiResources([
     'plan-budget' =>PlanBudgetController::class,
     'plan' =>PlanController::class,
     'shops' =>ShopsController::class,
+    'users' =>UsersController::class,
 ]);
-
-
