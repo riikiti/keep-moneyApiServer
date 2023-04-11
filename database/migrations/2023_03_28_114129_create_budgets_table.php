@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('budgets', function (Blueprint $table) {
             $table->bigIncrements('id');
             //'bank','type','number','budget','last_date'
-            $table->unsignedBigInteger('bank_id');
+            $table->unsignedBigInteger('bank');
             $table->string('type');
             $table->unsignedBigInteger('user_id');
             $table->char('numbers',4);
@@ -26,9 +26,6 @@ return new class extends Migration
             $table->foreign('user_id', 'user_budget_fk')->on('users')->references('id') ->onUpdate('cascade')
                 ->onDelete('cascade');
 
-            $table->index('bank_id', 'bank_type_idx');
-            $table->foreign('bank_id', 'bank_type_fk')->on('banks')->references('id') ->onUpdate('cascade')
-                ->onDelete('cascade');
         });
     }
 
