@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Api\v1\BankController;
 use App\Http\Controllers\Api\v1\BudgetController;
 use App\Http\Controllers\Api\v1\CategoriesController;
 use App\Http\Controllers\Api\v1\CheckController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\Api\v1\CheckItemController;
 use App\Http\Controllers\Api\v1\ExpensesController;
 use App\Http\Controllers\Api\v1\IncomeCategoriesController;
 use App\Http\Controllers\Api\v1\IncomeController;
+use App\Http\Controllers\Api\v1\NotificationController;
 use App\Http\Controllers\Api\v1\PlanBudgetController;
 use App\Http\Controllers\Api\v1\PlanController;
 use App\Http\Controllers\Api\v1\ShopsController;
@@ -30,4 +32,6 @@ Route::apiResources([
     'plan' =>PlanController::class,
     'shops' =>ShopsController::class,
     'users' =>UsersController::class,
+    'bank' =>BankController::class,
+    'notification' =>NotificationController::class,
 ]);
