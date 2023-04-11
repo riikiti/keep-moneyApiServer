@@ -6,7 +6,7 @@
     <ProfileAside></ProfileAside>
     <div class="profile__content">
       <div class="profile__content-item">
-        <h2 class="title title--2">График расходов:</h2>
+        <h2 class="title title--2">График Расходов:</h2>
         <charts></charts>
       </div>
       <div class="profile__content-item">

@@ -34,9 +34,9 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $shops)
+    public function show(User $user)
     {
-        return new UsersResource($shops);
+        return new UsersResource($user);
     }
 
     /**

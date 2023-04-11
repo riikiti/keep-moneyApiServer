@@ -22,9 +22,8 @@ class NotificationStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'user_id'=>'required',
             'text'=>'required|max:255',
-            'period_finish'=>'required|data',
+            'period_finish'=>'required',
             'categories_id'=>'required',
         ];
     }
