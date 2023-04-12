@@ -59,4 +59,19 @@ const router = createRouter({
     routes
 })
 
+router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem('x_xsrf_token')
+
+    if (!token) {
+        if (to.name === 'profile' || to.name === 'expenses' || to.name === 'income' || to.name === 'planning' || to.name === 'setting' || to.name === 'question' || to.name === 'budget') {
+            return next({name: 'home'})
+        }
+    } else {
+        if (to.name === 'home') {
+            return next({name: 'profile'})
+        }
+    }
+    next()
+})
+
 export default router

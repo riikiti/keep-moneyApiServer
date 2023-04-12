@@ -83,6 +83,7 @@ import {useVuelidate} from "@vuelidate/core";
 import {required, email, minLength, sameAs} from "@vuelidate/validators";
 import Modal from "../components/Modal.vue";
 import axios from "axios";
+import router from '../router/index'
 
 const reg = ref(false);
 
@@ -127,6 +128,8 @@ const submitForm = async () => {
                 password_confirmation:formDate.confirmpass.toString()
             }).then(response => {
                 console.log(response);
+                localStorage.setItem('x_xsrf_token',response.config.headers['X-XSRF-TOKEN']);
+                router.push({ name: 'profile' });
             })
         })
     }
@@ -141,7 +144,11 @@ const AuthPass = ref('');
 const login = () => {
     axios.get('/sanctum/csrf-cookie').then(response => {
         axios.post('/login', {email: AuthEmail.value.toString(), password: AuthPass.value.toString()}).then(response => {
-            console.log(response);
+            //console.log(response.config.headers['X-XSRF-TOKEN']);
+            localStorage.setItem('x_xsrf_token',response.config.headers['X-XSRF-TOKEN']);
+            router.push({ name: 'profile' });
+        }).catch(err=>{
+            console.log(err.response)
         })
     });
 

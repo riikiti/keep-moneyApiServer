@@ -1,5 +1,6 @@
 <template>
   <aside class="profile__aside">
+      <div>
     <ul>
       <li>
         <router-link
@@ -44,12 +45,22 @@
         >
       </li>
     </ul>
-
+      </div>
+      <div>
+          <a @click.prevent="logout()">Logout</a>
+      </div>
   </aside>
 </template>
 
 <script setup>
 import { ref, defineProps, computed } from "vue";
+import router from '../router/index'
 
+const logout = ()=>{
+    axios.post('/logout').then(res=>{
+        localStorage.removeItem('x_xsrf_token')
+        router.push({ name: 'home' });
+    })
+}
 </script>
 
