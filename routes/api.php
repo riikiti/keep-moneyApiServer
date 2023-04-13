@@ -19,7 +19,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
 
-
 });
 
 
@@ -34,8 +33,7 @@ Route::apiResources([
     'plan-budget' => PlanBudgetController::class,
     'plan' => PlanController::class,
     'shops' => ShopsController::class,
-    'bank' => BankController::class,
-    'notification' => NotificationController::class,
+    //'bank' => BankController::class,
+    //'notification' => NotificationController::class,
     'users' => UsersController::class,
 ]);
-

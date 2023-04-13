@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('income_categories', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
 
             $table->index('user_id', 'user_income_categories_idx');

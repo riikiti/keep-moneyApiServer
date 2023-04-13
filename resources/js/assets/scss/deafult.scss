@@ -45,7 +45,9 @@ a,
 a:visited {
   text-decoration: none;
 }
-
+a{
+    cursor: pointer;
+}
 a:hover {
   text-decoration: none;
 }

@@ -47,7 +47,7 @@
     </ul>
       </div>
       <div>
-          <a @click.prevent="logout()">Logout</a>
+          <a @click.prevent="logout()">Выход</a>
       </div>
   </aside>
 </template>

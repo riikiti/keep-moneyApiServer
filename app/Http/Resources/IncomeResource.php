@@ -17,10 +17,10 @@ class IncomeResource extends JsonResource
         return  [
             'id'=>$this->id,
             'title'=>$this->title,
-            'categories_id'=>$this->categories_id,
+            'category'=> new IncomeCategoriesResource($this->categories),
             'price'=>$this->price,
             'date'=>$this->date,
-            'user_id'=>$this->user_id,
+            'users'=> new UsersResource($this->user),
         ];
     }
 }

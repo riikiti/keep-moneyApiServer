@@ -127,7 +127,7 @@ const submitForm = async () => {
                 password: formDate.password.toString(),
                 password_confirmation:formDate.confirmpass.toString()
             }).then(response => {
-                console.log(response);
+               // console.log(response);
                 localStorage.setItem('x_xsrf_token',response.config.headers['X-XSRF-TOKEN']);
                 router.push({ name: 'profile' });
             })
