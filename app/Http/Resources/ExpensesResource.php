@@ -17,9 +17,9 @@ class ExpensesResource extends JsonResource
         return  [
             'id'=>$this->id,
             'user_id'=>$this->user_id,
-            'check_id'=>$this->check_id,
-            'shops_id'=>$this->shops_id,
-            'categories_id'=>$this->categories_id,
+            'checks'=>new CheckResource($this->check),
+            'shop'=>new ShopsResource($this->shops),
+            'category'=>new CategoriesResource($this->categories),
         ];
     }
 }
