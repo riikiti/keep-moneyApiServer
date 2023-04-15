@@ -9,5 +9,5 @@ class CheckItem extends Model
 {
     use HasFactory;
     protected $table = 'check_items';
-    protected $fillable =['name','price','check_id'];
+    protected $fillable =['name','price','check_id','count'];
 }

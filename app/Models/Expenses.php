@@ -10,7 +10,7 @@ class Expenses extends Model
 {
     use HasFactory;
     protected $table = 'expenses';
-    protected $fillable =['magazine_id','categories_id','check_id','user_id'];
+    protected $fillable =['shops_id','categories_id','check_id','user_id'];
 
 
     public function shops(): BelongsTo
