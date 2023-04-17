@@ -23,6 +23,7 @@ class PlanBudgetStoreRequest extends FormRequest
     {
         return [
             'budget_id'=>'required',
+            'budget_on_start'=>'required',
             'user_id'=>'required',
             'value'=>'required',
             'period_start'=>'required|date',

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('plan_budgets', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('budget_id');
+            $table->unsignedDouble('budget_on_start');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('value');
             $table->timestamp('period_start');
