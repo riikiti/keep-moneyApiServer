@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class CheckItem extends Model
+class Item extends Model
 {
     use HasFactory;
-    protected $table = 'check_items';
-    protected $fillable =['name','price','check_id','count'];
+    protected $table = 'items';
+    protected $fillable =['name','price','count','check_id'];
 }

@@ -13,7 +13,7 @@ return new class extends Migration
     {
 
 
-        Schema::create('check_items', function (Blueprint $table) {
+        Schema::create('items', function (Blueprint $table) {
 
             $table->bigIncrements('id');
             $table->string('name');
@@ -23,8 +23,8 @@ return new class extends Migration
             $table->timestamps();
 
 
-            $table->index('check_id', 'check_full_idx');
-            $table->foreign('check_id', 'check_full_fk')->on('checks')->references('id') ->onUpdate('cascade')
+            $table->index('check_id', 'check_item_idx');
+            $table->foreign('check_id', 'check_item_fk')->on('checks')->references('id') ->onUpdate('cascade')
                 ->onDelete('cascade');
         });
     }

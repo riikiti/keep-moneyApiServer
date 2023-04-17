@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\v1\BankController;
 use App\Http\Controllers\Api\v1\BudgetController;
 use App\Http\Controllers\Api\v1\CategoriesController;
 use App\Http\Controllers\Api\v1\CheckController;
-use App\Http\Controllers\Api\v1\CheckItemController;
+use App\Http\Controllers\Api\v1\ItemController;
 use App\Http\Controllers\Api\v1\ExpensesController;
 use App\Http\Controllers\Api\v1\IncomeCategoriesController;
 use App\Http\Controllers\Api\v1\IncomeController;
@@ -26,14 +26,12 @@ Route::apiResources([
     'budget' => BudgetController::class,
     'categories' => CategoriesController::class,
     'check' => CheckController::class,
-    'check-item' => CheckItemController::class,
+    'item' => ItemController::class,
     'expenses' => ExpensesController::class,
     'income' => IncomeController::class,
     'income-categories' => IncomeCategoriesController::class,
     'plan-budget' => PlanBudgetController::class,
     'plan' => PlanController::class,
     'shops' => ShopsController::class,
-    //'bank' => BankController::class,
-    //'notification' => NotificationController::class,
     'users' => UsersController::class,
 ]);
