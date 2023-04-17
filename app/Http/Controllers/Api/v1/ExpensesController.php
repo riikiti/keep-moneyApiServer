@@ -22,9 +22,7 @@ class ExpensesController extends Controller
      */
     public function store(ExpensesStoreRequest $request)
     {
-        $created_expenses = Expenses::create($request->validated());
-
-        return new Expenses($created_expenses);
+        return Expenses::create($request->validated());
     }
 
     /**

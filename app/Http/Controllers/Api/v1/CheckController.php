@@ -22,9 +22,7 @@ class CheckController extends Controller
      */
     public function store(CheckStoreRequest $request)
     {
-        $created_check = Check::create($request->validated());
-
-        return new CheckResource($created_check);
+        return Check::create($request->validated());
     }
 
     /**

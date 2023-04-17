@@ -22,9 +22,7 @@ class CategoriesController extends Controller
      */
     public function store(CategoriesStoreRequest $request)
     {
-        $created_categories = Categories::create($request->validated());
-
-        return new CategoriesResource($created_categories);
+        return Categories::create($request->validated());
     }
 
     /**

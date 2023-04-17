@@ -22,9 +22,7 @@ class PlanBudgetController extends Controller
      */
     public function store(PlanBudgetStoreRequest $request)
     {
-        $created_planBudget = PlanBudget::create($request->validated());
-
-        return new PlanBudget($created_planBudget);
+        return PlanBudget::create($request->validated());
     }
 
     /**

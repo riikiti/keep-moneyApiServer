@@ -23,9 +23,7 @@ class PlanController extends Controller
      */
     public function store(PlanStoreRequest $request)
     {
-        $created_plan = Plan::create($request->validated());
-
-        return new Plan($created_plan);
+        return Plan::create($request->validated());
     }
 
     /**

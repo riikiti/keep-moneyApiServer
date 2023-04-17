@@ -22,9 +22,7 @@ class IncomeCategoriesController extends Controller
      */
     public function store(IncomeCategoriesStoreRequest $request)
     {
-        $created_incomeCategories = IncomeCategories::create($request->validated());
-
-        return new IncomeCategories($created_incomeCategories);
+        return IncomeCategories::create($request->validated());
     }
 
     /**

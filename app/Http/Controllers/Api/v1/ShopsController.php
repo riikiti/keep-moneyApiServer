@@ -22,9 +22,7 @@ class ShopsController extends Controller
      */
     public function store(ShopsStoreRequest $request)
     {
-        $created_shops = Shops::create($request->validated());
-
-        return new Shops($created_shops);
+        return Shops::create($request->validated());
     }
 
     /**

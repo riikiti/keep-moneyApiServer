@@ -22,9 +22,7 @@ class IncomeController extends Controller
      */
     public function store(IncomeStoreRequest $request)
     {
-        $created_income = Income::create($request->validated());
-
-        return new Income($created_income);
+        return Income::create($request->validated());
     }
 
     /**

@@ -9,5 +9,6 @@ class Shops extends Model
 {
     use HasFactory;
     protected $table = 'shops';
-    protected $fillable =['name','address'];
+    protected $guarded=[];
+    //protected $fillable =['title','address','city'];
 }

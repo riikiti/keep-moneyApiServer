@@ -37,9 +37,7 @@ class BudgetController extends Controller
      */
     public function store(BudgetStoreRequest $request)
     {
-        $created_budget = Budget::create($request->validated());
-
-        return new BudgetResource($created_budget);
+        return Budget::create($request->validated());
     }
 
     /**
