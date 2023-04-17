@@ -9,5 +9,11 @@ class Check extends Model
 {
     use HasFactory;
     protected $table = 'checks';
-    protected $fillable =['title','total_price','date'];
+   // protected $fillable =['title','total_price','date'];
+    protected $guarded=[];
+
+    public function item()
+    {
+        return $this->hasMany(Item::class);
+    }
 }
