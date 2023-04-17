@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Budget extends Model
+class Bank extends Model
 {
     use HasFactory;
-    protected $table = 'budgets';
-    protected $fillable =['bank_id','type','numbers','budget','last_date','user_id'];
+    protected $table = 'banks';
+    protected $guarded=[];
 }

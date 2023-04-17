@@ -33,5 +33,6 @@ Route::apiResources([
     'plan-budget' => PlanBudgetController::class,
     'plan' => PlanController::class,
     'shops' => ShopsController::class,
+    'bank' => BankController::class,
     'users' => UsersController::class,
 ]);
