@@ -17,7 +17,7 @@ class PlanResource extends JsonResource
         return  [
             'id'=>$this->id,
             'title'=>$this->title,
-            'categories_id'=>$this->categories_id,
+            'category'=>new CategoriesResource($this->categories),
             'period_start'=>$this->period_start,
             'period_finish'=>$this->period_finish,
             'max_price'=>$this->max_price,

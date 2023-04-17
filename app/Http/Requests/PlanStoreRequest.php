@@ -22,7 +22,7 @@ class PlanStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'budget_id'=>'required',
+            'title'=>'required',
             'user_id'=>'required',
             'categories_id'=>'required',
             'max_price'=>'required',
