@@ -16,7 +16,7 @@ class BudgetResource extends JsonResource
     {
       return  [
           'id'=>$this->id,
-          'bank_id'=>$this->bank_id,
+          'bank'=>new BankResource( $this->bank),
           'type'=>$this->type,
           'user_id'=>$this->user_id,
           'numbers'=>$this->numbers,
