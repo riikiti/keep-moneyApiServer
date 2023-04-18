@@ -23,7 +23,7 @@ class IncomeCategoriesStoreRequest extends FormRequest
     {
         return [
             'name'=>'required|max:255',
-            'user_id'=>'required',
+            'user_id'=>''
         ];
     }
 }

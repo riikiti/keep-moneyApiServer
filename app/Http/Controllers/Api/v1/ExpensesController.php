@@ -28,9 +28,9 @@ class ExpensesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Expenses $expenses)
+    public function show($id)
     {
-        return new  ExpensesResource($expenses);
+        return new ExpensesResource(Expenses::findOrFail($id));
     }
 
     /**

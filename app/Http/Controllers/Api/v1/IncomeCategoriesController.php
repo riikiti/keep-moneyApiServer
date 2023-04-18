@@ -28,9 +28,9 @@ class IncomeCategoriesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(IncomeCategories $incomeCategories)
+    public function show($id)
     {
-        return new  IncomeCategoriesResource($incomeCategories);
+        return new IncomeCategoriesResource(IncomeCategories::findOrFail($id));
     }
 
     /**

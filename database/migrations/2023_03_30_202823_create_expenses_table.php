@@ -17,7 +17,7 @@ return new class extends Migration
 
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('check_id');
+            $table->unsignedBigInteger('check_id')->nullable();
             $table->unsignedBigInteger('shops_id');
             $table->unsignedBigInteger('categories_id');
             $table->timestamps();
