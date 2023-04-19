@@ -37,18 +37,5 @@ Route::apiResources([
     'users' => UsersController::class,
 ]);
 
-Route::post('login', function (UsersStoreRequest $request) {
-    $credentials = $request->only('email', 'password');
 
-    if (!$token = auth()->attempt($credentials)) {
-        return response()->json(['error' => 'Unauthorized'], 401);
-    }
-
-    $user = auth()->user();
-
-    return response()->json([
-        'token' => $token,
-        'user' => $user
-    ]);
-});
 

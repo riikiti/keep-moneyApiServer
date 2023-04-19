@@ -34,9 +34,9 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show($email)
     {
-        return new UsersResource($user);
+        return User::where('email',$email) -> first();
     }
 
     /**
