@@ -127,7 +127,7 @@ const submitForm = async () => {
                 password: formDate.password.toString(),
                 password_confirmation:formDate.confirmpass.toString()
             }).then(response => {
-               // console.log(response);
+                console.log(response);
                 localStorage.setItem('x_xsrf_token',response.config.headers['X-XSRF-TOKEN']);
                 router.push({ name: 'profile' });
             })
@@ -145,6 +145,7 @@ const login = () => {
     axios.get('/sanctum/csrf-cookie').then(response => {
         axios.post('/login', {email: AuthEmail.value.toString(), password: AuthPass.value.toString()}).then(response => {
             //console.log(response.config.headers['X-XSRF-TOKEN']);
+            console.log(response.config.data);
             localStorage.setItem('x_xsrf_token',response.config.headers['X-XSRF-TOKEN']);
             router.push({ name: 'profile' });
         }).catch(err=>{

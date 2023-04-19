@@ -1,5 +1,5 @@
 <template>
-  <swiper :slides-per-view="1.1"  :modules="modules" :pagination="true" class="swiper">
+  <swiper :slides-per-view="1.1"  :modules="modules" :pagination="true" :grab-cursor="true" class="swiper">
     <swiper-slide
       ><div class="credit-card visa selectable">
         <div class="credit-card-last4"><span>4242</span></div>

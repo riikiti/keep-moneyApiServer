@@ -15,12 +15,12 @@ use App\Http\Controllers\Api\v1\PlanBudgetController;
 use App\Http\Controllers\Api\v1\PlanController;
 use App\Http\Controllers\Api\v1\ShopsController;
 use App\Http\Controllers\Api\v1\UsersController;
+use App\Http\Requests\UsersStoreRequest;
 use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
 
 });
-
 
 Route::apiResources([
     'budget' => BudgetController::class,
@@ -36,3 +36,19 @@ Route::apiResources([
     'bank' => BankController::class,
     'users' => UsersController::class,
 ]);
+
+Route::post('login', function (UsersStoreRequest $request) {
+    $credentials = $request->only('email', 'password');
+
+    if (!$token = auth()->attempt($credentials)) {
+        return response()->json(['error' => 'Unauthorized'], 401);
+    }
+
+    $user = auth()->user();
+
+    return response()->json([
+        'token' => $token,
+        'user' => $user
+    ]);
+});
+
