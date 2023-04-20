@@ -59,6 +59,7 @@ import router from '../router/index'
 const logout = ()=>{
     axios.post('/logout').then(res=>{
         localStorage.removeItem('x_xsrf_token')
+        localStorage.removeItem('id')
         router.push({ name: 'home' });
     })
 }

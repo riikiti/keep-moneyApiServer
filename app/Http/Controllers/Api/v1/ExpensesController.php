@@ -30,7 +30,7 @@ class ExpensesController extends Controller
      */
     public function show($id)
     {
-        return new ExpensesResource(Expenses::findOrFail($id));
+        return  ExpensesResource::collection(Expenses::all()->where('user_id',$id));
     }
 
     /**

@@ -130,6 +130,12 @@ const submitForm = async () => {
                 console.log(response);
                 localStorage.setItem('x_xsrf_token',response.config.headers['X-XSRF-TOKEN']);
                 router.push({ name: 'profile' });
+
+                axios.get('http://127.0.0.1:8000/api/v1/users/'+JSON.parse(response.config.data).email).then(response=>{
+                    //console.log(response.data.id);
+                    localStorage.setItem('id',response.data.id);
+                })
+
             })
         })
     }
@@ -148,7 +154,8 @@ const login = () => {
 
             console.log(JSON.parse(response.config.data).email);
             axios.get('http://127.0.0.1:8000/api/v1/users/'+JSON.parse(response.config.data).email).then(response=>{
-                console.log(response.data.id);
+                //console.log(response.data.id);
+                localStorage.setItem('id',response.data.id);
             })
             localStorage.setItem('x_xsrf_token',response.config.headers['X-XSRF-TOKEN']);
             router.push({ name: 'profile' });
