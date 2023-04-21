@@ -43,9 +43,9 @@ class BudgetController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Budget $budget)
+    public function show($id)
     {
-        return new BudgetResource($budget);
+        return  BudgetResource::collection(Budget::all()->where('user_id',$id));
     }
 
     /**

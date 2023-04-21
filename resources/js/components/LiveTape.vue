@@ -39,7 +39,7 @@
       </div>
     </div>
     <div class="profile__content-livetape__header">
-      <h2 class="title title--2">Последние действия (live)</h2>
+      <h2 class="title title--2">Последние действия</h2>
     </div>
     <div v-if="data == null">loading...</div>
     <ul v-else>
@@ -135,7 +135,7 @@ const posthData = async (createData) => {
         price: createData.price,
         id_mag: createData.id_mag,
         date: createData.date,
-     
+
     })
     .then((response) => {
       console.log(response.data);

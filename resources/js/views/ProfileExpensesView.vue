@@ -2,7 +2,7 @@
 
   <div class="profile">
     <div class="profile__header">
-      <h1>Расходы</h1>
+      <h1 class="title title--2">Расходы</h1>
     </div>
     <ProfileAside></ProfileAside>
     <div class="profile__content">

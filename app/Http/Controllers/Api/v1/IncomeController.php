@@ -28,9 +28,9 @@ class IncomeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Income $income)
+    public function show($id)
     {
-        return new  IncomeResource($income);
+        return  IncomeResource::collection(Income::all()->where('user_id',$id));
     }
 
     /**

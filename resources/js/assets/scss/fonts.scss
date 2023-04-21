@@ -1,37 +1,47 @@
 .title {
-  font-family: 'Roboto', sans-serif;
-  color: $title-color;
+    font-family: 'Roboto', sans-serif;
+    color: $title-color;
 
-  &--1 {
-    font-weight: 700;
-    font-size: 40px;
-    line-height: 60px;
+    &--1 {
+        font-weight: 700;
+        font-size: 40px;
+        line-height: 60px;
 
-    @include vp-768() {
-      font-size: 32px;
-      line-height: 48px;
-    }
-
-  }
-
-  &--2 {
-    font-weight: 700;
-    font-size: 32px;
-    line-height: 48px;
         @include vp-768() {
-      font-size: 24px;
-      line-height: 32px;
-    }
-  }
+            font-size: 32px;
+            line-height: 48px;
+        }
 
-  &--3 {
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 24px;
-  }
+    }
+
+    &--2 {
+        font-weight: 700;
+        font-size: 32px;
+        line-height: 48px;
+        @include vp-768() {
+            font-size: 24px;
+            line-height: 32px;
+        }
+    }
+
+    &--3 {
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 28px;
+        @include vp-768() {
+            font-size: 24px;
+            line-height: 32px;
+        }
+    }
+
+    &--4 {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+    }
 }
 
 @font-face {
-  font-family: "Poppins";
-  src: url("assets/fonts/Poppins-Regular.ttf");
+    font-family: "Poppins";
+    src: url("assets/fonts/Poppins-Regular.ttf");
 }
