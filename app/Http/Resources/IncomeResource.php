@@ -20,7 +20,8 @@ class IncomeResource extends JsonResource
             'category'=> new IncomeCategoriesResource($this->categories),
             'price'=>$this->price,
             'date'=>$this->date,
-            'users'=> new UsersResource($this->user),
+          //  'users'=> new UsersResource($this->user),
+            'user_id'=>$this->user_id
         ];
     }
 }
