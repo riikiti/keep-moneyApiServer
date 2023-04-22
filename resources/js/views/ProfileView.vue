@@ -14,7 +14,7 @@
         <charts-income ></charts-income>
       </div>
       <div class="profile__content-item__two-case">
-        <h2 class="title title--3">Ваши карты:</h2>
+        <h2 class="title title--3">Ваши карты</h2>
         <swiper></swiper>
       </div>
     </div>
