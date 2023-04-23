@@ -18,6 +18,11 @@
                             <div class="form__block">
                                 <label class="title title--3">Категория</label>
                                 <input type="text" v-model="createData.categories_id" required/>
+                                <select v-model="createData.categories_id">
+                                    <option v-for="category in categories" :value="category.id">
+                                        {{ category.name }}
+                                    </option>
+                                </select>
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Дата</label>
@@ -30,7 +35,6 @@
                                     required
                                 />
                             </div>
-                            {{ createData.date }}
                             <button class="form__btn" @click="posthData(createData)">
                                 Изменить
                             </button>
@@ -107,6 +111,7 @@ const modal = ref(false);
 const modalIndex = ref(null);
 const modalForCreate = ref(false);
 const createData = ref([]);
+const categories = ref(null);
 const id = localStorage.getItem('id');
 
 
@@ -144,7 +149,7 @@ const posthData = async (createData) => {
             price: createData.price,
             categories_id: createData.categories_id,
             date: createData.date,
-            user_id:id
+            user_id: id
         })
         .then((response) => {
             console.log(response.data);
@@ -181,7 +186,7 @@ const updateData = async (item_id, item) => {
             price: item.price,
             categories_id: item.categories_id,
             date: item.date,
-            user_id:id,
+            user_id: id,
         })
         .then((response) => {
             console.log(response.data);
@@ -194,5 +199,18 @@ const updateData = async (item_id, item) => {
 
 fetchData();
 
-onMounted(fetchData, posthData, deleteData, updateData);
+const fetchCategories = async () => {
+    axios
+        .get('http://127.0.0.1:8000/api/v1/income-categories')
+        .then((response) => {
+            categories.value = response.data.data;
+            console.log(categories.value)
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+fetchCategories()
+onMounted(fetchData, posthData, deleteData, updateData,fetchCategories);
 </script>
