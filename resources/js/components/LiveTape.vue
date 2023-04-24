@@ -17,12 +17,9 @@
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Категория</label>
-                                <input type="text" v-model="createData.categories_id" required/>
-                                <select v-model="createData.categories_id">
-                                    <option v-for="category in categories" :value="category.id">
-                                        {{ category.name }}
-                                    </option>
-                                </select>
+                                <categories-selector :option="categories"
+                                                     @getSelect="getSelect"
+                                ></categories-selector>
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Дата</label>
@@ -101,10 +98,12 @@
 
 <script setup>
 import Modal from "../components/Modal.vue";
+import CategoriesSelector from "../components/CategoriesSelector.vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import {onMounted, ref} from "vue";
+import {onMounted,  ref} from "vue";
 import axios from "axios";
+
 
 const data = ref(null);
 const modal = ref(false);
@@ -113,7 +112,13 @@ const modalForCreate = ref(false);
 const createData = ref([]);
 const categories = ref(null);
 const id = localStorage.getItem('id');
+const selectCategories = ref({});
 
+const getSelect = (item) => {
+    console.log(item.id)
+    selectCategories.id = item.id
+    selectCategories.name = item.name
+}
 
 const modalOpen = (index) => {
     modalIndex.value = index;
@@ -140,14 +145,14 @@ const fetchData = async () => {
 const posthData = async (createData) => {
     try {
         createData.date = createData.date.toISOString().substring(0, 19).replace("T", " ");
-        console.log(createData.date)
+        console.log(createData)
     } catch {
     }
     axios
         .post("http://127.0.0.1:8000/api/v1/income", {
             title: createData.title,
             price: createData.price,
-            categories_id: createData.categories_id,
+            categories_id: selectCategories.id,
             date: createData.date,
             user_id: id
         })
@@ -212,5 +217,5 @@ const fetchCategories = async () => {
 };
 
 fetchCategories()
-onMounted(fetchData, posthData, deleteData, updateData,fetchCategories);
+onMounted(fetchData, posthData, deleteData, updateData, fetchCategories);
 </script>

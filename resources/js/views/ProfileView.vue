@@ -3,8 +3,7 @@
         <div class="profile__header">
             <h1 class="title title--2">Главная</h1>
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium asperiores beatae blanditiis
-                doloribus error esse eveniet facere, magni quos totam? At cupiditate natus nisi, optio quis reiciendis
-                sit temporibus voluptatibus!</p>
+                doloribus error esse eveniet facere, magni quos totam?</p>
         </div>
         <ProfileAside @openMenu="openMenu()"></ProfileAside>
         <div class="profile__content">

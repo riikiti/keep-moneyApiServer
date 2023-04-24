@@ -9,7 +9,7 @@
                         <span> м/г: {{ Math.floor(item.last_date / 100) + "/" + (item.last_date % 100) }}</span>
                     </div>
                     <div class="bank-card__info">
-                        <span> на счету: {{ item.budget }} </span>
+                        <span> на счету: {{ item.budget }} р. </span>
                         <img :src="cardType(item.type)" :alt="item.type" class="bank-card__type">
                     </div>
                 </div>

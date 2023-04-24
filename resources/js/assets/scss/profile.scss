@@ -17,6 +17,18 @@
         }
     }
 
+    p {
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 24px;
+        color: $label-color;
+
+        @include vp-768() {
+            font-size: 14px;
+            line-height: 16px;
+        }
+    }
+
     &__content {
         grid-area: content;
         display: grid;
