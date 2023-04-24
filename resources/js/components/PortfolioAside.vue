@@ -7,7 +7,7 @@
                 <img src="../assets/img/logo.png" alt="logo">
             </div>
             <div class="profile__aside-menu">
-                <button @click="$emit('openMenu')"><img src="../assets/img/svg/arrow.svg" alt=""></button>
+                <button @click="$emit('openMenu')"><img src="../assets/img/svg/arrow.svg" alt=""><img src="../assets/img/svg/arrow.svg" alt=""></button>
             </div>
             <ul>
                 <li>
@@ -62,7 +62,6 @@
 </template>
 
 <script setup>
-import {ref, defineProps, computed} from "vue";
 import router from '../router/index'
 
 

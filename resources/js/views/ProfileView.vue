@@ -34,9 +34,10 @@ import ChartsIncome from "../components/ChartIncome.vue";
 import Swiper from "../components/SwiperCards.vue";
 import {ref} from "vue";
 
-const menu = ref(false);
+const menu = ref(ref(localStorage.getItem("is_expanded") === "true"));
 const openMenu = () => {
     menu.value = !menu.value
+    localStorage.setItem("is_expanded", menu.value)
     console.log(menu.value)
 }
 
