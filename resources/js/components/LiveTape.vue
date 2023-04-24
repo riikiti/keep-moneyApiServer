@@ -60,8 +60,12 @@
                                     <input type="text" v-model="item.price"/>
                                 </div>
                                 <div class="form__block">
-                                    <label class="title title--3">Изаменение магазина</label>
-                                    <input type="text" v-model="item.categories_id"/>
+                                    <label class="title title--3">Изаменение категории</label>
+                                    {{item.category.id}}
+                                    <categories-selector :option="categories"
+                                                         @getSelect="getSelect"
+                                                         :id="item.category.id"
+                                    ></categories-selector>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Изаменение даты</label>
