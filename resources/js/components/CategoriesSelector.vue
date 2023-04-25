@@ -30,8 +30,20 @@ const select = (item) => {
 
 const update = () => {
     console.log(props.id)
+    console.log(props.option)
+    const arr = Object.values(props.option)
+    arr.forEach((item) => {
+        console.log(item.id === props.id)
+        if (item.id === props.id) {
+            console.log(item.name)
+            data.value = item.name
+        }
+    })
 }
 update()
+onMounted(update)
+
+
 </script>
 
 

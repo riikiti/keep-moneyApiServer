@@ -61,7 +61,6 @@
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Изаменение категории</label>
-                                    {{item.category.id}}
                                     <categories-selector :option="categories"
                                                          @getSelect="getSelect"
                                                          :id="item.category.id"
@@ -193,7 +192,7 @@ const updateData = async (item_id, item) => {
         .put("http://127.0.0.1:8000/api/v1/income/" + item_id, {
             title: item.title,
             price: item.price,
-            categories_id: item.categories_id,
+            categories_id: selectCategories.id,
             date: item.date,
             user_id: id,
         })
