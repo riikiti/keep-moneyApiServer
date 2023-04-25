@@ -1,11 +1,12 @@
 <template>
-    <div v-if="!data">Данный пока нет...</div>
+    <div v-if="!data"><preloader></preloader></div>
     <vue-echarts v-else :option="option" ref="chart"/>
 </template>
 
 <script setup>
 import {VueEcharts} from "vue3-echarts";
 import {onMounted, ref} from "vue";
+import Preloader from "../components/Preloader.vue";
 import axios from "axios";
 
 const data = ref(null);

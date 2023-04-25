@@ -29,6 +29,10 @@ aside {
             margin-right: 12px;
         }
 
+        span{
+            opacity: 1;
+        }
+
         &.router-link-exact-active {
             white-space: nowrap;
             width: 100%;
@@ -42,7 +46,10 @@ aside {
     }
 
     &-logo {
-        height: 80px;
+       img{
+           width: 80px;
+           height: 80px;
+       }
     }
 
     &-menu {
