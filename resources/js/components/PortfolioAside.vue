@@ -4,7 +4,7 @@
     <aside class="profile__aside">
         <div>
             <div class="profile__aside-logo">
-                <img src="../assets/img/logo.png" alt="logo">
+                <img src="../assets/img/keep-moneyLogo.png" alt="logo">
             </div>
             <div class="profile__aside-menu">
                 <button @click="$emit('openMenu')"><img src="../assets/img/svg/arrow.svg" alt=""><img src="../assets/img/svg/arrow.svg" alt=""></button>

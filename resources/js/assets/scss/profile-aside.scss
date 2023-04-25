@@ -1,6 +1,7 @@
 aside {
     overflow: hidden;
-    a{
+
+    a {
         white-space: nowrap;
     }
 }
@@ -10,7 +11,7 @@ aside {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
+    overflow: hidden;
 
     li {
         white-space: nowrap;
@@ -29,7 +30,7 @@ aside {
             margin-right: 12px;
         }
 
-        span{
+        span {
             opacity: 1;
         }
 
@@ -38,6 +39,7 @@ aside {
             width: 100%;
             background-color: $light-gray;
             border-radius: 2px;
+
             img {
                 width: 25px;
                 height: 25px;
@@ -46,10 +48,11 @@ aside {
     }
 
     &-logo {
-       img{
-           width: 80px;
-           height: 80px;
-       }
+        transition: 0.2s ease-in-out;
+        margin-left: 30px;
+        img {
+            height: 80px;
+        }
     }
 
     &-menu {

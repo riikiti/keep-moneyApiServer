@@ -71,7 +71,7 @@
         </modal
         >
         <div class="header__content">
-            <img src="../assets/img/logo.png" alt="logo"/>
+            <img src="../assets/img/keep-moneyLogoBlack.png" alt="logo">
             <button @click="modalOpen()" class="button">Авторизация</button>
         </div>
     </div>

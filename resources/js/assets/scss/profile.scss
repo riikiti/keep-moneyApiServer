@@ -21,6 +21,10 @@
                 opacity: 0;
             }
         }
+        .profile__aside-logo{
+            transition: 0.2s ease-in-out;
+            margin-left: -10px;
+        }
     }
 
     p {
@@ -55,6 +59,8 @@
 
             .vue-echarts {
                 height: 400px;
+                width: 100%;
+
             }
 
             &__two-case {
