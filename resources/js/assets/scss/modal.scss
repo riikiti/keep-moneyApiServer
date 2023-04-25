@@ -99,8 +99,8 @@
 
             ul {
                 position: absolute;
-                max-height: 100px;
-                height: 100px;
+                max-height: 150px;
+                height: 150px;
                 overflow-y: scroll;
                 width: 100%;
                 z-index: 10;
@@ -111,7 +111,7 @@
                 }
 
                 &::-webkit-scrollbar-track {
-                    background-color:$light-white;
+                    background-color: $light-white;
                 }
 
                 &::-webkit-scrollbar-thumb {
@@ -121,6 +121,9 @@
                 li {
                     padding: 10px;
                     background-color: $white;
+                    font-size: 18px;
+                    line-height: 32px;
+                    color: $label-color !important;
 
                     &:nth-of-type(even) {
                         background-color: $light-white;
