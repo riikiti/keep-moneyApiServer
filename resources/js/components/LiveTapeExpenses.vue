@@ -73,31 +73,51 @@
                     <Modal :status="modal" :item="item" @modalClose="modalOpen()">
                         <template v-slot:modalContent>
                             <form class="form" @submit.prevent="modalOpen()">
-                                <h2 class="title title--2">Изаменение записи "{{ item.title }}"</h2>
+                                <h2 class="title title--2">Изаменение записи "{{ item.checks.title }}"</h2>
                                 <div class="form__block">
-                                    <label class="title title--3">Изаменение названия</label>
-                                    <input type="text" v-model="item.title"/>
+                                    <label class="title title--3">Название</label>
+                                    <input type="text" v-model="createData.title" required/>
                                 </div>
                                 <div class="form__block">
-                                    <label class="title title--3">Изаменение цены</label>
-                                    <input type="text" v-model="item.price"/>
+                                    <label class="title title--3">Список покупок</label>
+                                    <ul class="form__block-lists">
+                                        <li v-for="item in items" :key="item.id">
+                                            <p>Название:</p> <input type="text" v-model="item.name">
+                                            <p>Цена:</p><input type="text" v-model="item.price" @blur='totalPriceSum()'>
+                                            <p>р.</p>
+                                            <p>Кол-во:</p> <input type="text" v-model="item.count" @blur='totalPriceSum()'>
+                                            <p>шт.</p>
+                                            <div class="form__block-lists__delete" @click="removeItem(item.id)">
+                                                <img src="../assets/img/svg/exit.svg" alt="exit">
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="form__block-lists__add" @click="addItem()"> + добавить новую запись</div>
+                                    <div class="form__block-price">
+                                        <label class="title title--3">Итоговая цена: </label>
+                                        <p>{{ totalPrice }} р.</p>
+                                    </div>
                                 </div>
                                 <div class="form__block">
-                                    <label class="title title--3">Изаменение категории</label>
+                                    <label class="title title--3">Категория</label>
                                     <categories-selector :option="categories"
                                                          @getSelect="getSelect"
-                                                         :id="item.category.id"
                                     ></categories-selector>
                                 </div>
                                 <div class="form__block">
-                                    <label class="title title--3">Изаменение даты</label>
+                                    <label class="title title--3">Дата</label>
                                     <VueDatePicker
-                                        v-model="item.date"
+                                        v-model="createData.date"
                                         locale="ru"
                                         vertical
                                         :startDate="new Date()"
-                                        format="dd/MM/yyyy HH:mm"
+                                        format=" dd/MM/yyyy HH:mm"
+                                        required
                                     />
+                                </div>
+                                <div class="form__block">
+                                    <label class="title title--3">Адресс магазина</label>
+                                    <input type="text" v-model="createData.address" required/>
                                 </div>
                                 <button class="form__btn" @click="updateData(item.id, item)">
                                     Изменить
@@ -107,7 +127,7 @@
                     </Modal>
                 </div>
                 <div class="item__content">
-                    <h3 class="title title--4">{{ item.title }}</h3>
+                    <h3 class="title title--4">{{ item.checks.title }}</h3>
                     <div class="item-action">
                         <button @click="modalOpen(index)" :data-item="item.id">
                             <img src="../assets/img/svg/pen.svg" alt="update"/>
@@ -188,7 +208,7 @@ const modalCreate = () => {
 
 const fetchData = async () => {
     axios
-        .get('http://127.0.0.1:8000/api/v1/income/' + id)
+        .get('http://127.0.0.1:8000/api/v1/expenses/' + id)
         .then((response) => {
             data.value = response.data.data;
             console.log(data.value)
