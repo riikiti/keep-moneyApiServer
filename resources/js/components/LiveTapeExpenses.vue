@@ -14,29 +14,22 @@
                             <div class="form__block">
                                 <label class="title title--3">Список покупок</label>
                                 <ul class="form__block-lists">
-                                    <li><p>Название:</p> <input type="text">
-                                        <p>Цена:</p><input type="text" >
+                                    <li v-for="item in items" :key="item.id">
+                                        <p>{{item.id}}</p>
+                                        <p>Название:</p> <input type="text" v-model="item.name">
+                                        <p>Цена:</p><input type="text" v-model="item.price" @focus='totalPrice'>
                                         <p>р.</p>
-                                        <p>Кол-во:</p> <input type="text">
+                                        <p>Кол-во:</p> <input type="text" v-model="item.count">
                                         <p>шт.</p>
-                                        <div class="form__block-lists__delete">
-                                            <img src="../assets/img/svg/exit.svg" alt="exit">
-                                        </div>
-                                    </li>
-                                    <li><p>Название:</p> <input type="text">
-                                        <p>Цена:</p><input type="text">
-                                        <p>р.</p>
-                                        <p>Кол-во:</p> <input type="text">
-                                        <p>шт.</p>
-                                        <div class="form__block-lists__delete">
+                                        <div class="form__block-lists__delete" @click="removeItem(item.id)">
                                             <img src="../assets/img/svg/exit.svg" alt="exit">
                                         </div>
                                     </li>
                                 </ul>
-                                <div class="form__block-lists__add"> + добавить новую запись</div>
+                                <div class="form__block-lists__add" @click="addItem()"> + добавить новую запись</div>
                                 <div class="form__block-price">
                                     <label class="title title--3">Итоговая цена: </label>
-                                    <p>{{createData.price}} р.</p>
+                                    <p>{{ createData.totalPrice }} р.</p>
                                 </div>
                             </div>
                             <div class="form__block">
@@ -136,7 +129,7 @@ import Preloader from "../components/Preloader.vue";
 import CategoriesSelector from "../components/CategoriesSelector.vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import axios from "axios";
 
 
@@ -148,6 +141,27 @@ const createData = ref([]);
 const categories = ref(null);
 const id = localStorage.getItem('id');
 const selectCategories = ref({});
+const items = ref([]);
+const item = ref('');
+let count = 1
+const addItem = () => {
+    items.value.push({name: '', price: 0, count: 0, id: count});
+    count++;
+}
+
+const totalPrice=()=>{
+    items.value.forEach((el)=>{
+        createData.toralPrice += el.price;
+    })
+}
+
+const removeItem = (index) => {
+    items.value.forEach((el, i) => {
+        if (el.id === index) {
+            items.value.splice(i, 1);
+        }
+    })
+}
 
 const getSelect = (item) => {
     console.log(item.id)
