@@ -143,7 +143,7 @@ const selectCategories = ref({});
 const items = ref([]);
 const item = ref('');
 const totalPrice = ref(0)
-const checkId = ref(1);
+const checkId = ref(null);
 let count = 1
 
 
@@ -203,7 +203,7 @@ const posthData = async (createData) => {
         console.log(createData)
     } catch {
     }
-    console.log(createData.title,totalPrice,createData.date)
+    console.log(createData.title, totalPrice, createData.date)
     axios
         .post("http://127.0.0.1:8000/api/v1/check", {
             title: createData.title,
@@ -211,48 +211,47 @@ const posthData = async (createData) => {
             date: createData.date,
         })
         .then((response) => {
-           // console.log(response.data);
-            checkId.value=response.data.id;
+            // console.log(response.data);
+            checkId.value = response.data.id;
+            console.log(checkId.value)
+
+            console.log(items.value);
+            items.value.forEach((el) => {
+                console.log(el.name, el.price, el.count, checkId.value);
+                axios
+                    .post("http://127.0.0.1:8000/api/v1/item", {
+                        name: el.name,
+                        price: el.price,
+                        count: el.count,
+                        check_id: checkId.value
+                    })
+                    .then((response) => {
+                        console.log(response.data);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            })
+            axios
+                .post("http://127.0.0.1:8000/api/v1/expenses", {
+                    user_id: id,
+                    check_id: checkId.value,
+                    shops_id: 1,
+                    categories_id: selectCategories.id
+                })
+                .then((response) => {
+                    console.log(response.data);
+                    modalCreate()
+
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         })
         .catch((error) => {
             console.log(error);
         });
 
-
-    console.log(items.value);
-    items.value.forEach((el) => {
-        console.log(el.name,el.price,el.count,checkId.value);
-        axios
-            .post("http://127.0.0.1:8000/api/v1/item", {
-                name: el.name,
-                price: el.price,
-                count: el.count,
-                check_id: checkId.value
-            })
-            .then((response) => {
-                console.log(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    })
-
-
-    axios
-        .post("http://127.0.0.1:8000/api/v1/expenses", {
-            user_id: id,
-            check_id: checkId.value,
-            shops_id: 1,
-            categories_id: selectCategories.id
-        })
-        .then((response) => {
-            console.log(response.data);
-            modalCreate()
-
-        })
-        .catch((error) => {
-            console.log(error);
-        });
 
 };
 
