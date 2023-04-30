@@ -12,8 +12,32 @@
                                 <input type="text" v-model="createData.title" required/>
                             </div>
                             <div class="form__block">
-                                <label class="title title--3">Цена</label>
-                                <input type="text" v-model="createData.price" required/>
+                                <label class="title title--3">Список покупок</label>
+                                <ul class="form__block-lists">
+                                    <li><p>Название:</p> <input type="text">
+                                        <p>Цена:</p><input type="text" >
+                                        <p>р.</p>
+                                        <p>Кол-во:</p> <input type="text">
+                                        <p>шт.</p>
+                                        <div class="form__block-lists__delete">
+                                            <img src="../assets/img/svg/exit.svg" alt="exit">
+                                        </div>
+                                    </li>
+                                    <li><p>Название:</p> <input type="text">
+                                        <p>Цена:</p><input type="text">
+                                        <p>р.</p>
+                                        <p>Кол-во:</p> <input type="text">
+                                        <p>шт.</p>
+                                        <div class="form__block-lists__delete">
+                                            <img src="../assets/img/svg/exit.svg" alt="exit">
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="form__block-lists__add"> + добавить новую запись</div>
+                                <div class="form__block-price">
+                                    <label class="title title--3">Итоговая цена: </label>
+                                    <p>{{createData.price}} р.</p>
+                                </div>
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Категория</label>
@@ -32,8 +56,13 @@
                                     required
                                 />
                             </div>
+
+                            <div class="form__block">
+                                <label class="title title--3">Адресс магазина</label>
+                                <input type="text" v-model="createData.title" required/>
+                            </div>
                             <button class="form__btn" @click="posthData(createData)">
-                                Изменить
+                                Создать
                             </button>
                         </form>
                     </template>
@@ -43,7 +72,9 @@
         <div class="profile__content-livetape__header">
             <h2 class="title title--2">Последние действия</h2>
         </div>
-        <div v-if="data == null"><Preloader></Preloader></div>
+        <div v-if="data == null">
+            <Preloader></Preloader>
+        </div>
         <ul v-else>
             <li v-for="(item, index) in data" :key="item.id" class="item">
                 <div v-if="modal && modalIndex === index">
@@ -105,7 +136,7 @@ import Preloader from "../components/Preloader.vue";
 import CategoriesSelector from "../components/CategoriesSelector.vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import {onMounted,  ref} from "vue";
+import {onMounted, ref} from "vue";
 import axios from "axios";
 
 
