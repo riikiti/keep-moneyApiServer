@@ -15,7 +15,7 @@
 
 <script setup>
 import ProfileAside from "../components/PortfolioAside.vue";
-import LiveTape from "../components/LiveTape.vue";
+import LiveTape from "../components/LiveTapeIncome.vue";
 import {ref} from "vue";
 const menu = ref(ref(localStorage.getItem("is_expanded") === "true"));
 const openMenu = () => {

@@ -1,22 +1,32 @@
 <template>
 
     <div class="profile" :class="{ 'profile-active': menu}">
-    <div class="profile__header">
-      <h1 class="title title--2">Бюджет</h1>
-    </div>
+        <div class="profile__header">
+            <h1 class="title title--2">Бюджет</h1>
+        </div>
         <ProfileAside @openMenu="openMenu()"></ProfileAside>
-    <div class="profile__content">
-      <div class="profile__content-charts"></div>
+        <div class="profile__content">
+            <div class="profile__content-item__two-case">
+                <h2 class="title title--3">Бюджет</h2>
+                <swiper></swiper>
+            </div>
+            <div class="profile__content-item"><h2 class="title title--3">Количество денег на всех картах</h2>
+                <charts-expenses></charts-expenses>
+            </div>
+            <div class="profile__content-item"><h2 class="title title--3">ХЗ</h2></div>
+        </div>
+        <live-tape></live-tape>
     </div>
-    <live-tape></live-tape>
-  </div>
 </template>
 
 
 <script setup>
 import ProfileAside from "../components/PortfolioAside.vue";
-import LiveTape from "../components/LiveTape.vue";
+import LiveTape from "../components/LiveTapePlan.vue";
+import ChartsExpenses from "../components/ChartExpenses.vue";
+import Swiper from "../components/SwiperCards.vue";
 import {ref} from "vue";
+
 const menu = ref(ref(localStorage.getItem("is_expanded") === "true"));
 const openMenu = () => {
     menu.value = !menu.value
