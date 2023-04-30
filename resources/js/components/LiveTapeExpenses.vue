@@ -15,11 +15,10 @@
                                 <label class="title title--3">Список покупок</label>
                                 <ul class="form__block-lists">
                                     <li v-for="item in items" :key="item.id">
-                                        <p>{{item.id}}</p>
                                         <p>Название:</p> <input type="text" v-model="item.name">
-                                        <p>Цена:</p><input type="text" v-model="item.price" @focus='totalPrice'>
+                                        <p>Цена:</p><input type="text" v-model="item.price" @blur='totalPriceSum()'>
                                         <p>р.</p>
-                                        <p>Кол-во:</p> <input type="text" v-model="item.count">
+                                        <p>Кол-во:</p> <input type="text" v-model="item.count" @blur='totalPriceSum()'>
                                         <p>шт.</p>
                                         <div class="form__block-lists__delete" @click="removeItem(item.id)">
                                             <img src="../assets/img/svg/exit.svg" alt="exit">
@@ -29,7 +28,7 @@
                                 <div class="form__block-lists__add" @click="addItem()"> + добавить новую запись</div>
                                 <div class="form__block-price">
                                     <label class="title title--3">Итоговая цена: </label>
-                                    <p>{{ createData.totalPrice }} р.</p>
+                                    <p>{{ totalPrice }} р.</p>
                                 </div>
                             </div>
                             <div class="form__block">
@@ -52,7 +51,7 @@
 
                             <div class="form__block">
                                 <label class="title title--3">Адресс магазина</label>
-                                <input type="text" v-model="createData.title" required/>
+                                <input type="text" v-model="createData.address" required/>
                             </div>
                             <button class="form__btn" @click="posthData(createData)">
                                 Создать
@@ -143,15 +142,21 @@ const id = localStorage.getItem('id');
 const selectCategories = ref({});
 const items = ref([]);
 const item = ref('');
+const totalPrice = ref(0)
+const checkId = ref(1);
 let count = 1
+
+
 const addItem = () => {
-    items.value.push({name: '', price: 0, count: 0, id: count});
+    items.value.push({name: '', price: 0, count: 1, id: count});
     count++;
 }
 
-const totalPrice=()=>{
-    items.value.forEach((el)=>{
-        createData.toralPrice += el.price;
+const totalPriceSum = () => {
+    totalPrice.value = 0
+    items.value.forEach((el) => {
+        console.log(el.price)
+        totalPrice.value += Number(el.price) * Number(el.count);
     })
 }
 
@@ -161,6 +166,7 @@ const removeItem = (index) => {
             items.value.splice(i, 1);
         }
     })
+    totalPriceSum()
 }
 
 const getSelect = (item) => {
@@ -197,23 +203,59 @@ const posthData = async (createData) => {
         console.log(createData)
     } catch {
     }
+    console.log(createData.title,totalPrice,createData.date)
     axios
-        .post("http://127.0.0.1:8000/api/v1/income", {
+        .post("http://127.0.0.1:8000/api/v1/check", {
             title: createData.title,
-            price: createData.price,
-            categories_id: selectCategories.id,
+            total_price: totalPrice.value,
             date: createData.date,
-            user_id: id
         })
         .then((response) => {
-            console.log(response.data);
-            modalCreate();
-            fetchData();
+           // console.log(response.data);
+            checkId.value=response.data.id;
         })
         .catch((error) => {
             console.log(error);
         });
+
+
+    console.log(items.value);
+    items.value.forEach((el) => {
+        console.log(el.name,el.price,el.count,checkId.value);
+        axios
+            .post("http://127.0.0.1:8000/api/v1/item", {
+                name: el.name,
+                price: el.price,
+                count: el.count,
+                check_id: checkId.value
+            })
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    })
+
+
+    axios
+        .post("http://127.0.0.1:8000/api/v1/expenses", {
+            user_id: id,
+            check_id: checkId.value,
+            shops_id: 1,
+            categories_id: selectCategories.id
+        })
+        .then((response) => {
+            console.log(response.data);
+            modalCreate()
+
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
 };
+
 
 const deleteData = async (id) => {
     axios
@@ -255,7 +297,7 @@ fetchData();
 
 const fetchCategories = async () => {
     axios
-        .get('http://127.0.0.1:8000/api/v1/income-categories')
+        .get('http://127.0.0.1:8000/api/v1/categories')
         .then((response) => {
             categories.value = response.data.data;
             console.log(categories.value)
