@@ -95,7 +95,8 @@
                                             </div>
                                         </li>
                                     </ul>
-                                    <div class="form__block-lists__add" @click="addItemUpdate()"> + добавить новую запись
+                                    <div class="form__block-lists__add" @click="addItemUpdate()"> + добавить новую
+                                        запись
                                     </div>
                                     <div class="form__block-price">
                                         <label class="title title--3">Итоговая цена: </label>
@@ -182,7 +183,7 @@ const addItem = () => {
 }
 
 const addItemUpdate = () => {
-    getItemsNew.value.push({name: '', price: 0, count: 1, id: count});
+    getItemsNew.value.push({name: '', price: 0, count: 1, id: count, newItem: true});
     count++;
 }
 
@@ -333,22 +334,57 @@ const deleteData = async (id) => {
 };
 const updateData = async (item_id, item) => {
     try {
-        item.date = item.date.toISOString().substring(0, 19).replace("T", " ");
+        item.checks.date = item.checks.date.toISOString().substring(0, 19).replace("T", " ");
         console.log(item.date)
     } catch {
     }
-
+    if (totalPriceUpdate !== 0) {
+        item.checks.total_price = totalPriceUpdate.value;
+    }
+    console.log(item);
     axios
-        .put("http://127.0.0.1:8000/api/v1/income/" + item_id, {
-            title: item.title,
-            price: item.price,
-            categories_id: selectCategories.id,
-            date: item.date,
-            user_id: id,
+        .put("http://127.0.0.1:8000/api/v1/check/" + item.checks.id, {
+            title: item.checks.title,
+            total_price: item.checks.total_price,
+            date: item.checks.date,
         })
         .then((response) => {
             console.log(response.data);
-            fetchData();
+            checkId.value = response.data.id;
+
+//todo провереить если есть параметр newItem то создать запись если нет то обновить запись
+//todo что делать если один из item был удален?(вызывать  deleteData() в самом списке items, поменявь в делетеДата на удаление item)
+            getItemsNew.value.forEach((el) => {
+                console.log(el);
+                axios
+                    .put("http://127.0.0.1:8000/api/v1/item/" + el.id, {
+                        name: el.name,
+                        price: Number(el.price),
+                        count: Number(el.count),
+                        check_id: Number(el.check_id)
+                    })
+                    .then((response) => {
+                        console.log(response.data);
+
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            })
+
+            axios
+                .put("http://127.0.0.1:8000/api/v1/expenses/" + item.id, {
+                    user_id: id,
+                    check_id: checkId,
+                    shops_id: 1,
+                    categories_id: selectCategories.id
+                })
+                .then((response) => {
+                    console.log(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         })
         .catch((error) => {
             console.log(error);

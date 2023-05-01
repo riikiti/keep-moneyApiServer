@@ -28,26 +28,26 @@ class ItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Item $checkItem)
+    public function show(Item $item)
     {
-        return new  ItemResource($checkItem);
+        return new  ItemResource($item);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ItemStoreRequest $request, Item $checkItem)
+    public function update(ItemStoreRequest $request, Item $item)
     {
-        $checkItem->update($request->validated());
-        return new ItemResource($checkItem);
+        $item->update($request->validated());
+        return new ItemResource($item);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Item $checkItem)
+    public function destroy(Item $item)
     {
-        $checkItem->delete();
+        $item->delete();
 
         return response(null);
     }
