@@ -30,14 +30,15 @@ class ExpensesController extends Controller
      */
     public function show($id)
     {
-        return  ExpensesResource::collection(Expenses::all()->where('user_id',$id));
+        return ExpensesResource::collection(Expenses::all()->where('user_id',$id));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ExpensesStoreRequest $request, Expenses $expenses)
+    public function update(ExpensesStoreRequest $request, $id)
     {
+        $expenses = Expenses::findOrFail($id);
         $expenses->update($request->validated());
         return new ExpensesResource($expenses);
     }
