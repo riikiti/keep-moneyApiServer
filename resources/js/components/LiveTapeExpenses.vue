@@ -76,38 +76,43 @@
                                 <h2 class="title title--2">Изаменение записи "{{ item.checks.title }}"</h2>
                                 <div class="form__block">
                                     <label class="title title--3">Название</label>
-                                    <input type="text" v-model="createData.title" required/>
+                                    <input type="text" v-model="item.checks.title" required/>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Список покупок</label>
                                     <ul class="form__block-lists">
-                                        <li v-for="item in items" :key="item.id">
-                                            <p>Название:</p> <input type="text" v-model="item.name">
-                                            <p>Цена:</p><input type="text" v-model="item.price" @blur='totalPriceSum()'>
+                                        <li v-for="el in item.checks.items" :key="item.id">
+                                            <p>Название:</p> <input type="text" v-model="el.name">
+                                            <p>Цена:</p><input type="text" v-model="el.price"
+                                                               @blur='totalPriceSumUpdate()'>
                                             <p>р.</p>
-                                            <p>Кол-во:</p> <input type="text" v-model="item.count" @blur='totalPriceSum()'>
+                                            <p>Кол-во:</p> <input type="text" v-model="el.count"
+                                                                  @blur='totalPriceSumUpdate()'>
                                             <p>шт.</p>
-                                            <div class="form__block-lists__delete" @click="removeItem(item.id)">
+                                            <div class="form__block-lists__delete" @click="removeItem(el.id)">
                                                 <img src="../assets/img/svg/exit.svg" alt="exit">
                                             </div>
+                                            {{ addItemUpdate(el) }}
                                         </li>
                                     </ul>
-                                    <div class="form__block-lists__add" @click="addItem()"> + добавить новую запись</div>
+                                    <div class="form__block-lists__add" @click="addItem()"> + добавить новую запись
+                                    </div>
                                     <div class="form__block-price">
                                         <label class="title title--3">Итоговая цена: </label>
-                                        <p>{{ totalPrice }} р.</p>
+                                        <p>{{ totalPriceUpdate }} р.</p>
                                     </div>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Категория</label>
                                     <categories-selector :option="categories"
                                                          @getSelect="getSelect"
+                                                         :id="item.category.id"
                                     ></categories-selector>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Дата</label>
                                     <VueDatePicker
-                                        v-model="createData.date"
+                                        v-model="item.checks.date"
                                         locale="ru"
                                         vertical
                                         :startDate="new Date()"
@@ -117,7 +122,7 @@
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Адресс магазина</label>
-                                    <input type="text" v-model="createData.address" required/>
+                                    <input type="text" v-model="item.shop.id" required/>
                                 </div>
                                 <button class="form__btn" @click="updateData(item.id, item)">
                                     Изменить
@@ -163,7 +168,9 @@ const selectCategories = ref({});
 const items = ref([]);
 const item = ref('');
 const totalPrice = ref(0)
+const totalPriceUpdate = ref(0)
 const checkId = ref(null);
+const getItems = ref([]);
 let count = 1
 
 
@@ -172,11 +179,28 @@ const addItem = () => {
     count++;
 }
 
+
+const addItemUpdate = (el) => {
+    getItems.value.push({name: el.name, price: el.price, count: el.count, id: el.id});
+    console.log(getItems.value)
+}
+
+
 const totalPriceSum = () => {
     totalPrice.value = 0
     items.value.forEach((el) => {
         console.log(el.price)
         totalPrice.value += Number(el.price) * Number(el.count);
+    })
+}
+
+
+const totalPriceSumUpdate = () => {
+    totalPriceUpdate.value = 0
+    console.log(getItems.value)
+    getItems.value.forEach((el) => {
+        console.log(el.price)
+        totalPriceUpdate.value += Number(el.price) * Number(el.count);
     })
 }
 
@@ -194,24 +218,24 @@ const getSelect = (item) => {
     selectCategories.id = item.id
     selectCategories.name = item.name
 }
-
 const modalOpen = (index) => {
     modalIndex.value = index;
     modal.value = !modal.value;
     console.log(modal.value);
 };
-
 const modalCreate = () => {
     modalForCreate.value = !modalForCreate.value;
     console.log(modalForCreate.value);
 };
-
 const fetchData = async () => {
     axios
         .get('http://127.0.0.1:8000/api/v1/expenses/' + id)
         .then((response) => {
             data.value = response.data.data;
-            console.log(data.value)
+            /* data.value.forEach((el) => {
+                 getItems.value.push(el.checks.items)
+                 console.log(getItems.value)
+             })*/
         })
         .catch((error) => {
             console.log(error);
@@ -274,8 +298,6 @@ const posthData = async (createData) => {
 
 
 };
-
-
 const deleteData = async (id) => {
     axios
         .delete(`http://127.0.0.1:8000/api/v1/income/${id}`)
@@ -287,7 +309,6 @@ const deleteData = async (id) => {
             console.log(error);
         });
 };
-
 const updateData = async (item_id, item) => {
     try {
         item.date = item.date.toISOString().substring(0, 19).replace("T", " ");
@@ -313,7 +334,6 @@ const updateData = async (item_id, item) => {
 };
 
 fetchData();
-
 const fetchCategories = async () => {
     axios
         .get('http://127.0.0.1:8000/api/v1/categories')

@@ -110,7 +110,7 @@
 
         &-list {
             position: relative;
-            opacity: 0;
+            display: none;
 
             ul {
                 position: absolute;
@@ -154,7 +154,7 @@
             }
 
             .modal__select-list {
-                opacity: 1;
+                display: block;
             }
         }
     }
