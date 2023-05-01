@@ -81,25 +81,25 @@
                                 <div class="form__block">
                                     <label class="title title--3">Список покупок</label>
                                     <ul class="form__block-lists">
-                                        <li v-for="el in item.checks.items" :key="item.id">
+                                        {{ getItemsUpdate(item.checks.id) }}
+                                        <li v-for="el in getItemsNew" :key="item.id">
                                             <p>Название:</p> <input type="text" v-model="el.name">
                                             <p>Цена:</p><input type="text" v-model="el.price"
-                                                               @blur='totalPriceSumUpdate()'>
+                                                               @blur='totalPriceSum()'>
                                             <p>р.</p>
                                             <p>Кол-во:</p> <input type="text" v-model="el.count"
-                                                                  @blur='totalPriceSumUpdate()'>
+                                                                  @blur='totalPriceSum()'>
                                             <p>шт.</p>
                                             <div class="form__block-lists__delete" @click="removeItem(el.id)">
                                                 <img src="../assets/img/svg/exit.svg" alt="exit">
                                             </div>
-                                            {{ addItemUpdate(el) }}
                                         </li>
                                     </ul>
                                     <div class="form__block-lists__add" @click="addItem()"> + добавить новую запись
                                     </div>
                                     <div class="form__block-price">
                                         <label class="title title--3">Итоговая цена: </label>
-                                        <p>{{ totalPriceUpdate }} р.</p>
+                                        <p>{{ totalPrice }} р.</p>
                                     </div>
                                 </div>
                                 <div class="form__block">
@@ -171,6 +171,7 @@ const totalPrice = ref(0)
 const totalPriceUpdate = ref(0)
 const checkId = ref(null);
 const getItems = ref([]);
+const getItemsNew = ref([]);
 let count = 1
 
 
@@ -180,11 +181,15 @@ const addItem = () => {
 }
 
 
-const addItemUpdate = (el) => {
-    getItems.value.push({name: el.name, price: el.price, count: el.count, id: el.id});
-    console.log(getItems.value)
+const getItemsUpdate = (id) => {
+    getItems.value.forEach((el) => {
+        console.log(el)
+        if (el.id === id) {
+            console.log(el.items)
+            getItemsNew.value = el.items;
+        }
+    })
 }
-
 
 const totalPriceSum = () => {
     totalPrice.value = 0
@@ -194,15 +199,6 @@ const totalPriceSum = () => {
     })
 }
 
-
-const totalPriceSumUpdate = () => {
-    totalPriceUpdate.value = 0
-    console.log(getItems.value)
-    getItems.value.forEach((el) => {
-        console.log(el.price)
-        totalPriceUpdate.value += Number(el.price) * Number(el.count);
-    })
-}
 
 const removeItem = (index) => {
     items.value.forEach((el, i) => {
@@ -232,10 +228,10 @@ const fetchData = async () => {
         .get('http://127.0.0.1:8000/api/v1/expenses/' + id)
         .then((response) => {
             data.value = response.data.data;
-            /* data.value.forEach((el) => {
-                 getItems.value.push(el.checks.items)
-                 console.log(getItems.value)
-             })*/
+            data.value.forEach((el) => {
+                getItems.value.push(el.checks)
+                //console.log(getItems.value)
+            })
         })
         .catch((error) => {
             console.log(error);
