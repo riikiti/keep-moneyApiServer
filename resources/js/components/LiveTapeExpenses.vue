@@ -85,21 +85,22 @@
                                         <li v-for="el in getItemsNew" :key="item.id">
                                             <p>Название:</p> <input type="text" v-model="el.name">
                                             <p>Цена:</p><input type="text" v-model="el.price"
-                                                               @blur='totalPriceSum()'>
+                                                               @blur='totalPriceSumUpdate()'>
                                             <p>р.</p>
                                             <p>Кол-во:</p> <input type="text" v-model="el.count"
-                                                                  @blur='totalPriceSum()'>
+                                                                  @blur='totalPriceSumUpdate()'>
                                             <p>шт.</p>
-                                            <div class="form__block-lists__delete" @click="removeItem(el.id)">
+                                            <div class="form__block-lists__delete" @click="removeItemUpdate(el.id)">
                                                 <img src="../assets/img/svg/exit.svg" alt="exit">
                                             </div>
                                         </li>
                                     </ul>
-                                    <div class="form__block-lists__add" @click="addItem()"> + добавить новую запись
+                                    <div class="form__block-lists__add" @click="addItemUpdate()"> + добавить новую запись
                                     </div>
                                     <div class="form__block-price">
                                         <label class="title title--3">Итоговая цена: </label>
-                                        <p>{{ totalPrice }} р.</p>
+                                        <p v-if="totalPriceUpdate===0">{{ item.checks.total_price }} р.</p>
+                                        <p v-else>{{ totalPriceUpdate }} р.</p>
                                     </div>
                                 </div>
                                 <div class="form__block">
@@ -180,6 +181,11 @@ const addItem = () => {
     count++;
 }
 
+const addItemUpdate = () => {
+    getItemsNew.value.push({name: '', price: 0, count: 1, id: count});
+    count++;
+}
+
 
 const getItemsUpdate = (id) => {
     getItems.value.forEach((el) => {
@@ -200,6 +206,15 @@ const totalPriceSum = () => {
 }
 
 
+const totalPriceSumUpdate = () => {
+    totalPriceUpdate.value = 0
+    getItemsNew.value.forEach((el) => {
+        console.log(el.price)
+        totalPriceUpdate.value += Number(el.price) * Number(el.count);
+    })
+}
+
+
 const removeItem = (index) => {
     items.value.forEach((el, i) => {
         if (el.id === index) {
@@ -207,6 +222,17 @@ const removeItem = (index) => {
         }
     })
     totalPriceSum()
+}
+
+
+const removeItemUpdate = (index) => {
+    getItemsNew.value.forEach((el, i) => {
+        console.log(el.id)
+        if (el.id === index) {
+            getItemsNew.value.splice(i, 1);
+        }
+    })
+    totalPriceSumUpdate()
 }
 
 const getSelect = (item) => {
