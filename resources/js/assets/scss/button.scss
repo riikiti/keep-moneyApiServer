@@ -9,6 +9,7 @@
     color: $white;
     text-transform: uppercase;
     white-space: nowrap;
+    transition: 0.2s ease-in-out;
     &:hover{
         background-color: #9944cc;
         box-shadow: 0px 10px 20px rgba(153, 68, 204, 0.35);
@@ -17,5 +18,5 @@
     @include vp-768(){
         padding: 6px 12px;
     }
- 
+
 }

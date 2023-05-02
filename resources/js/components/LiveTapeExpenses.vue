@@ -139,7 +139,7 @@
                         <button @click="modalOpen(index)" :data-item="item.id">
                             <img src="../assets/img/svg/pen.svg" alt="update"/>
                         </button>
-                        <button @click="deleteData(item.id)">
+                        <button @click="deleteData(item.id,item)">
                             <img src="../assets/img/svg/trash.svg" alt="delete"/>
                         </button>
                     </div>
@@ -321,7 +321,7 @@ const posthData = async (createData) => {
 
 
 };
-const deleteData = async (id) => {
+const deleteData = async (id, item) => {
     axios
         .delete(`http://127.0.0.1:8000/api/v1/expenses/${id}`)
         .then((response) => {
@@ -331,6 +331,34 @@ const deleteData = async (id) => {
         .catch((error) => {
             console.log(error);
         });
+
+    axios
+        .delete(`http://127.0.0.1:8000/api/v1/check/${item.checks.id}`)
+        .then((response) => {
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+
+    try {
+        item.value.checks.items.forEach((el) => {
+            axios
+                .delete(`http://127.0.0.1:8000/api/v1/item/${el.id}`)
+                .then((response) => {
+                    console.log(response.data);
+
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        })
+    } catch (err) {
+        console.log(err)
+    }
+
+
 };
 const updateData = async (item_id, item) => {
     try {
