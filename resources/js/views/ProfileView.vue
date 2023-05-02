@@ -27,7 +27,7 @@
 
 <script setup>
 import ProfileAside from "../components/PortfolioAside.vue";
-import LiveTape from "../components/LiveTapeIncome.vue";
+import LiveTape from "../components/LiveTapePlan.vue";
 import ChartsExpenses from "../components/ChartExpenses.vue";
 import ChartsIncome from "../components/ChartIncome.vue";
 import Swiper from "../components/SwiperCards.vue";

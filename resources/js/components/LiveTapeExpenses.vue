@@ -90,7 +90,7 @@
                                             <p>Кол-во:</p> <input type="text" v-model="el.count"
                                                                   @blur='totalPriceSumUpdate()'>
                                             <p>шт.</p>
-                                            <div class="form__block-lists__delete" @click="removeItemUpdate(el.id)">
+                                            <div class="form__block-lists__delete" @click="removeItemUpdate(el.id);deleteItem(el.id)">
                                                 <img src="../assets/img/svg/exit.svg" alt="exit">
                                             </div>
                                         </li>
@@ -185,6 +185,19 @@ const addItem = () => {
 const addItemUpdate = () => {
     getItemsNew.value.push({name: '', price: 0, count: 1, id: count, newItem: true});
     count++;
+}
+
+
+const deleteItem = (id) => {
+    axios
+        .delete(`http://127.0.0.1:8000/api/v1/item/${id}`)
+        .then((response) => {
+            console.log(response.data);
+
+        })
+        .catch((error) => {
+            console.log(error);
+        });
 }
 
 
