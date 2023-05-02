@@ -338,44 +338,61 @@ const updateData = async (item_id, item) => {
         console.log(item.date)
     } catch {
     }
-    if (totalPriceUpdate !== 0) {
-        item.checks.total_price = totalPriceUpdate.value;
-    }
     console.log(item);
     axios
         .put("http://127.0.0.1:8000/api/v1/check/" + item.checks.id, {
             title: item.checks.title,
-            total_price: item.checks.total_price,
+            total_price: totalPriceUpdate.value,
             date: item.checks.date,
         })
         .then((response) => {
             console.log(response.data);
-            checkId.value = response.data.id;
+            //checkId.value = response.data.id;
 
 //todo провереить если есть параметр newItem то создать запись если нет то обновить запись
 //todo что делать если один из item был удален?(вызывать  deleteData() в самом списке items, поменявь в делетеДата на удаление item)
+// todo сделать totalPriceUpdate чтобы небыл равен 0
             getItemsNew.value.forEach((el) => {
                 console.log(el);
-                axios
-                    .put("http://127.0.0.1:8000/api/v1/item/" + el.id, {
-                        name: el.name,
-                        price: Number(el.price),
-                        count: Number(el.count),
-                        check_id: Number(el.check_id)
-                    })
-                    .then((response) => {
-                        console.log(response.data);
 
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                if (el.newItem === true) {
+                    console.log(11111111111111, el, checkId.value)
+                    axios
+                        .post("http://127.0.0.1:8000/api/v1/item", {
+                            name: el.name,
+                            price: Number(el.price),
+                            count: Number(el.count),
+                            check_id: Number(item.checks.id)
+                        })
+                        .then((response) => {
+                            console.log(response.data);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                } else {
+
+                    axios
+                        .put("http://127.0.0.1:8000/api/v1/item/" + el.id, {
+                            name: el.name,
+                            price: Number(el.price),
+                            count: Number(el.count),
+                            check_id: Number(el.check_id)
+                        })
+                        .then((response) => {
+                            console.log(response.data);
+
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                }
             })
 
             axios
                 .put("http://127.0.0.1:8000/api/v1/expenses/" + item.id, {
                     user_id: id,
-                    check_id: checkId,
+                    check_id: item.checks.id,
                     shops_id: 1,
                     categories_id: selectCategories.id
                 })
