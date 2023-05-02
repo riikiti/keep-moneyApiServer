@@ -82,6 +82,7 @@
                                     <label class="title title--3">Список покупок</label>
                                     <ul class="form__block-lists">
                                         {{ getItemsUpdate(item.checks.id) }}
+                                        {{ totalPriceSumUpdate() }}
                                         <li v-for="el in getItemsNew" :key="item.id">
                                             <p>Название:</p> <input type="text" v-model="el.name">
                                             <p>Цена:</p><input type="text" v-model="el.price"
@@ -407,6 +408,7 @@ const updateData = async (item_id, item) => {
             console.log(error);
         });
 };
+
 
 fetchData();
 const fetchCategories = async () => {
