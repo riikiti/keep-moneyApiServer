@@ -33,7 +33,7 @@
                                 />
                             </div>
                             <button class="form__btn" @click="posthData(createData)">
-                                Изменить
+                                Создать
                             </button>
                         </form>
                     </template>
@@ -41,9 +41,11 @@
             </div>
         </div>
         <div class="profile__content-livetape__header">
-            <h2 class="title title--2">Последние действия</h2>
+            <h2 class="title title--2">Планы</h2>
         </div>
-        <div v-if="data == null"><Preloader></Preloader></div>
+        <div v-if="data == null">
+            <Preloader></Preloader>
+        </div>
         <ul v-else>
             <li v-for="(item, index) in data" :key="item.id" class="item">
                 <div v-if="modal && modalIndex === index">
@@ -105,7 +107,7 @@ import Preloader from "../components/Preloader.vue";
 import CategoriesSelector from "../components/CategoriesSelector.vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import {onMounted,  ref} from "vue";
+import {onMounted, ref} from "vue";
 import axios from "axios";
 
 

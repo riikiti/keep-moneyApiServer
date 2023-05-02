@@ -62,7 +62,7 @@
             </div>
         </div>
         <div class="profile__content-livetape__header">
-            <h2 class="title title--2">Последние действия</h2>
+            <h2 class="title title--2">Траты</h2>
         </div>
         <div v-if="data == null">
             <Preloader></Preloader>
@@ -82,7 +82,6 @@
                                     <label class="title title--3">Список покупок</label>
                                     <ul class="form__block-lists">
                                         {{ getItemsUpdate(item.checks.id) }}
-                                        {{ totalPriceSumUpdate() }}
                                         <li v-for="el in getItemsNew" :key="item.id">
                                             <p>Название:</p> <input type="text" v-model="el.name">
                                             <p>Цена:</p><input type="text" v-model="el.price"
@@ -310,7 +309,7 @@ const posthData = async (createData) => {
                 .then((response) => {
                     console.log(response.data);
                     modalCreate()
-
+                    fetchData()
                 })
                 .catch((error) => {
                     console.log(error);
@@ -324,7 +323,7 @@ const posthData = async (createData) => {
 };
 const deleteData = async (id) => {
     axios
-        .delete(`http://127.0.0.1:8000/api/v1/income/${id}`)
+        .delete(`http://127.0.0.1:8000/api/v1/expenses/${id}`)
         .then((response) => {
             console.log(response.data);
             fetchData();
@@ -350,7 +349,6 @@ const updateData = async (item_id, item) => {
             console.log(response.data);
             //checkId.value = response.data.id;
 
-//todo провереить если есть параметр newItem то создать запись если нет то обновить запись
 //todo что делать если один из item был удален?(вызывать  deleteData() в самом списке items, поменявь в делетеДата на удаление item)
 // todo сделать totalPriceUpdate чтобы небыл равен 0
             getItemsNew.value.forEach((el) => {
@@ -399,6 +397,7 @@ const updateData = async (item_id, item) => {
                 })
                 .then((response) => {
                     console.log(response.data);
+                    fetchData()
                 })
                 .catch((error) => {
                     console.log(error);
@@ -426,3 +425,5 @@ const fetchCategories = async () => {
 fetchCategories()
 onMounted(fetchData, posthData, deleteData, updateData, fetchCategories);
 </script>
+
+

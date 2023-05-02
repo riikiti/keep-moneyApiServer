@@ -33,7 +33,7 @@
                                 />
                             </div>
                             <button class="form__btn" @click="posthData(createData)">
-                                Изменить
+                                Создать
                             </button>
                         </form>
                     </template>
@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="profile__content-livetape__header">
-            <h2 class="title title--2">Последние действия</h2>
+            <h2 class="title title--2">Прибыль</h2>
         </div>
         <div v-if="data == null"><Preloader></Preloader></div>
         <ul v-else>
