@@ -82,6 +82,7 @@
                                     <label class="title title--3">Список покупок</label>
                                     <ul class="form__block-lists">
                                         {{ getItemsUpdate(item.checks.id) }}
+                                        {{ totalPriceSumUpdate() }}
                                         <li v-for="el in getItemsNew" :key="item.id">
                                             <p>Название:</p> <input type="text" v-model="el.name">
                                             <p>Цена:</p><input type="text" v-model="el.price"
@@ -194,6 +195,7 @@ const getItemsUpdate = (id) => {
         if (el.id === id) {
             console.log(el.items)
             getItemsNew.value = el.items;
+            return true;
         }
     })
 }
@@ -212,6 +214,7 @@ const totalPriceSumUpdate = () => {
     getItemsNew.value.forEach((el) => {
         console.log(el.price)
         totalPriceUpdate.value += Number(el.price) * Number(el.count);
+
     })
 }
 
@@ -257,6 +260,7 @@ const fetchData = async () => {
             data.value = response.data.data;
             data.value.forEach((el) => {
                 getItems.value.push(el.checks)
+
                 //console.log(getItems.value)
             })
         })
@@ -338,38 +342,55 @@ const updateData = async (item_id, item) => {
         console.log(item.date)
     } catch {
     }
-    if (totalPriceUpdate !== 0) {
-        item.checks.total_price = totalPriceUpdate.value;
-    }
     console.log(item);
     axios
         .put("http://127.0.0.1:8000/api/v1/check/" + item.checks.id, {
             title: item.checks.title,
-            total_price: item.checks.total_price,
+            total_price: totalPriceUpdate.value,
             date: item.checks.date,
         })
         .then((response) => {
             console.log(response.data);
-            checkId.value = response.data.id;
+            //checkId.value = response.data.id;
 
 //todo провереить если есть параметр newItem то создать запись если нет то обновить запись
 //todo что делать если один из item был удален?(вызывать  deleteData() в самом списке items, поменявь в делетеДата на удаление item)
+// todo сделать totalPriceUpdate чтобы небыл равен 0
             getItemsNew.value.forEach((el) => {
                 console.log(el);
-                axios
-                    .put("http://127.0.0.1:8000/api/v1/item/" + el.id, {
-                        name: el.name,
-                        price: Number(el.price),
-                        count: Number(el.count),
-                        check_id: Number(el.check_id)
-                    })
-                    .then((response) => {
-                        console.log(response.data);
 
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                if (el.newItem === true) {
+                    console.log(11111111111111, el, checkId.value)
+                    axios
+                        .post("http://127.0.0.1:8000/api/v1/item", {
+                            name: el.name,
+                            price: Number(el.price),
+                            count: Number(el.count),
+                            check_id: Number(checkId.value)
+                        })
+                        .then((response) => {
+                            console.log(response.data);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                } else {
+
+                    axios
+                        .put("http://127.0.0.1:8000/api/v1/item/" + el.id, {
+                            name: el.name,
+                            price: Number(el.price),
+                            count: Number(el.count),
+                            check_id: Number(el.check_id)
+                        })
+                        .then((response) => {
+                            console.log(response.data);
+
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                }
             })
 
             axios
