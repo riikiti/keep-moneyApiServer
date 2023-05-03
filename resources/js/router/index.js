@@ -3,7 +3,6 @@ import Home from '../views/HomeView.vue'
 import Profile from '../views/ProfileView.vue'
 import Expenses from '../views/ProfileExpensesView.vue'
 import Income from '../views/ProfileIncomeView.vue'
-import Planning from '../views/ProfilePlanningView.vue'
 import Setting from '../views/ProfileSettingView.vue'
 import Question from '../views/ProfileQuestionView.vue'
 import Budget from '../views/ProfileBudgetView.vue'
@@ -29,11 +28,6 @@ const routes = [
         path: '/profile/income',
         name: 'income',
         component: Income
-    },
-    {
-        path: '/profile/planning',
-        name: 'planning',
-        component: Planning
     },
     {
         path: '/profile/setting',
@@ -63,7 +57,7 @@ router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('x_xsrf_token')
 
     if (!token) {
-        if (to.name === 'profile' || to.name === 'expenses' || to.name === 'income' || to.name === 'planning' || to.name === 'setting' || to.name === 'question' || to.name === 'budget') {
+        if (to.name === 'profile' || to.name === 'expenses' || to.name === 'income' ||  to.name === 'setting' || to.name === 'question' || to.name === 'budget') {
             return next({name: 'home'})
         }
     } else {

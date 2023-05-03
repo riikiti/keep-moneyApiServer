@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="profile__content-livetape__header">
-            <h2 class="title title--2">Планы по категориям</h2>
+            <h2 class="title title--2">Планирование бюджета</h2>
         </div>
         <div v-if="data == null">
             <Preloader></Preloader>

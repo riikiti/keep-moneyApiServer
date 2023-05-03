@@ -13,7 +13,7 @@
             <div class="profile__content-item"><h2 class="title title--3">Количество денег на всех картах</h2>
                 <charts-expenses></charts-expenses>
             </div>
-            <div class="profile__content-item"><h2 class="title title--3">ХЗ</h2></div>
+            <div class="profile__content-item"><h2 class="title title--3">Планы</h2><bar-plan></bar-plan></div>
         </div>
         <live-tape></live-tape>
     </div>
@@ -22,8 +22,9 @@
 
 <script setup>
 import ProfileAside from "../components/PortfolioAside.vue";
-import LiveTape from "../components/LiveTapePlan.vue";
+import LiveTape from "../components/LiveTapePlanBudget.vue";
 import ChartsExpenses from "../components/ChartExpenses.vue";
+import BarPlan from "../components/BarPlan.vue";
 import Swiper from "../components/SwiperCards.vue";
 import {ref} from "vue";
 
