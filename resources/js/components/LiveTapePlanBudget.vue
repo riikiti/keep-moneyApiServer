@@ -83,8 +83,13 @@
                         </template>
                     </Modal>
                 </div>
+                {{ getPercent(item) }}
                 <div class="item__content">
-                    <h3 class="title title--4">{{ item.budgets.bank.name }} - {{ item.budgets.numbers }}</h3>
+                    <h3 class="title title--4">{{ item.budgets.bank.name }} - {{ item.budgets.numbers }} <span
+                        class="item__persent" :class="{ 'item__persent-minus' : getPercentColor()}">{{
+                            percent
+                        }} %</span></h3>
+
                     <div class="item-action">
                         <button @click="modalOpen(index)" :data-item="item.id">
                             <img src="../assets/img/svg/pen.svg" alt="update"/>
@@ -117,11 +122,29 @@ const createData = ref([]);
 const categories = ref(null);
 const id = localStorage.getItem('id');
 const selectBudget = ref({});
+const percent = ref(null)
 
 const getSelect = (item) => {
     console.log(item.id)
     selectBudget.id = item.id
     selectBudget.budget = item.budget
+}
+
+const getPercent = (item) => {
+    if (Number(item.budgets.budget) < Number(item.budget_on_start)) {
+        percent.value = (Number(item.budgets.budget) / Number(item.budget_on_start) * -100).toFixed(2)
+    } else {
+        percent.value = ((Number(item.budgets.budget) / Number(item.value)) * 100).toFixed(2)
+    }
+}
+
+const getPercentColor= ()=>{
+    if (percent.value<0){
+        return true
+    }
+    else {
+        return false
+    }
 }
 
 const modalOpen = (index) => {

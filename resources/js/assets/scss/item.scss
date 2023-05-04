@@ -5,6 +5,14 @@
     height: max-content;
     cursor: pointer;
 
+    &__persent {
+        color: rgb(24, 184, 52);;
+
+        &-minus {
+            color: $error-color;
+        }
+    }
+
     &:hover {
         .item-action {
             opacity: 1;

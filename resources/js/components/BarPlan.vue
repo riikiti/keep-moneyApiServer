@@ -23,7 +23,7 @@ const option = ref({
         }
     },
     grid: {
-        top: 80,
+        top: 30,
         bottom: 30
     },
     xAxis: {
@@ -56,7 +56,7 @@ const option = ref({
     },
     series: [
         {
-            name: 'Cost',
+            name: 'Значение:',
             type: 'bar',
             stack: 'Total',
             label: {
