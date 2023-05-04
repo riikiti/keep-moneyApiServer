@@ -50,28 +50,27 @@
                     <Modal :status="modal" :item="item" @modalClose="modalOpen()">
                         <template v-slot:modalContent>
                             <form class="form" @submit.prevent="modalOpen()">
-                                <h2 class="title title--2">Изаменение записи "{{ item.title }}"</h2>
+                                <h2 class="title title--2">Изаменение записи "{{ item.budgets.numbers}} - {{ item.budgets.bank.name  }}"</h2>
                                 <div class="form__block">
-                                    <label class="title title--3">Изаменение названия</label>
-                                    <input type="text" v-model="item.title"/>
-                                </div>
-                                <div class="form__block">
-                                    <label class="title title--3">Изаменение цены</label>
-                                    <input type="text" v-model="item.price"/>
+                                    <label class="title title--3">Изаменение цели</label>
+                                    <input type="number" v-model="item.value"/>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Изаменение категории</label>
                                     <categories-selector :option="categories"
                                                          @getSelect="getSelect"
-                                                         :id="item.category.id"
+                                                         :id="item.budgets.id"
                                     ></categories-selector>
                                 </div>
+                                {{getUpdateDate(item)}}
+                                {{updateDate}}
                                 <div class="form__block">
                                     <label class="title title--3">Изаменение даты</label>
                                     <VueDatePicker
-                                        v-model="item.date"
+                                        v-model="updateDate"
                                         locale="ru"
                                         vertical
+                                        range
                                         :startDate="new Date()"
                                         format="dd/MM/yyyy HH:mm"
                                     />
@@ -123,6 +122,7 @@ const categories = ref(null);
 const id = localStorage.getItem('id');
 const selectBudget = ref({});
 const percent = ref(null)
+const updateDate = ref(null);
 
 const getSelect = (item) => {
     console.log(item.id)
@@ -131,11 +131,16 @@ const getSelect = (item) => {
 }
 
 const getPercent = (item) => {
+    percent.value=0
     if (Number(item.budgets.budget) < Number(item.budget_on_start)) {
-        percent.value = (Number(item.budgets.budget) / Number(item.budget_on_start) * -100).toFixed(2)
+        percent.value = ((Number(item.budgets.budget) / Number(item.budget_on_start)) * -100).toFixed(2)
     } else {
         percent.value = ((Number(item.budgets.budget) / Number(item.value)) * 100).toFixed(2)
     }
+}
+
+const getUpdateDate=(item)=>{
+    updateDate.value=[item.period_start,item.period_finish];
 }
 
 const getPercentColor= ()=>{

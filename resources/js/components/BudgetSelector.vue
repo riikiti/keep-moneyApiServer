@@ -50,8 +50,7 @@ const update = () => {
         console.log(item.id === props.id)
         if (item.id === props.id) {
             console.log(item.name)
-            data.numbers= item.numbers
-            data.budget = item.budget
+            data.value= item.numbers
         }
     })
 }
