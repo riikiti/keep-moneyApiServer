@@ -1,32 +1,30 @@
 <template>
     <div class="profile__livetape">
         <div class="profile__livetape-button">
-            <button class="button" @click="modalCreate()">Создать запись</button>
+            <button class="button" @click="modalCreate()">Создать Плана</button>
             <div v-if="modalForCreate">
                 <Modal :status="modalForCreate" @modalClose="modalCreate()">
                     <template v-slot:modalContent>
                         <form class="form" @submit.prevent="modalOpen()">
-                            <h2 class="title title--2">Создание записи</h2>
+                            <h2 class="title title--2">Создание плана</h2>
+
                             <div class="form__block">
-                                <label class="title title--3">Название</label>
-                                <input type="text" v-model="createData.title" required/>
+                                <label class="title title--3">Планируемое значение по карте</label>
+                                <input type="number" v-model="createData.price" required/>
                             </div>
                             <div class="form__block">
-                                <label class="title title--3">Цена</label>
-                                <input type="text" v-model="createData.price" required/>
-                            </div>
-                            <div class="form__block">
-                                <label class="title title--3">Категория</label>
+                                <label class="title title--3">Выбор карты</label>
                                 <categories-selector :option="categories"
                                                      @getSelect="getSelect"
                                 ></categories-selector>
                             </div>
                             <div class="form__block">
-                                <label class="title title--3">Дата</label>
+                                <label class="title title--3">На какой периуд</label>
                                 <VueDatePicker
                                     v-model="createData.date"
                                     locale="ru"
                                     vertical
+                                    range
                                     :startDate="new Date()"
                                     format=" dd/MM/yyyy HH:mm"
                                     required
@@ -86,7 +84,7 @@
                     </Modal>
                 </div>
                 <div class="item__content">
-                    <h3 class="title title--4">{{ item.title }}</h3>
+                    <h3 class="title title--4">{{ item.budgets.bank.name }} - {{ item.budgets.numbers }}</h3>
                     <div class="item-action">
                         <button @click="modalOpen(index)" :data-item="item.id">
                             <img src="../assets/img/svg/pen.svg" alt="update"/>
@@ -104,7 +102,7 @@
 <script setup>
 import Modal from "../components/Modal.vue";
 import Preloader from "../components/Preloader.vue";
-import CategoriesSelector from "../components/CategoriesSelector.vue";
+import CategoriesSelector from "../components/BudgetSelector.vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import {onMounted, ref} from "vue";
@@ -118,12 +116,12 @@ const modalForCreate = ref(false);
 const createData = ref([]);
 const categories = ref(null);
 const id = localStorage.getItem('id');
-const selectCategories = ref({});
+const selectBudget = ref({});
 
 const getSelect = (item) => {
     console.log(item.id)
-    selectCategories.id = item.id
-    selectCategories.name = item.name
+    selectBudget.id = item.id
+    selectBudget.budget = item.budget
 }
 
 const modalOpen = (index) => {
@@ -139,7 +137,7 @@ const modalCreate = () => {
 
 const fetchData = async () => {
     axios
-        .get('http://127.0.0.1:8000/api/v1/income/' + id)
+        .get('http://127.0.0.1:8000/api/v1/plan-budget/' + id)
         .then((response) => {
             data.value = response.data.data;
             console.log(data.value)
@@ -149,17 +147,21 @@ const fetchData = async () => {
         });
 };
 const posthData = async (createData) => {
+    console.log(createData.date)
     try {
-        createData.date = createData.date.toISOString().substring(0, 19).replace("T", " ");
-        console.log(createData)
+        createData.dateStart = createData.date[0].toISOString().substring(0, 19).replace("T", " ");
+        createData.dateFinish = createData.date[1].toISOString().substring(0, 19).replace("T", " ");
+        console.log(createData.dateStart)
+        console.log(createData.dateFinish)
     } catch {
     }
     axios
-        .post("http://127.0.0.1:8000/api/v1/income", {
-            title: createData.title,
-            price: createData.price,
-            categories_id: selectCategories.id,
-            date: createData.date,
+        .post("http://127.0.0.1:8000/api/v1/plan-budget", {
+            value: createData.price,
+            budget_id: selectBudget.id,
+            period_start: createData.dateStart,
+            period_finish: createData.dateFinish,
+            budget_on_start: selectBudget.budget,
             user_id: id
         })
         .then((response) => {
@@ -174,7 +176,7 @@ const posthData = async (createData) => {
 
 const deleteData = async (id) => {
     axios
-        .delete(`http://127.0.0.1:8000/api/v1/income/${id}`)
+        .delete(`http://127.0.0.1:8000/api/v1/plan-budget/${id}`)
         .then((response) => {
             console.log(response.data);
             fetchData();
@@ -195,7 +197,7 @@ const updateData = async (item_id, item) => {
         .put("http://127.0.0.1:8000/api/v1/income/" + item_id, {
             title: item.title,
             price: item.price,
-            categories_id: selectCategories.id,
+            categories_id: selectBudget.id,
             date: item.date,
             user_id: id,
         })
@@ -212,7 +214,7 @@ fetchData();
 
 const fetchCategories = async () => {
     axios
-        .get('http://127.0.0.1:8000/api/v1/income-categories')
+        .get('http://127.0.0.1:8000/api/v1/budget/' + id)
         .then((response) => {
             categories.value = response.data.data;
             console.log(categories.value)

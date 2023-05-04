@@ -29,9 +29,9 @@ class PlanController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Plan $plan)
+    public function show($id)
     {
-        return new PlanResource($plan);
+        return PlanResource::collection(Plan::all()->where('user_id',$id));
     }
 
     /**

@@ -28,9 +28,9 @@ class PlanBudgetController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(PlanBudget $planBudget)
+    public function show($id)
     {
-        return new PlanBudgetResource($planBudget);
+        return PlanBudgetResource::collection(PlanBudget::all()->where('user_id',$id));
     }
 
     /**

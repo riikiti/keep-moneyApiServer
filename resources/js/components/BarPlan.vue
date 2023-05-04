@@ -16,9 +16,6 @@ const labelRight = {
 };
 
 const option = ref({
-    title: {
-        text: 'Bar Chart with Negative Value'
-    },
     tooltip: {
         trigger: 'axis',
         axisPointer: {

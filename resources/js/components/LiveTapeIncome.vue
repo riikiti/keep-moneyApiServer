@@ -13,7 +13,7 @@
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Цена</label>
-                                <input type="text" v-model="createData.price" required/>
+                                <input type="number" v-model="createData.price" required/>
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Категория</label>
@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Изаменение цены</label>
-                                    <input type="text" v-model="item.price"/>
+                                    <input type="number" v-model="item.price"/>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Изаменение категории</label>
