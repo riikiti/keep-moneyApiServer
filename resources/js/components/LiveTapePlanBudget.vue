@@ -75,6 +75,8 @@
                                         format="dd/MM/yyyy HH:mm"
                                     />
                                 </div>
+
+
                                 <button class="form__btn" @click="updateData(item)">
                                     Изменить
                                 </button>
@@ -215,43 +217,69 @@ const updateData = async (item) => {
 
 
     try {
-        if (updateDate != null) {
-            afterDate.dateStart = updateDate.date[0].toISOString().substring(0, 19).replace("T", " ");
-            afterDate.dateFinish = updateDate.date[1].toISOString().substring(0, 19).replace("T", " ");
-            console.log(afterDate)
+        if (updateDate.value.length !== 0) {
+            afterDate.dateStart = updateDate.value[0].toISOString().substring(0, 19).replace("T", " ");
+            afterDate.dateFinish = updateDate.value[1].toISOString().substring(0, 19).replace("T", " ");
+            console.log(111,afterDate)
+            if (!selectBudget.id){
+                selectBudget.id=item.budgets.id;
+            }
+            axios
+                .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
+                    value: item.value,
+                    budget_id: selectBudget.id,
+                    period_start:  afterDate.dateStart,
+                    period_finish: afterDate.dateFinish ,
+                    user_id: id,
+                    budget_on_start: item.budget_on_start,
+                })
+                .then((response) => {
+                    console.log(response.data);
+                    fetchData();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
         } else {
-            afterDate.value.dateStart = item.period_start;
-            afterDate.value.dateFinish = item.period_finish;
-            console.log(afterDate)
+            console.log(222,afterDate)
+            afterDate.dateStart = item.period_start;
+            afterDate.dateFinish = item.period_finish;
+            console.log(222,afterDate)
+
+
+            if (!selectBudget.id){
+                selectBudget.id=item.budgets.id;
+            }
+            console.log(afterDate.value)
+            console.log(111111111111, selectBudget)
+            axios
+                .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
+                    value: item.value,
+                    budget_id: selectBudget.id,
+                    period_start:  afterDate.dateStart,
+                    period_finish: afterDate.dateFinish ,
+                    user_id: id,
+                    budget_on_start: item.budget_on_start,
+                })
+                .then((response) => {
+                    console.log(response.data);
+                    fetchData();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
 
 
-    } catch {
+    } catch(err) {
+        console.log(err)
     }
 
 
-    if (!selectBudget.id){
-        selectBudget.value=item.budgets.id;
-    }
-    console.log(afterDate.value)
-    console.log(111111111111, selectBudget.value)
 
-    axios
-        .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
-            value: item.value,
-            budget_id: selectBudget.value,
-            period_start: updateDate.dateStart,
-            period_finish: updateDate.dateFinish,
-            user_id: id,
-            budget_on_start: item.budget_on_start,
-        })
-        .then((response) => {
-            console.log(response.data);
-            // fetchData();
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+
+
 };
 
 fetchData();
