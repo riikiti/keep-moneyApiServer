@@ -2,7 +2,7 @@
     <div class="profile__livetape">
         <div class="profile__livetape-button">
             <button class="button" @click="modalCreate()">Создать запись</button>
-            <div v-if="modalForCreate">
+            <teleport to=".modals" v-if="modalForCreate">
                 <Modal :status="modalForCreate" @modalClose="modalCreate()">
                     <template v-slot:modalContent>
                         <form class="form" @submit.prevent="modalOpen()">
@@ -38,7 +38,7 @@
                         </form>
                     </template>
                 </Modal>
-            </div>
+            </teleport>
         </div>
         <div class="profile__content-livetape__header">
             <h2 class="title title--2">Прибыль</h2>
@@ -46,7 +46,7 @@
         <div v-if="data == null"><Preloader></Preloader></div>
         <ul v-else>
             <li v-for="(item, index) in data" :key="item.id" class="item">
-                <div v-if="modal && modalIndex === index">
+                <teleport to=".modals" v-if="modal && modalIndex === index">
                     <Modal :status="modal" :item="item" @modalClose="modalOpen()">
                         <template v-slot:modalContent>
                             <form class="form" @submit.prevent="modalOpen()">
@@ -82,7 +82,7 @@
                             </form>
                         </template>
                     </Modal>
-                </div>
+                </teleport>
                 <div class="item__content">
                     <h3 class="title title--4">{{ item.title }}</h3>
                     <div class="item-action">

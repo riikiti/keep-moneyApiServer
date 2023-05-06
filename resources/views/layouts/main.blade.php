@@ -14,8 +14,11 @@
     @vite(['resources/js/assets/scss/style.scss', 'resources/js/app.js'])
 </head>
 <body>
-    <div id="app">
-            @yield('content')
-    </div>
+<div id="app">
+    @yield('content')
+</div>
+<div class="modals">
+
+</div>
 </body>
 </html>

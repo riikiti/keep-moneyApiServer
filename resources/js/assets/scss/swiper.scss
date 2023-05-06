@@ -38,7 +38,8 @@
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
-                img{
+
+                img {
                     width: 20px;
                     cursor: pointer;
                 }
@@ -56,11 +57,16 @@
         z-index: 10;
 
 
-        button{
+        button {
             font-size: 36px;
             vertical-align: center;
             color: white;
             cursor: pointer;
+            padding: 3px;
+
+            &:nth-of-type(2) {
+                margin-top: -6px;
+            }
         }
     }
 

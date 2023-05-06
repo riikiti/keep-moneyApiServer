@@ -2,7 +2,7 @@
     <div class="profile__livetape">
         <div class="profile__livetape-button">
             <button class="button" @click="modalCreate()">Создать Плана</button>
-            <div v-if="modalForCreate">
+            <teleport to=".modals" v-if="modalForCreate">
                 <Modal :status="modalForCreate" @modalClose="modalCreate()">
                     <template v-slot:modalContent>
                         <form class="form" @submit.prevent="modalOpen()">
@@ -36,7 +36,7 @@
                         </form>
                     </template>
                 </Modal>
-            </div>
+            </teleport>
         </div>
         <div class="profile__content-livetape__header">
             <h2 class="title title--2">Планирование бюджета</h2>
@@ -46,7 +46,7 @@
         </div>
         <ul v-else>
             <li v-for="(item, index) in data" :key="item.id" class="item">
-                <div v-if="modal && modalIndex === index">
+                <teleport to=".modals" v-if="modal && modalIndex === index">
                     <Modal :status="modal" :item="item" @modalClose="modalOpen()">
                         <template v-slot:modalContent>
                             <form class="form" @submit.prevent="modalOpen()">
@@ -83,7 +83,7 @@
                             </form>
                         </template>
                     </Modal>
-                </div>
+                </teleport>
                 {{ getPercent(item) }}
                 <div class="item__content">
                     <h3 class="title title--4">{{ item.budgets.bank.name }} - {{ item.budgets.numbers }} <span

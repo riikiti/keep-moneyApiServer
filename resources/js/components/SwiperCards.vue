@@ -5,7 +5,7 @@
                 <div class="bank-card__content" :style="{ color: item.bank.text_color , background: item.bank.color }">
                     <img :src="cardBank(item.bank.name)" :alt="item.bank.name" class="bank-card__bank">
                     <div class="bank-card__action">
-                        <img src="../assets/img/svg/pen.svg" alt="pen">
+                        <img src="../assets/img/svg/pen.svg" alt="pen" @click="modalOpen()">
                         <button>+</button>
                         <button>-</button>
                     </div>
@@ -19,6 +19,23 @@
                     </div>
                 </div>
             </div>
+            <teleport to=".modals" v-if="modal">
+                <Modal :status="modal" @modalClose="modalOpen()">
+                    <template v-slot:modalContent>
+                        <form class="form" @submit.prevent="modalOpen()">
+                            <h2 class="title title--2">Создание плана</h2>
+
+                            <div class="form__block">
+                                <label class="title title--3">Планируемое значение по карте</label>
+                                <input type="number" required/>
+                            </div>
+                            <button class="form__btn" @click="updateData(item)">
+                                Создать
+                            </button>
+                        </form>
+                    </template>
+                </Modal>
+            </teleport>
         </swiper-slide>
     </swiper>
     <div v-else>loading...</div>
@@ -31,9 +48,11 @@ import "swiper/css";
 import 'swiper/css/pagination';
 import axios from "axios";
 import {onMounted, ref} from "vue";
+import Modal from "../components/Modal.vue";
+
 
 const modules = [Pagination, Navigation, Scrollbar, A11y];
-
+const modal = ref(false);
 const data = ref(null);
 const type = ref(null);
 const id = localStorage.getItem('id');
@@ -50,7 +69,6 @@ const fetchData = async () => {
             console.log(error);
         });
 };
-
 
 const cardBank = (item) => {
     switch (item) {
@@ -75,6 +93,35 @@ const cardType = (item) => {
             return 'http://127.0.0.1:5173/resources/js//assets/img/DebitCards/MC.png'
     }
 }
+
+
+const modalOpen = (index) => {
+    modal.value = !modal.value;
+    console.log(modal.value);
+};
+
+
+const updateData = async (item) => {
+
+    axios
+        .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
+            value: item.value,
+            budget_id: selectBudget.id,
+            period_start: afterDate.dateStart,
+            period_finish: afterDate.dateFinish,
+            user_id: id,
+            budget_on_start: item.budget_on_start,
+        })
+        .then((response) => {
+            console.log(response.data);
+            fetchData();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+};
+
 
 onMounted(fetchData)
 
