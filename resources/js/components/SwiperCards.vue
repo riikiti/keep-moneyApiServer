@@ -5,9 +5,9 @@
                 <div class="bank-card__content" :style="{ color: item.bank.text_color , background: item.bank.color }">
                     <img :src="cardBank(item.bank.name)" :alt="item.bank.name" class="bank-card__bank">
                     <div class="bank-card__action">
-                        <img src="../assets/img/svg/pen.svg" alt="pen" @click="modalOpen()">
-                        <button>+</button>
-                        <button>-</button>
+                        <img src="../assets/img/svg/pen.svg" alt="pen">
+                        <button @click="modalOpenPlus()">+</button>
+                        <button @click="modalOpenMinus()">-</button>
                     </div>
                     <div class="bank-card__numbers"><span>**** **** **** {{ item.numbers }}</span></div>
                     <div class="bank-card__date">
@@ -19,23 +19,40 @@
                     </div>
                 </div>
             </div>
-            <teleport to=".modals" v-if="modal">
-                <Modal :status="modal" @modalClose="modalOpen()">
+            <teleport to=".modals" v-if="modalPlus">
+                <Modal :status="modalPlus" @modalClose="modalOpenPlus()">
                     <template v-slot:modalContent>
-                        <form class="form" @submit.prevent="modalOpen()">
-                            <h2 class="title title--2">Создание плана</h2>
-
+                        <form class="form" @submit.prevent="modalOpenPlus()">
+                            <h2 class="title title--2">Добавить на счет</h2>
                             <div class="form__block">
-                                <label class="title title--3">Планируемое значение по карте</label>
+                                <label class="title title--3">Значение</label>
                                 <input type="number" required/>
                             </div>
                             <button class="form__btn" @click="updateData(item)">
-                                Создать
+                                Добавить
                             </button>
                         </form>
                     </template>
                 </Modal>
             </teleport>
+            <teleport to=".modals" v-if="modalMinus">
+                <Modal :status="modalMinus" @modalClose="modalOpenMinus()">
+                    <template v-slot:modalContent>
+                        <form class="form" @submit.prevent="modalOpenMinus()">
+                            <h2 class="title title--2">Вычесть из счета</h2>
+                            <div class="form__block">
+                                <label class="title title--3">Значение</label>
+                                <input type="number" required/>
+                            </div>
+                            <button class="form__btn" @click="updateData(item)">
+                                Добавить
+                            </button>
+                        </form>
+                    </template>
+                </Modal>
+
+            </teleport>
+
         </swiper-slide>
     </swiper>
     <div v-else>loading...</div>
@@ -52,7 +69,8 @@ import Modal from "../components/Modal.vue";
 
 
 const modules = [Pagination, Navigation, Scrollbar, A11y];
-const modal = ref(false);
+const modalPlus = ref(false);
+const modalMinus = ref(false);
 const data = ref(null);
 const type = ref(null);
 const id = localStorage.getItem('id');
@@ -95,9 +113,14 @@ const cardType = (item) => {
 }
 
 
-const modalOpen = (index) => {
-    modal.value = !modal.value;
-    console.log(modal.value);
+const modalOpenPlus = () => {
+    modalPlus.value = !modalPlus.value;
+    console.log(modalPlus.value);
+};
+
+const modalOpenMinus = () => {
+    modalMinus.value = !modalMinus.value;
+    console.log(modalMinus.value);
 };
 
 
