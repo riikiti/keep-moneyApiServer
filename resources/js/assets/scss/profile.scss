@@ -4,8 +4,9 @@
         "aside content content livetape";
     grid-template-columns: 250px 3fr 3fr 2fr;
     grid-template-rows: 80px auto;
-
+    max-height: 100vh;
     height: 100vh;
+    overflow: hidden;
     transition: 0.2s ease-in-out;
 
     &-active {
@@ -21,7 +22,8 @@
                 opacity: 0;
             }
         }
-        .profile__aside-logo{
+
+        .profile__aside-logo {
             transition: 0.2s ease-in-out;
             margin-left: -10px;
         }
@@ -68,7 +70,8 @@
                 grid-column: 1/3;
                 position: relative;
                 z-index: 0;
-                .vue-echarts{
+
+                .vue-echarts {
                     width: 100%;
                     height: 400px;
                 }
@@ -117,6 +120,6 @@
     }
 }
 
-.profile__content-livetape__header{
+.profile__content-livetape__header {
     text-align: center;
 }

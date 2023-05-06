@@ -49,7 +49,7 @@ const update = () => {
     arr.forEach((item) => {
         console.log(item.id === props.id)
         if (item.id === props.id) {
-            console.log(item.name)
+            console.log(item.id)
             data.value= item.numbers
         }
     })

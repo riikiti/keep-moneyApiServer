@@ -6,10 +6,13 @@
     cursor: pointer;
 
     &__persent {
-        color: rgb(24, 184, 52);;
+        color: $light-gray;
 
         &-minus {
             color: $error-color;
+        }
+        &-plus{
+            color: rgb(24, 184, 52);;
         }
     }
 

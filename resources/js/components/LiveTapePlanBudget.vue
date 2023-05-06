@@ -50,7 +50,8 @@
                     <Modal :status="modal" :item="item" @modalClose="modalOpen()">
                         <template v-slot:modalContent>
                             <form class="form" @submit.prevent="modalOpen()">
-                                <h2 class="title title--2">Изаменение записи "{{ item.budgets.numbers}} - {{ item.budgets.bank.name  }}"</h2>
+                                <h2 class="title title--2">Изаменение записи "{{ item.budgets.numbers }} -
+                                    {{ item.budgets.bank.name }}"</h2>
                                 <div class="form__block">
                                     <label class="title title--3">Изаменение цели</label>
                                     <input type="number" v-model="item.value"/>
@@ -62,10 +63,9 @@
                                                          :id="item.budgets.id"
                                     ></categories-selector>
                                 </div>
-                                {{getUpdateDate(item)}}
-                                {{updateDate}}
                                 <div class="form__block">
-                                    <label class="title title--3">Изаменение даты</label>
+                                    <p>Оставить старые даты: {{ item.period_start }} - {{ item.period_finish }}</p>
+                                    <p>или выбрать новые даты:</p>
                                     <VueDatePicker
                                         v-model="updateDate"
                                         locale="ru"
@@ -75,7 +75,7 @@
                                         format="dd/MM/yyyy HH:mm"
                                     />
                                 </div>
-                                <button class="form__btn" @click="updateData(item.id, item)">
+                                <button class="form__btn" @click="updateData(item)">
                                     Изменить
                                 </button>
                             </form>
@@ -85,7 +85,7 @@
                 {{ getPercent(item) }}
                 <div class="item__content">
                     <h3 class="title title--4">{{ item.budgets.bank.name }} - {{ item.budgets.numbers }} <span
-                        class="item__persent" :class="{ 'item__persent-minus' : getPercentColor()}">{{
+                        class="item__persent" :class="getPercentColor() ? 'item__persent-minus' : 'item__persent-plus'">{{
                             percent
                         }} %</span></h3>
 
@@ -123,6 +123,8 @@ const id = localStorage.getItem('id');
 const selectBudget = ref({});
 const percent = ref(null)
 const updateDate = ref(null);
+const afterDate=ref(null);
+
 
 const getSelect = (item) => {
     console.log(item.id)
@@ -131,25 +133,20 @@ const getSelect = (item) => {
 }
 
 const getPercent = (item) => {
-    percent.value=0
+    percent.value = 0
     if (Number(item.budgets.budget) < Number(item.budget_on_start)) {
         percent.value = ((Number(item.budgets.budget) / Number(item.budget_on_start)) * -100).toFixed(2)
     } else {
         percent.value = ((Number(item.budgets.budget) / Number(item.value)) * 100).toFixed(2)
     }
+    if (Number(item.budgets.budget) === Number(item.budget_on_start)) {
+        percent.value = 0
+    }
 }
 
-const getUpdateDate=(item)=>{
-    updateDate.value=[item.period_start,item.period_finish];
-}
 
-const getPercentColor= ()=>{
-    if (percent.value<0){
-        return true
-    }
-    else {
-        return false
-    }
+const getPercentColor = () => {
+    return percent.value < 0;
 }
 
 const modalOpen = (index) => {
@@ -214,24 +211,43 @@ const deleteData = async (id) => {
         });
 };
 
-const updateData = async (item_id, item) => {
+const updateData = async (item) => {
+
+
     try {
-        item.date = item.date.toISOString().substring(0, 19).replace("T", " ");
-        console.log(item.date)
+        if (updateDate != null) {
+            afterDate.dateStart = updateDate.date[0].toISOString().substring(0, 19).replace("T", " ");
+            afterDate.dateFinish = updateDate.date[1].toISOString().substring(0, 19).replace("T", " ");
+            console.log(afterDate)
+        } else {
+            afterDate.value.dateStart = item.period_start;
+            afterDate.value.dateFinish = item.period_finish;
+            console.log(afterDate)
+        }
+
+
     } catch {
     }
 
+
+    if (!selectBudget.id){
+        selectBudget.value=item.budgets.id;
+    }
+    console.log(afterDate.value)
+    console.log(111111111111, selectBudget.value)
+
     axios
-        .put("http://127.0.0.1:8000/api/v1/income/" + item_id, {
-            title: item.title,
-            price: item.price,
-            categories_id: selectBudget.id,
-            date: item.date,
+        .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
+            value: item.value,
+            budget_id: selectBudget.value,
+            period_start: updateDate.dateStart,
+            period_finish: updateDate.dateFinish,
             user_id: id,
+            budget_on_start: item.budget_on_start,
         })
         .then((response) => {
             console.log(response.data);
-            fetchData();
+            // fetchData();
         })
         .catch((error) => {
             console.log(error);

@@ -4,6 +4,11 @@
             <div class="bank-card__wrap">
                 <div class="bank-card__content" :style="{ color: item.bank.text_color , background: item.bank.color }">
                     <img :src="cardBank(item.bank.name)" :alt="item.bank.name" class="bank-card__bank">
+                    <div class="bank-card__action">
+                        <img src="../assets/img/svg/pen.svg" alt="pen">
+                        <button>+</button>
+                        <button>-</button>
+                    </div>
                     <div class="bank-card__numbers"><span>**** **** **** {{ item.numbers }}</span></div>
                     <div class="bank-card__date">
                         <span> м/г: {{ Math.floor(item.last_date / 100) + "/" + (item.last_date % 100) }}</span>

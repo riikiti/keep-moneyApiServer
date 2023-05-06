@@ -36,8 +36,9 @@ class PlanBudgetController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PlanBudgetStoreRequest $request, PlanBudget $planBudget)
+    public function update(PlanBudgetStoreRequest $request, $id)
     {
+        $planBudget = PlanBudget::findOrFail($id);
         $planBudget->update($request->validated());
         return new PlanBudgetResource($planBudget);
     }
