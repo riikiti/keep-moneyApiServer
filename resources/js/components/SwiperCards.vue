@@ -49,14 +49,14 @@
         </Modal>
     </teleport>
     <swiper :slides-per-view="1" :modules="modules" :pagination="true" :grab-cursor="true" class="swiper" v-if="data">
-        <swiper-slide v-for="item in data" :key="item.id">
+        <swiper-slide v-for="(item, index) in data" :key="item.id">
             <div class="bank-card__wrap">
                 <div class="bank-card__content" :style="{ color: item.bank.text_color , background: item.bank.color }">
                     <img :src="cardBank(item.bank.name)" :alt="item.bank.name" class="bank-card__bank">
                     <div class="bank-card__action">
                         <button @click="modalOpenPlus(item)">+</button>
                         <button @click="modalOpenMinus(item)">-</button>
-                        <img src="../assets/img/svg/pen.svg" alt="pen">
+                        <img src="../assets/img/svg/pen.svg" alt="pen" @click="modalUpdate(index)">
                         <img src="../assets/img/svg/trash.svg" alt="trash" @click="deleteData(item.id)">
                     </div>
                     <div class="bank-card__numbers"><span>**** **** **** {{ item.numbers }}</span></div>
@@ -69,6 +69,7 @@
                     </div>
                 </div>
             </div>
+
             <teleport to=".modals" v-if="modalPlus">
                 <Modal :status="modalPlus" :item="modalItem" @modalClose="modalOpenPlus()">
                     <template v-slot:modalContent>
@@ -77,8 +78,6 @@
                             <div class="form__block">
                                 <label class="title title--3">Значение</label>
                                 <input type="number" v-model="dataForUpdate.plus" min="0" required/>
-                                {{ modalItem }}
-                                {{ dataForUpdate }}
                             </div>
                             <button class="form__btn" @click="updateData(modalItem)">
                                 Добавить
@@ -96,20 +95,68 @@
                                 <label class="title title--3">Значение</label>
                                 <input type="number" v-model="dataForUpdate.minus" min="0" required/>
                             </div>
-                            {{ modalItem }}
-                            {{ dataForUpdate }}
                             <button class="form__btn" @click="updateData(modalItem)">
                                 Убрать
                             </button>
                         </form>
                     </template>
                 </Modal>
-
             </teleport>
+            <teleport to=".modals" v-if="modalForUpdate && modalItem === index">
+                <Modal :status="modalForUpdate" :item="modalItem" @modalClose="modalUpdate()">
+                    <template v-slot:modalContent>
+                        <form class="form" @submit.prevent="modalUpdate()">
+                            <h2 class="title title--2">Создание карты</h2>
+                            <div class="form__block">
+                                <label class="title title--3">Банк</label>
+                                <bank-selector :option="banks"
+                                               @getSelect="getSelect"
+                                               :id="item.bank.id"
+                                ></bank-selector>
+                            </div>
 
+                            <div class="form__block">
+                                <label class="title title--3">Тип карты</label>
+                                <div class="form__block-radio">
+                                    <div class="form__block-radio__wrap">
+                                        <input type="radio" value="mir" v-model="item.type">
+                                        <label>Mir</label>
+                                    </div>
+                                    <div class="form__block-radio__wrap">
+                                        <input type="radio" value="visa" v-model="item.type">
+                                        <label>Visa</label>
+                                    </div>
+                                    <div class="form__block-radio__wrap">
+                                        <input type="radio" value="mc" v-model="item.type">
+                                        <label>MasterCard</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form__block">
+                                <label class="title title--3">Последние 4 цифры</label>
+                                <input type="number" v-model="item.numbers" required/>
+                            </div>
+                            <div class="form__block">
+                                <label class="title title--3">Дата окончания карты</label>
+                                <input type="number" v-model="item.last_date" required/>
+                            </div>
+                            <div class="form__block">
+                                <label class="title title--3">Количсетво денег на карте</label>
+                                <input type="number" v-model="item.budget" required/>
+                            </div>
+                            <button class="form__btn" @click="updateData(item)">
+                                Обновить
+                            </button>
+                        </form>
+                    </template>
+                </Modal>
+            </teleport>
         </swiper-slide>
     </swiper>
     <div v-else>loading...</div>
+
+
+
 </template>
 
 <script setup>
@@ -126,6 +173,7 @@ import BankSelector from "../components/CategoriesSelector.vue";
 const modules = [Pagination, Navigation, Scrollbar, A11y];
 const modalPlus = ref(false);
 const modalMinus = ref(false);
+const modalForUpdate = ref(false);
 const modalForCreate = ref(false);
 const modalItem = ref(null);
 const data = ref(null);
@@ -165,7 +213,7 @@ const posthData = async (createData) => {
             budget: createData.budget,
             bank_id: selectCategories.id,
             numbers: createData.numbers,
-            last_date:Number(createData.last_date),
+            last_date: Number(createData.last_date),
             user_id: id
         })
         .then((response) => {
@@ -220,6 +268,12 @@ const modalOpenMinus = (index) => {
     modalItem.value = index;
     modalMinus.value = !modalMinus.value;
     console.log(modalMinus.value);
+};
+
+const modalUpdate = (index) => {
+    modalItem.value = index;
+    modalForUpdate.value = !modalForUpdate.value;
+    console.log(modalForUpdate.value);
 };
 
 

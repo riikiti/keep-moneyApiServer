@@ -7,7 +7,8 @@
                 <img src="../assets/img/keep-moneyLogo.png" alt="logo">
             </div>
             <div class="profile__aside-menu">
-                <button @click="$emit('openMenu')"><img src="../assets/img/svg/arrow.svg" alt=""><img src="../assets/img/svg/arrow.svg" alt=""></button>
+                <button @click="$emit('openMenu')"><img src="../assets/img/svg/arrow.svg" alt=""><img
+                    src="../assets/img/svg/arrow.svg" alt=""></button>
             </div>
             <ul>
                 <li>
@@ -39,24 +40,21 @@
                 <li>
                     <router-link class="title title--4"
                                  :to="{ name: 'budget' }"
-                    ><img src="../assets/img/svg/wallet.svg" alt="wallet"> <span> Бюджет</span>
+                    ><img src="../assets/img/svg/wallet.svg" alt="wallet"><span>Бюджет</span>
                     </router-link
                     >
                 </li>
                 <li>
                     <router-link class="title title--4"
                                  :to="{ name: 'question' }"
-                    ><img src="../assets/img/svg/question.svg" alt="question">
-
-                        <span>
-                        Остались вопросы?</span>
+                    ><img src="../assets/img/svg/question.svg" alt="question"><span>Остались вопросы?</span>
                     </router-link
                     >
                 </li>
             </ul>
         </div>
         <div>
-            <a @click.prevent="logout()" class="title title--4"> <img src="../assets/img/svg/logout.svg" alt="logout"> Выход</a>
+            <a @click.prevent="logout()" class="title title--4"> <img src="../assets/img/svg/logout.svg" alt="logout">Выход</a>
         </div>
     </aside>
 </template>
