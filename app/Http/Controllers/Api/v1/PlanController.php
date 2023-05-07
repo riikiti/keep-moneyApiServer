@@ -31,14 +31,15 @@ class PlanController extends Controller
      */
     public function show($id)
     {
-        return PlanResource::collection(Plan::all()->where('user_id',$id));
+        return PlanResource::collection(Plan::all()->where('user_id', $id));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Plan $plan)
+    public function update(Request $request, $id)
     {
+        $plan = Plan::findOrFail($id);
         $plan->update($request->validated());
         return new PlanResource($plan);
     }

@@ -57,7 +57,7 @@
                         <button @click="modalOpenPlus(item)">+</button>
                         <button @click="modalOpenMinus(item)">-</button>
                         <img src="../assets/img/svg/pen.svg" alt="pen" @click="modalUpdate(index)">
-                        <img src="../assets/img/svg/trash.svg" alt="trash" @click="deleteData(item.id)">
+                        <img src="../assets/img/svg/trashWhite.png" alt="trash" @click="deleteData(item.id)">
                     </div>
                     <div class="bank-card__numbers"><span>**** **** **** {{ item.numbers }}</span></div>
                     <div class="bank-card__date">

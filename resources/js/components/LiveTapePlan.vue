@@ -12,7 +12,7 @@
                                 <input type="text" v-model="createData.title" required/>
                             </div>
                             <div class="form__block">
-                                <label class="title title--3">Цена</label>
+                                <label class="title title--3">Максимальная планируемая цена</label>
                                 <input type="number" v-model="createData.price" required/>
                             </div>
                             <div class="form__block">
@@ -27,6 +27,7 @@
                                     v-model="createData.date"
                                     locale="ru"
                                     vertical
+                                    range
                                     :startDate="new Date()"
                                     format=" dd/MM/yyyy HH:mm"
                                     required
@@ -59,7 +60,7 @@
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Изаменение цены</label>
-                                    <input type="number" v-model="item.price"/>
+                                    <input type="number" v-model="item.max_price"/>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Изаменение категории</label>
@@ -69,11 +70,13 @@
                                     ></categories-selector>
                                 </div>
                                 <div class="form__block">
-                                    <label class="title title--3">Изаменение даты</label>
+                                    <p>Оставить старые даты: {{ item.period_start }} - {{ item.period_finish }}</p>
+                                    <p>или выбрать новые даты:</p>
                                     <VueDatePicker
-                                        v-model="item.date"
+                                        v-model="updateDate"
                                         locale="ru"
                                         vertical
+                                        range
                                         :startDate="new Date()"
                                         format="dd/MM/yyyy HH:mm"
                                     />
@@ -119,6 +122,8 @@ const createData = ref([]);
 const categories = ref(null);
 const id = localStorage.getItem('id');
 const selectCategories = ref({});
+const updateDate = ref(null);
+const afterDate = ref(null);
 
 const getSelect = (item) => {
     console.log(item.id)
@@ -139,7 +144,7 @@ const modalCreate = () => {
 
 const fetchData = async () => {
     axios
-        .get('http://127.0.0.1:8000/api/v1/income/' + id)
+        .get('http://127.0.0.1:8000/api/v1/plan/' + id)
         .then((response) => {
             data.value = response.data.data;
             console.log(data.value)
@@ -150,16 +155,19 @@ const fetchData = async () => {
 };
 const posthData = async (createData) => {
     try {
-        createData.date = createData.date.toISOString().substring(0, 19).replace("T", " ");
-        console.log(createData)
+        createData.dateStart = createData.date[0].toISOString().substring(0, 19).replace("T", " ");
+        createData.dateFinish = createData.date[1].toISOString().substring(0, 19).replace("T", " ");
+        console.log(createData.dateStart)
+        console.log(createData.dateFinish)
     } catch {
     }
     axios
-        .post("http://127.0.0.1:8000/api/v1/income", {
+        .post("http://127.0.0.1:8000/api/v1/plan", {
             title: createData.title,
-            price: createData.price,
+            max_price: createData.price,
             categories_id: selectCategories.id,
-            date: createData.date,
+            period_start: createData.dateStart,
+            period_finish: createData.dateFinish,
             user_id: id
         })
         .then((response) => {
@@ -174,7 +182,7 @@ const posthData = async (createData) => {
 
 const deleteData = async (id) => {
     axios
-        .delete(`http://127.0.0.1:8000/api/v1/income/${id}`)
+        .delete(`http://127.0.0.1:8000/api/v1/plan/${id}`)
         .then((response) => {
             console.log(response.data);
             fetchData();
@@ -184,35 +192,71 @@ const deleteData = async (id) => {
         });
 };
 
-const updateData = async (item_id, item) => {
+
+const updateData = async (item) => {
+    console.log(updateDate)
+
     try {
-        item.date = item.date.toISOString().substring(0, 19).replace("T", " ");
-        console.log(item.date)
-    } catch {
+        if (updateDate.value !== null) {
+            afterDate.dateStart = updateDate.value[0].toISOString().substring(0, 19).replace("T", " ");
+            afterDate.dateFinish = updateDate.value[1].toISOString().substring(0, 19).replace("T", " ");
+            console.log(111, afterDate.dateStart)
+            axios
+                .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
+                    title: item.title,
+                    max_price: item.max_price,
+                    categories_id: selectCategories.id,
+                    period_start: afterDate.dateStart,
+                    period_finish: afterDate.dateFinish,
+                    user_id: id
+                })
+                .then((response) => {
+                    console.log(response.data);
+                    fetchData();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+        } else {
+            console.log(222, afterDate)
+            afterDate.dateStart = item.period_start;
+            afterDate.dateFinish = item.period_finish;
+            console.log(222, afterDate.dateStart)
+            console.log(111111111111, selectCategories)
+            axios
+                .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
+                    title: item.title,
+                    max_price: item.max_price,
+                    categories_id: selectCategories.id,
+                    period_start: afterDate.dateStart,
+                    period_finish: afterDate.dateFinish,
+                    user_id: id
+
+                })
+                .then((response) => {
+                    console.log(response.data);
+                    fetchData();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+
+
+    } catch (err) {
+        console.log(err)
     }
 
-    axios
-        .put("http://127.0.0.1:8000/api/v1/income/" + item_id, {
-            title: item.title,
-            price: item.price,
-            categories_id: selectCategories.id,
-            date: item.date,
-            user_id: id,
-        })
-        .then((response) => {
-            console.log(response.data);
-            fetchData();
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+
 };
+
 
 fetchData();
 
 const fetchCategories = async () => {
     axios
-        .get('http://127.0.0.1:8000/api/v1/income-categories')
+        .get('http://127.0.0.1:8000/api/v1/categories')
         .then((response) => {
             categories.value = response.data.data;
             console.log(categories.value)
