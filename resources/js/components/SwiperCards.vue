@@ -1,13 +1,13 @@
 <template>
     <swiper :slides-per-view="1" :modules="modules" :pagination="true" :grab-cursor="true" class="swiper" v-if="data">
-        <swiper-slide v-for="item in data" :key="item.id">
+        <swiper-slide v-for="(item, index) in data" :key="item.id">
             <div class="bank-card__wrap">
                 <div class="bank-card__content" :style="{ color: item.bank.text_color , background: item.bank.color }">
                     <img :src="cardBank(item.bank.name)" :alt="item.bank.name" class="bank-card__bank">
                     <div class="bank-card__action">
                         <img src="../assets/img/svg/pen.svg" alt="pen">
-                        <button @click="modalOpenPlus()">+</button>
-                        <button @click="modalOpenMinus()">-</button>
+                        <button @click="modalOpenPlus(item)">+</button>
+                        <button @click="modalOpenMinus(item)">-</button>
                     </div>
                     <div class="bank-card__numbers"><span>**** **** **** {{ item.numbers }}</span></div>
                     <div class="bank-card__date">
@@ -20,15 +20,17 @@
                 </div>
             </div>
             <teleport to=".modals" v-if="modalPlus">
-                <Modal :status="modalPlus" @modalClose="modalOpenPlus()">
+                <Modal :status="modalPlus" :item="modalItem" @modalClose="modalOpenPlus()">
                     <template v-slot:modalContent>
                         <form class="form" @submit.prevent="modalOpenPlus()">
                             <h2 class="title title--2">Добавить на счет</h2>
                             <div class="form__block">
                                 <label class="title title--3">Значение</label>
-                                <input type="number" required/>
+                                <input type="number" v-model="dataForUpdate.plus" min="0" required/>
+                                {{ modalItem }}
+                                {{ dataForUpdate }}
                             </div>
-                            <button class="form__btn" @click="updateData(item)">
+                            <button class="form__btn" @click="updateData(modalItem)">
                                 Добавить
                             </button>
                         </form>
@@ -36,16 +38,18 @@
                 </Modal>
             </teleport>
             <teleport to=".modals" v-if="modalMinus">
-                <Modal :status="modalMinus" @modalClose="modalOpenMinus()">
+                <Modal :status="modalMinus" :item="modalItem" @modalClose="modalOpenMinus()">
                     <template v-slot:modalContent>
                         <form class="form" @submit.prevent="modalOpenMinus()">
                             <h2 class="title title--2">Вычесть из счета</h2>
                             <div class="form__block">
                                 <label class="title title--3">Значение</label>
-                                <input type="number" required/>
+                                <input type="number" v-model="dataForUpdate.minus" min="0" required/>
                             </div>
-                            <button class="form__btn" @click="updateData(item)">
-                                Добавить
+                            {{ modalItem }}
+                            {{ dataForUpdate }}
+                            <button class="form__btn" @click="updateData(modalItem)">
+                                Убрать
                             </button>
                         </form>
                     </template>
@@ -71,9 +75,11 @@ import Modal from "../components/Modal.vue";
 const modules = [Pagination, Navigation, Scrollbar, A11y];
 const modalPlus = ref(false);
 const modalMinus = ref(false);
+const modalItem = ref(null);
 const data = ref(null);
 const type = ref(null);
 const id = localStorage.getItem('id');
+const dataForUpdate = ref({});
 
 const fetchData = async () => {
     axios
@@ -113,27 +119,49 @@ const cardType = (item) => {
 }
 
 
-const modalOpenPlus = () => {
+const modalOpenPlus = (index) => {
+    modalItem.value = index;
     modalPlus.value = !modalPlus.value;
     console.log(modalPlus.value);
 };
 
-const modalOpenMinus = () => {
+const modalOpenMinus = (index) => {
+    modalItem.value = index;
     modalMinus.value = !modalMinus.value;
     console.log(modalMinus.value);
 };
 
 
 const updateData = async (item) => {
+    console.log(1111111111, item);
+    dataForUpdate.bank_id = item.bank.id
+    dataForUpdate.type = item.type;
+    dataForUpdate.numbers = item.numbers;
+    dataForUpdate.budget = item.budget;
+    dataForUpdate.last_date = item.last_date;
+
+    console.log(2222, dataForUpdate.value.plus);
+    if (dataForUpdate.value.plus != null) {
+        console.log(dataForUpdate.budget)
+        dataForUpdate.budget += dataForUpdate.value.plus
+        console.log(3333333333, dataForUpdate.budget)
+    }
+
+    if (dataForUpdate.value.minus != null) {
+        console.log(dataForUpdate.budget)
+        dataForUpdate.budget -= dataForUpdate.value.minus
+        console.log(33333333333, dataForUpdate.budget)
+    }
 
     axios
-        .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
-            value: item.value,
-            budget_id: selectBudget.id,
-            period_start: afterDate.dateStart,
-            period_finish: afterDate.dateFinish,
-            user_id: id,
-            budget_on_start: item.budget_on_start,
+        .put("http://127.0.0.1:8000/api/v1/budget/" + item.id, {
+            bank_id: dataForUpdate.bank_id,
+            type: dataForUpdate.type,
+            numbers: dataForUpdate.numbers,
+            budget: Number(dataForUpdate.budget),
+            last_date: dataForUpdate.last_date,
+            user_id: id
+
         })
         .then((response) => {
             console.log(response.data);
@@ -142,7 +170,6 @@ const updateData = async (item) => {
         .catch((error) => {
             console.log(error);
         });
-
 };
 
 

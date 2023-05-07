@@ -51,10 +51,12 @@ class BudgetController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(BudgetStoreRequest $request, Budget $budget)
+    public function update(BudgetStoreRequest $request, $id)
     {
+        $budget = Budget::findOrFail($id);
         $budget->update($request->validated());
         return new BudgetResource($budget);
+
     }
 
     /**

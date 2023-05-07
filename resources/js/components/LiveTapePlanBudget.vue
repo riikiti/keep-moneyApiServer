@@ -125,7 +125,7 @@ const id = localStorage.getItem('id');
 const selectBudget = ref({});
 const percent = ref(null)
 const updateDate = ref(null);
-const afterDate=ref(null);
+const afterDate = ref(null);
 
 
 const getSelect = (item) => {
@@ -214,22 +214,22 @@ const deleteData = async (id) => {
 };
 
 const updateData = async (item) => {
-
+    console.log(updateDate)
 
     try {
-        if (updateDate.value.length !== 0) {
+        if (updateDate.value !== null) {
             afterDate.dateStart = updateDate.value[0].toISOString().substring(0, 19).replace("T", " ");
             afterDate.dateFinish = updateDate.value[1].toISOString().substring(0, 19).replace("T", " ");
-            console.log(111,afterDate)
-            if (!selectBudget.id){
-                selectBudget.id=item.budgets.id;
+            console.log(111, afterDate)
+            if (!selectBudget.id) {
+                selectBudget.id = item.budgets.id;
             }
             axios
                 .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
                     value: item.value,
                     budget_id: selectBudget.id,
-                    period_start:  afterDate.dateStart,
-                    period_finish: afterDate.dateFinish ,
+                    period_start: afterDate.dateStart,
+                    period_finish: afterDate.dateFinish,
                     user_id: id,
                     budget_on_start: item.budget_on_start,
                 })
@@ -242,14 +242,14 @@ const updateData = async (item) => {
                 });
 
         } else {
-            console.log(222,afterDate)
+            console.log(222, afterDate)
             afterDate.dateStart = item.period_start;
             afterDate.dateFinish = item.period_finish;
-            console.log(222,afterDate)
+            console.log(222, afterDate)
 
 
-            if (!selectBudget.id){
-                selectBudget.id=item.budgets.id;
+            if (!selectBudget.id) {
+                selectBudget.id = item.budgets.id;
             }
             console.log(afterDate.value)
             console.log(111111111111, selectBudget)
@@ -257,8 +257,8 @@ const updateData = async (item) => {
                 .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
                     value: item.value,
                     budget_id: selectBudget.id,
-                    period_start:  afterDate.dateStart,
-                    period_finish: afterDate.dateFinish ,
+                    period_start: afterDate.dateStart,
+                    period_finish: afterDate.dateFinish,
                     user_id: id,
                     budget_on_start: item.budget_on_start,
                 })
@@ -272,12 +272,9 @@ const updateData = async (item) => {
         }
 
 
-    } catch(err) {
+    } catch (err) {
         console.log(err)
     }
-
-
-
 
 
 };
