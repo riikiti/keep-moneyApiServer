@@ -278,14 +278,14 @@ const modalUpdate = (index) => {
 
 
 const updateData = async (item) => {
-    console.log(1111111111, item);
+    //console.log(1111111111, item);
     dataForUpdate.bank_id = item.bank.id
     dataForUpdate.type = item.type;
     dataForUpdate.numbers = item.numbers;
     dataForUpdate.budget = item.budget;
     dataForUpdate.last_date = item.last_date;
 
-    console.log(2222, dataForUpdate.value.plus);
+   // console.log(2222, dataForUpdate.value.plus);
     if (dataForUpdate.value.plus != null) {
         console.log(dataForUpdate.budget)
         dataForUpdate.budget += dataForUpdate.value.plus
@@ -300,7 +300,7 @@ const updateData = async (item) => {
 
     axios
         .put("http://127.0.0.1:8000/api/v1/budget/" + item.id, {
-            bank_id: dataForUpdate.bank_id,
+            bank_id: selectCategories.id,
             type: dataForUpdate.type,
             numbers: dataForUpdate.numbers,
             budget: Number(dataForUpdate.budget),
