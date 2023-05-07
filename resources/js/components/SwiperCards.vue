@@ -157,6 +157,28 @@ const fetchData = async () => {
         });
 };
 
+
+const posthData = async (createData) => {
+    axios
+        .post("http://127.0.0.1:8000/api/v1/budget", {
+            type: createData.type,
+            budget: createData.budget,
+            bank_id: selectCategories.id,
+            numbers: createData.numbers,
+            last_date:Number(createData.last_date),
+            user_id: id
+        })
+        .then((response) => {
+            console.log(response.data);
+            modalCreate();
+            fetchData();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+
 const cardBank = (item) => {
     switch (item) {
         case 'sber':
@@ -243,7 +265,7 @@ const updateData = async (item) => {
 
 const deleteData = async (id) => {
     axios
-        .delete(`http://127.0.0.1:8000/api/v1/income/${id}`)
+        .delete(`http://127.0.0.1:8000/api/v1/budget/${id}`)
         .then((response) => {
             console.log(response.data);
             fetchData();
