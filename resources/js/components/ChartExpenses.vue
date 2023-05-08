@@ -1,6 +1,11 @@
 <template>
-    <div v-if="!data"><preloader></preloader></div>
-    <vue-echarts v-else :option="option" ref="chart"/>
+    <div class="charts">
+        <div v-if="!data">
+            <preloader></preloader>
+        </div>
+        <vue-echarts v-else :option="option" ref="chart"/>
+        <h4 class="title title--4">Всего: {{ all }} р.</h4>
+    </div>
 </template>
 
 <script setup>
@@ -10,6 +15,7 @@ import {onMounted, ref} from "vue";
 import axios from "axios";
 
 const data = ref(null);
+const all = ref(0)
 
 const option = ref({
     tooltip: {
@@ -59,6 +65,7 @@ const fetchData = async () => {
                 } else {
                     res[item.category.name] = item.checks.total_price;
                 }
+                all.value += item.checks.total_price;
             });
 
             const keys = Object.keys(res);
@@ -66,6 +73,7 @@ const fetchData = async () => {
             keys.forEach((key, index) => {
                 console.log(`${key}: ${res[key]}`);
                 option.value.series[0].data.push({value: res[key], name: key})
+
             });
         })
         .catch((error) => {

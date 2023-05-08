@@ -1,0 +1,13 @@
+.charts {
+    position: relative;
+    width: 100%;
+    height: max-content;
+    .vue-echarts {
+
+    }
+    h4{
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+    }
+}

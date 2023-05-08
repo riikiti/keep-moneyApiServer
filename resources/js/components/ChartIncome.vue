@@ -1,6 +1,11 @@
 <template>
-    <div v-if="!data"><preloader></preloader></div>
-    <vue-echarts v-else :option="option" ref="chart"/>
+    <div class="charts">
+        <div v-if="!data">
+            <preloader></preloader>
+        </div>
+        <vue-echarts v-else :option="option" ref="chart"/>
+        <h4 class="title title--4">Всего: {{ all }} р.</h4>
+    </div>
 </template>
 
 <script setup>
@@ -10,7 +15,7 @@ import Preloader from "../components/Preloader.vue";
 import axios from "axios";
 
 const data = ref(null);
-
+const all = ref(0)
 const option = ref({
     tooltip: {
         trigger: "item",
@@ -59,6 +64,7 @@ const fetchData = async () => {
                 } else {
                     res[item.category.name] = item.price;
                 }
+                all.value += item.price;
             });
 
             const keys = Object.keys(res);
