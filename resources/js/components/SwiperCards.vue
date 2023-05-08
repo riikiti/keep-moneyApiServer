@@ -156,7 +156,6 @@
     <div v-else>loading...</div>
 
 
-
 </template>
 
 <script setup>
@@ -285,7 +284,7 @@ const updateData = async (item) => {
     dataForUpdate.budget = item.budget;
     dataForUpdate.last_date = item.last_date;
 
-   // console.log(2222, dataForUpdate.value.plus);
+    console.log(2222, dataForUpdate.value.plus);
     if (dataForUpdate.value.plus != null) {
         console.log(dataForUpdate.budget)
         dataForUpdate.budget += dataForUpdate.value.plus
@@ -297,13 +296,15 @@ const updateData = async (item) => {
         dataForUpdate.budget -= dataForUpdate.value.minus
         console.log(33333333333, dataForUpdate.budget)
     }
-
+    if (!selectCategories.id) {
+        selectCategories.id = item.bank.id
+    }
     axios
         .put("http://127.0.0.1:8000/api/v1/budget/" + item.id, {
             bank_id: selectCategories.id,
             type: dataForUpdate.type,
             numbers: dataForUpdate.numbers,
-            budget: Number(dataForUpdate.budget),
+            budget: parseFloat(dataForUpdate.budget),
             last_date: dataForUpdate.last_date,
             user_id: id
 
