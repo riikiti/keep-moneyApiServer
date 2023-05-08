@@ -37,7 +37,7 @@ class PlanController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(PlanStoreRequest $request, $id)
     {
         $plan = Plan::findOrFail($id);
         $plan->update($request->validated());

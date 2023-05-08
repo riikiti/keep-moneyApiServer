@@ -81,7 +81,7 @@
                                         format="dd/MM/yyyy HH:mm"
                                     />
                                 </div>
-                                <button class="form__btn" @click="updateData(item.id, item)">
+                                <button class="form__btn" @click="updateData(item)">
                                     Изменить
                                 </button>
                             </form>
@@ -194,15 +194,22 @@ const deleteData = async (id) => {
 
 
 const updateData = async (item) => {
-    console.log(updateDate)
-
+    console.log(12345,updateDate.value)
+    console.log(555,item.category.id)
+    console.log(!selectCategories.id)
     try {
         if (updateDate.value !== null) {
             afterDate.dateStart = updateDate.value[0].toISOString().substring(0, 19).replace("T", " ");
             afterDate.dateFinish = updateDate.value[1].toISOString().substring(0, 19).replace("T", " ");
             console.log(111, afterDate.dateStart)
+
+
+            if (!selectCategories.id){
+                selectCategories.id=item.category.id
+                console.log(111111111111, selectCategories.id)
+            }
             axios
-                .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
+                .put("http://127.0.0.1:8000/api/v1/plan/" + item.id, {
                     title: item.title,
                     max_price: item.max_price,
                     categories_id: selectCategories.id,
@@ -223,9 +230,15 @@ const updateData = async (item) => {
             afterDate.dateStart = item.period_start;
             afterDate.dateFinish = item.period_finish;
             console.log(222, afterDate.dateStart)
-            console.log(111111111111, selectCategories)
+
+
+            if (!selectCategories.id){
+                selectCategories.id=item.category.id
+                console.log(111111111111, selectCategories.id)
+            }
+
             axios
-                .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
+                .put("http://127.0.0.1:8000/api/v1/plan/" + item.id, {
                     title: item.title,
                     max_price: item.max_price,
                     categories_id: selectCategories.id,
