@@ -7,7 +7,10 @@
                     <template v-slot:modalContent>
                         <form class="form" @submit.prevent="modalOpen()">
                             <h2 class="title title--2">Создание плана</h2>
-
+                            <div class="form__block">
+                                <label class="title title--3">Комментарий</label>
+                                <input type="text" v-model="createData.title" required/>
+                            </div>
                             <div class="form__block">
                                 <label class="title title--3">Планируемое значение по карте</label>
                                 <input type="number" v-model="createData.price" required/>
@@ -52,6 +55,10 @@
                             <form class="form" @submit.prevent="modalOpen()">
                                 <h2 class="title title--2">Изаменение записи "{{ item.budgets.numbers }} -
                                     {{ item.budgets.bank.name }}"</h2>
+                                <div class="form__block">
+                                    <label class="title title--3">Комментарий</label>
+                                    <input type="text" v-model="item.title"/>
+                                </div>
                                 <div class="form__block">
                                     <label class="title title--3">Изаменение цели</label>
                                     <input type="number" v-model="item.value"/>
@@ -137,7 +144,7 @@ const getSelect = (item) => {
 const getPercent = (item) => {
     percent.value = 0
     if (Number(item.budgets.budget) < Number(item.budget_on_start)) {
-        percent.value = ((Number(item.budgets.budget) / Number(item.budget_on_start)) * -100).toFixed(2)
+        percent.value = ((100+ ((Number(item.budgets.budget) / Number(item.budget_on_start)) * -100))*-1).toFixed(2)
     } else {
         percent.value = ((Number(item.budgets.budget) / Number(item.value)) * 100).toFixed(2)
     }
@@ -184,6 +191,7 @@ const posthData = async (createData) => {
     }
     axios
         .post("http://127.0.0.1:8000/api/v1/plan-budget", {
+            title:createData.title,
             value: createData.price,
             budget_id: selectBudget.id,
             period_start: createData.dateStart,
@@ -226,6 +234,7 @@ const updateData = async (item) => {
             }
             axios
                 .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
+                    title:item.title,
                     value: item.value,
                     budget_id: selectBudget.id,
                     period_start: afterDate.dateStart,
@@ -255,6 +264,7 @@ const updateData = async (item) => {
             console.log(111111111111, selectBudget)
             axios
                 .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
+                    title:item.title,
                     value: item.value,
                     budget_id: selectBudget.id,
                     period_start: afterDate.dateStart,

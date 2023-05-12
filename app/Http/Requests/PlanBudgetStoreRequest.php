@@ -22,6 +22,7 @@ class PlanBudgetStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'title'=>'required',
             'budget_id'=>'required',
             'budget_on_start'=>'required',
             'user_id'=>'required',

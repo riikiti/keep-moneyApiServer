@@ -5,7 +5,7 @@
               </span>
             <img
                 src="../assets/img/svg/arrowBlack.svg" alt="arrow"></div>
-        <div v-else class="modal__select-selected" @click="showCategories"><span>Выберите категорию</span><img
+        <div v-else class="modal__select-selected" @click="showCategories"><span>Выберите карту</span><img
             src="../assets/img/svg/arrowBlack.svg" alt="arrow"></div>
         <div class="modal__select-list">
             <ul>

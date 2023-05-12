@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('budgets', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('bank_id');
+            $table->unsignedBigInteger('bank_id')->nullable();
             $table->string('type');
             $table->unsignedBigInteger('user_id');
-            $table->char('numbers',4);
+            $table->char('numbers',4)->nullable();
             $table->unsignedDouble('budget');
-            $table->char('last_date',4);
+            $table->char('last_date',4)->nullable();
             $table->timestamps();
 
             $table->index('user_id', 'user_budget_idx');

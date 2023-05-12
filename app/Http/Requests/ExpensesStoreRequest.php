@@ -26,6 +26,7 @@ class ExpensesStoreRequest extends FormRequest
             'check_id'=>'required',
             'shops_id'=>'required',
             'categories_id'=>'required',
+            'budget_id'=>'required',
         ];
     }
 }

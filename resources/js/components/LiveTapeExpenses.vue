@@ -38,6 +38,12 @@
                                 ></categories-selector>
                             </div>
                             <div class="form__block">
+                                <label class="title title--3">Категория</label>
+                                <budget-selector :option="categoriesBudget"
+                                                 @getSelect="getSelectBudget"
+                                ></budget-selector>
+                            </div>
+                            <div class="form__block">
                                 <label class="title title--3">Дата</label>
                                 <VueDatePicker
                                     v-model="createData.date"
@@ -112,6 +118,13 @@
                                     ></categories-selector>
                                 </div>
                                 <div class="form__block">
+                                    <label class="title title--3">Категория</label>
+                                    <budget-selector :option="categoriesBudget"
+                                                         @getSelect="getSelectBudget"
+                                                         :id="item.budget.id"
+                                    ></budget-selector>
+                                </div>
+                                <div class="form__block">
                                     <label class="title title--3">Дата</label>
                                     <VueDatePicker
                                         v-model="item.checks.date"
@@ -157,6 +170,7 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import {computed, onMounted, ref} from "vue";
 import axios from "axios";
+import BudgetSelector from "../components/BudgetSelector.vue";
 
 
 const data = ref(null);
@@ -165,8 +179,10 @@ const modalIndex = ref(null);
 const modalForCreate = ref(false);
 const createData = ref([]);
 const categories = ref(null);
+const categoriesBudget = ref(null);
 const id = localStorage.getItem('id');
 const selectCategories = ref({});
+const selectBudget = ref({});
 const items = ref([]);
 const item = ref('');
 const totalPrice = ref(0)
@@ -254,6 +270,13 @@ const getSelect = (item) => {
     selectCategories.id = item.id
     selectCategories.name = item.name
 }
+
+const getSelectBudget = (item) => {
+    console.log(item.id)
+    selectBudget.id = item.id
+    selectBudget.budget = item.budget
+}
+
 const modalOpen = (index) => {
     modalIndex.value = index;
     modal.value = !modal.value;
@@ -317,7 +340,8 @@ const posthData = async (createData) => {
                     user_id: id,
                     check_id: checkId.value,
                     shops_id: 1,
-                    categories_id: selectCategories.id
+                    categories_id: selectCategories.id,
+                    budget_id: selectBudget.id
                 })
                 .then((response) => {
                     console.log(response.data);
@@ -434,7 +458,8 @@ const updateData = async (item_id, item) => {
                     user_id: id,
                     check_id: item.checks.id,
                     shops_id: 1,
-                    categories_id: selectCategories.id
+                    categories_id: selectCategories.id,
+                    budget_id: selectBudget.id
                 })
                 .then((response) => {
                     console.log(response.data);
@@ -464,7 +489,23 @@ const fetchCategories = async () => {
 };
 
 fetchCategories()
-onMounted(fetchData, posthData, deleteData, updateData, fetchCategories);
+
+
+const fetchCategoriesBudget = async () => {
+    axios
+        .get('http://127.0.0.1:8000/api/v1/budget/' + id)
+        .then((response) => {
+            categoriesBudget.value = response.data.data;
+            console.log(categoriesBudget.value)
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+fetchCategoriesBudget()
+
+onMounted(fetchData, posthData, deleteData, updateData, fetchCategories,fetchCategoriesBudget);
 </script>
 
 

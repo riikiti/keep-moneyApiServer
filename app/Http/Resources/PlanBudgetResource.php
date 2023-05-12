@@ -16,6 +16,7 @@ class PlanBudgetResource extends JsonResource
     {
         return  [
             'id'=>$this->id,
+            'title'=>$this->title,
             'budgets'=>new BudgetResource($this->budget),
             'budget_on_start'=>$this->budget_on_start,
             'user_id'=>$this->user_id,

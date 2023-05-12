@@ -20,6 +20,7 @@ class ExpensesResource extends JsonResource
             'checks'=>new CheckResource($this->check),
             'shop'=>new ShopsResource($this->shops),
             'category'=>new CategoriesResource($this->categories),
+            'budget'=>new BudgetResource($this->budget),
         ];
     }
 }

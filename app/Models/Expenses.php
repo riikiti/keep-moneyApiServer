@@ -28,4 +28,9 @@ class Expenses extends Model
     {
         return $this->belongsTo(Check::class);
     }
+
+    public function budget(): BelongsTo
+    {
+        return $this->belongsTo(Budget::class);
+    }
 }

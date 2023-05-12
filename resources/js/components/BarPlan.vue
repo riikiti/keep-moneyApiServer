@@ -100,6 +100,7 @@ const fetchData = async () => {
             //console.log(keys)
             keys.forEach((key, index) => {
                 console.log(`${key}: ${res[key]}`);
+
                // option.value.series[0].data.push({value: res[key], name: key})
             });
         })

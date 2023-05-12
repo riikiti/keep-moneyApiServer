@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('plan_budgets', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('title')->nullable();
             $table->unsignedBigInteger('budget_id');
             $table->unsignedDouble('budget_on_start');
             $table->unsignedBigInteger('user_id');

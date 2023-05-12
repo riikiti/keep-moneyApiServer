@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('check_id')->nullable();
             $table->unsignedBigInteger('shops_id');
             $table->unsignedBigInteger('categories_id');
+            $table->unsignedBigInteger('budget_id')->nullable();
             $table->timestamps();
 
             $table->index('categories_id', 'categories_check_idx');
@@ -39,6 +40,11 @@ return new class extends Migration
             $table->index('user_id', 'user_expenses_idx');
             $table->foreign('user_id', 'user_expenses_fk')->on('users')->references('id') ->onUpdate('cascade')
                 ->onDelete('cascade');
+
+            $table->index('budget_id', 'budget_expenses_idx');
+            $table->foreign('budget_id', 'budget_expenses_fk')->on('budgets')->references('id') ->onUpdate('cascade')
+                ->onDelete('cascade');
+
         });
     }
 
