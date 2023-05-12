@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('type');
             $table->unsignedBigInteger('user_id');
             $table->char('numbers',4)->nullable();
-            $table->unsignedDouble('budget');
+            $table->Double('budget');
             $table->char('last_date',4)->nullable();
             $table->timestamps();
 

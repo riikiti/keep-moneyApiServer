@@ -12,4 +12,11 @@ php artisan serve
 ```
 npm run dev
 ```
-
+# Banks
+```
+INSERT INTO `banks` (`id`, `name`, `color`, `text_color`, `created_at`, `updated_at`) VALUES
+(1, 'sber', '#00a300', 'white', NULL, NULL),
+(2, 'vtb', 'black', 'white', NULL, NULL),
+(3, 'alfa', '#ef3124', 'white', NULL, NULL),
+(4, 'tinkoff', '#fedd2c', 'black', NULL, NULL);
+```

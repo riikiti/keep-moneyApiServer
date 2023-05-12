@@ -18,7 +18,8 @@
                                         <p>Название:</p> <input type="text" v-model="item.name">
                                         <p>Цена:</p><input type="number" v-model="item.price" @blur='totalPriceSum()'>
                                         <p>р.</p>
-                                        <p>Кол-во:</p> <input type="number" v-model="item.count" @blur='totalPriceSum()'>
+                                        <p>Кол-во:</p> <input type="number" v-model="item.count"
+                                                              @blur='totalPriceSum()'>
                                         <p>шт.</p>
                                         <div class="form__block-lists__delete" @click="removeItem(item.id)">
                                             <img src="../assets/img/svg/exit.svg" alt="exit">
@@ -78,6 +79,7 @@
                 <teleport to=".modals" v-if="modal && modalIndex === index">
                     <Modal :status="modal" :item="item" @modalClose="modalOpen()">
                         <template v-slot:modalContent>
+
                             <form class="form" @submit.prevent="modalOpen()">
                                 <h2 class="title title--2">Изаменение записи "{{ item.checks.title }}"</h2>
                                 <div class="form__block">
@@ -96,7 +98,8 @@
                                             <p>Кол-во:</p> <input type="number" v-model="el.count"
                                                                   @blur='totalPriceSumUpdate()'>
                                             <p>шт.</p>
-                                            <div class="form__block-lists__delete" @click="removeItemUpdate(el.id);deleteItem(el.id)">
+                                            <div class="form__block-lists__delete"
+                                                 @click="removeItemUpdate(el.id);deleteItem(el.id)">
                                                 <img src="../assets/img/svg/exit.svg" alt="exit">
                                             </div>
                                         </li>
@@ -120,8 +123,8 @@
                                 <div class="form__block">
                                     <label class="title title--3">Категория</label>
                                     <budget-selector :option="categoriesBudget"
-                                                         @getSelect="getSelectBudget"
-                                                         :id="item.budget.id"
+                                                     @getSelect="getSelectBudget"
+                                                     :id="item.budget.id"
                                     ></budget-selector>
                                 </div>
                                 <div class="form__block">
@@ -168,7 +171,7 @@ import Preloader from "../components/Preloader.vue";
 import CategoriesSelector from "../components/CategoriesSelector.vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import {computed, onMounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 import axios from "axios";
 import BudgetSelector from "../components/BudgetSelector.vue";
 
@@ -179,6 +182,7 @@ const modalIndex = ref(null);
 const modalForCreate = ref(false);
 const createData = ref([]);
 const categories = ref(null);
+const updateBudget = ref(null);
 const categoriesBudget = ref(null);
 const id = localStorage.getItem('id');
 const selectCategories = ref({});
@@ -188,9 +192,13 @@ const item = ref('');
 const totalPrice = ref(0)
 const totalPriceUpdate = ref(0)
 const checkId = ref(null);
+const tempTotalPrice = ref(null);
+const tempBudgetId = ref(null);
 const getItems = ref([]);
 const getItemsNew = ref([]);
 let count = 1
+
+
 
 
 const addItem = () => {
@@ -225,6 +233,7 @@ const getItemsUpdate = (id) => {
             getItemsNew.value = el.items;
         }
     })
+
 }
 
 const totalPriceSum = () => {
@@ -236,7 +245,7 @@ const totalPriceSum = () => {
 }
 
 
-const totalPriceSumUpdate = () => {
+const totalPriceSumUpdate = (item) => {
     totalPriceUpdate.value = 0
     getItemsNew.value.forEach((el) => {
         console.log(el.price)
@@ -351,6 +360,33 @@ const posthData = async (createData) => {
                 .catch((error) => {
                     console.log(error);
                 });
+
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+    //update budget
+    categoriesBudget.value.forEach((el) => {
+        if (el.id === selectBudget.id) {
+            updateBudget.value = el;
+        }
+    })
+    console.log(totalPrice.value)
+    updateBudget.value.budget -= Number(totalPrice.value);
+    console.log(updateBudget.value, updateBudget.value.budget)
+    axios
+        .put("http://127.0.0.1:8000/api/v1/budget/" + selectBudget.id, {
+            bank_id: updateBudget.value.bank.id,
+            type: updateBudget.value.type,
+            numbers: updateBudget.value.numbers,
+            budget: parseFloat(updateBudget.value.budget),
+            last_date: updateBudget.value.last_date,
+            user_id: id
+
+        })
+        .then((response) => {
+            console.log(333333, response.data);
         })
         .catch((error) => {
             console.log(error);
@@ -404,6 +440,7 @@ const updateData = async (item_id, item) => {
     } catch {
     }
     console.log(item);
+
     axios
         .put("http://127.0.0.1:8000/api/v1/check/" + item.checks.id, {
             title: item.checks.title,
@@ -413,7 +450,6 @@ const updateData = async (item_id, item) => {
         .then((response) => {
             console.log(response.data);
             //checkId.value = response.data.id;
-
 //todo что делать если один из item был удален?(вызывать  deleteData() в самом списке items, поменявь в делетеДата на удаление item)
 // todo сделать totalPriceUpdate чтобы небыл равен 0
             getItemsNew.value.forEach((el) => {
@@ -452,7 +488,11 @@ const updateData = async (item_id, item) => {
                         });
                 }
             })
-
+            console.log(5555555, selectCategories.id, selectBudget.id)
+            if (!selectCategories.id) {
+                selectCategories.id = item.category.id
+                console.log(66666666)
+            }
             axios
                 .put("http://127.0.0.1:8000/api/v1/expenses/" + item.id, {
                     user_id: id,
@@ -472,6 +512,88 @@ const updateData = async (item_id, item) => {
         .catch((error) => {
             console.log(error);
         });
+
+
+    //update budget
+
+    console.log(tempBudgetId.value !== selectBudget.id)
+    if (tempBudgetId.value !== selectBudget.id) {
+
+        const oldBudget = ref(null)
+        categoriesBudget.value.forEach((el) => {
+            if (el.id === selectBudget.id) {
+                updateBudget.value = el;
+            }
+            if (el.id === tempBudgetId.value) {
+                oldBudget.value = el;
+            }
+        })
+        oldBudget.value.budget += Number(tempTotalPrice.value);
+        console.log(updateBudget.value, updateBudget.value.budget)
+        axios
+            .put("http://127.0.0.1:8000/api/v1/budget/" + tempBudgetId.value, {
+                bank_id: oldBudget.value.bank.id,
+                type: oldBudget.value.type,
+                numbers: oldBudget.value.numbers,
+                budget: parseFloat(oldBudget.value.budget),
+                last_date: oldBudget.value.last_date,
+                user_id: id
+
+            })
+            .then((response) => {
+                console.log(333333, response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+
+        updateBudget.value.budget -= Number(totalPrice.value);
+        console.log(updateBudget.value, updateBudget.value.budget)
+        axios
+            .put("http://127.0.0.1:8000/api/v1/budget/" + selectBudget.id, {
+                bank_id: updateBudget.value.bank.id,
+                type: updateBudget.value.type,
+                numbers: updateBudget.value.numbers,
+                budget: parseFloat(updateBudget.value.budget),
+                last_date: updateBudget.value.last_date,
+                user_id: id
+            })
+            .then((response) => {
+                console.log(333333, response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+    } else {
+        //update budget
+        categoriesBudget.value.forEach((el) => {
+            if (el.id === selectBudget.id) {
+                updateBudget.value = el;
+            }
+        })
+        console.log(totalPrice.value)
+        //updateBudget.value.budget -= Number(totalPrice.value);
+        console.log(updateBudget.value, updateBudget.value.budget)
+        axios
+            .put("http://127.0.0.1:8000/api/v1/budget/" + selectBudget.id, {
+                bank_id: updateBudget.value.bank.id,
+                type: updateBudget.value.type,
+                numbers: updateBudget.value.numbers,
+                budget: parseFloat(updateBudget.value.budget),
+                last_date: updateBudget.value.last_date,
+                user_id: id
+
+            })
+            .then((response) => {
+                console.log(333333, response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
 };
 
 
@@ -505,7 +627,7 @@ const fetchCategoriesBudget = async () => {
 
 fetchCategoriesBudget()
 
-onMounted(fetchData, posthData, deleteData, updateData, fetchCategories,fetchCategoriesBudget);
+onMounted(fetchData, posthData, deleteData, updateData, fetchCategories, fetchCategoriesBudget);
 </script>
 
 
