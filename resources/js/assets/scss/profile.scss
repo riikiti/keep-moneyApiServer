@@ -120,8 +120,9 @@
             width: 100%;
             height: max-content;
             flex-direction: row;
-            justify-content: space-between;
             padding: 0 20px;
+            justify-content: center;
+
             &__wrap {
                 &-item {
                     cursor: pointer;
@@ -131,8 +132,18 @@
                     justify-content: center;
                     align-items: center;
                     border-radius: 8px;
+                    margin: 0 10px;
                     border: 1px solid $light-black;
 
+                    img {
+                        width: 20px;
+                    }
+                    &__next {
+                        img {
+                            width: 20px;
+                            transform: rotate(180deg);
+                        }
+                    }
                 }
 
 

@@ -166,17 +166,19 @@
                 </li>
             </ul>
 
-            <div class="profile__livetape-pagination" v-if="links">
+            <div class="profile__livetape-pagination" v-if="links && links.last_page>1">
                 <div class="profile__livetape-pagination__wrap-item" v-if="current_page!==1"
-                     @click="fetchData(Number(current_page-1))">назад
+                     @click="fetchData(Number(current_page-1))">   <img src="../assets/img/svg/arrowBlack.svg" alt="arrow">
                 </div>
                 <div class="profile__livetape-pagination__wrap" v-for="link in links.links" :key="link.label">
-                    <div class="profile__livetape-pagination__wrap-item" v-if="Number(link.label)"
+                    <div class="profile__livetape-pagination__wrap-item"
+                         v-if="Number(link.label)  && current_page -link.label <2 && current_page -link.label >-2"
                          @click="fetchData(Number(link.label))" :class="link.active?'active':''">{{ link.label }}
                     </div>
                 </div>
-                <div class="profile__livetape-pagination__wrap-item" v-if="current_page!== links.last_page"
-                     @click="fetchData(Number(current_page+1))"> вперед
+                <div class="profile__livetape-pagination__wrap-item  profile__livetape-pagination__wrap-item__next" v-if="current_page!== links.last_page"
+                     @click="fetchData(Number(current_page+1))">
+                    <img src="../assets/img/svg/arrowBlack.svg" alt="arrow">
                 </div>
             </div>
         </div>
