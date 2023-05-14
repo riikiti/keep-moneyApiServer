@@ -30,8 +30,20 @@ class ExpensesController extends Controller
      */
     public function show($id)
     {
-        $start = $_GET['start'];
-        $finish= $_GET['finish'];
+
+
+        if (empty($_GET['start'])){
+            $start= "2000-05-12 13:18:56";
+        }
+        else{
+            $start = $_GET['start'];
+        }
+        if (empty($_GET['finish'])){
+            $finish= date('Y-m-d H:i:s');
+        }
+        else{
+            $finish= $_GET['finish'];
+        }
         return ExpensesResource::collection(Expenses::where('user_id', $id)
             ->where('created_at', '>=', $start)
             ->where('created_at', '<=', $finish)
