@@ -315,6 +315,7 @@ const posthData = async (createData) => {
         console.log(createData)
     } catch {
     }
+    totalPriceSum()
     console.log(createData.title, totalPrice, createData.date)
     axios
         .post("http://127.0.0.1:8000/api/v1/check", {
@@ -528,7 +529,7 @@ const updateData = async (item_id, item) => {
                 oldBudget.value = el;
             }
         })
-        oldBudget.value.budget += Number(tempTotalPrice.value);
+        oldBudget.budget += Number(tempTotalPrice.value);
         console.log(updateBudget.value, updateBudget.value.budget)
         axios
             .put("http://127.0.0.1:8000/api/v1/budget/" + tempBudgetId.value, {
