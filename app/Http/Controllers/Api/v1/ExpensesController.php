@@ -30,7 +30,12 @@ class ExpensesController extends Controller
      */
     public function show($id)
     {
-        return ExpensesResource::collection(Expenses::where('user_id',$id)->paginate(1));
+        $start = $_GET['start'];
+        $finish= $_GET['finish'];
+        return ExpensesResource::collection(Expenses::where('user_id', $id)
+            ->where('created_at', '>=', $start)
+            ->where('created_at', '<=', $finish)
+            ->paginate(5));
     }
 
     /**
