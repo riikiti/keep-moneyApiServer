@@ -88,9 +88,17 @@
     &__livetape {
         grid-area: livetape;
 
-
         &__header {
             margin-bottom: 20px;
+        }
+
+        &-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+            height: 80vh;
+
         }
 
         &-button {
@@ -103,6 +111,30 @@
 
             button {
                 border-radius: 4px;
+
+            }
+        }
+
+        &-pagination {
+            display: flex;
+            width: 100%;
+            height: max-content;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 0 20px;
+            &__wrap {
+                &-item {
+                    cursor: pointer;
+                    width: 30px;
+                    height: 30px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 8px;
+                    border: 1px solid $light-black;
+
+                }
+
 
             }
         }
@@ -123,3 +155,9 @@
 .profile__content-livetape__header {
     text-align: center;
 }
+
+
+.profile__livetape-pagination__wrap-item.active {
+    background-color: $light-gray;
+}
+

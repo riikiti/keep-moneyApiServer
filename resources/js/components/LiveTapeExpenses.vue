@@ -71,97 +71,115 @@
         <div class="profile__content-livetape__header">
             <h2 class="title title--2">Траты</h2>
         </div>
-        <div v-if="data == null">
-            <Preloader></Preloader>
-        </div>
-        <ul v-else>
-            <li v-for="(item, index) in data" :key="item.id" class="item">
-                <teleport to=".modals" v-if="modal && modalIndex === index">
-                    <Modal :status="modal" :item="item" @modalClose="modalOpen()">
-                        <template v-slot:modalContent>
 
-                            <form class="form" @submit.prevent="modalOpen()">
-                                <h2 class="title title--2">Изаменение записи "{{ item.checks.title }}"</h2>
-                                <div class="form__block">
-                                    <label class="title title--3">Название</label>
-                                    <input type="text" v-model="item.checks.title" required/>
-                                </div>
-                                <div class="form__block">
-                                    <label class="title title--3">Список покупок</label>
-                                    <ul class="form__block-lists">
-                                        {{ getItemsUpdate(item.checks.id) }}
-                                        <li v-for="el in getItemsNew" :key="item.id">
-                                            <p>Название:</p> <input type="text" v-model="el.name">
-                                            <p>Цена:</p><input type="number" v-model="el.price"
-                                                               @blur='totalPriceSumUpdate()'>
-                                            <p>р.</p>
-                                            <p>Кол-во:</p> <input type="number" v-model="el.count"
-                                                                  @blur='totalPriceSumUpdate()'>
-                                            <p>шт.</p>
-                                            <div class="form__block-lists__delete"
-                                                 @click="removeItemUpdate(el.id);deleteItem(el.id)">
-                                                <img src="../assets/img/svg/exit.svg" alt="exit">
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <div class="form__block-lists__add" @click="addItemUpdate()"> + добавить новую
-                                        запись
+
+        <div class="profile__livetape-content">
+            <div v-if="data == null">
+                <Preloader></Preloader>
+            </div>
+            <ul v-else>
+                <li v-for="(item, index) in data" :key="item.id" class="item">
+                    <teleport to=".modals" v-if="modal && modalIndex === index">
+                        <Modal :status="modal" :item="item" @modalClose="modalOpen()">
+                            <template v-slot:modalContent>
+
+                                <form class="form" @submit.prevent="modalOpen()">
+                                    <h2 class="title title--2">Изаменение записи "{{ item.checks.title }}"</h2>
+                                    <div class="form__block">
+                                        <label class="title title--3">Название</label>
+                                        <input type="text" v-model="item.checks.title" required/>
                                     </div>
-                                    <div class="form__block-price">
-                                        <label class="title title--3">Итоговая цена: </label>
-                                        <p v-if="totalPriceUpdate===0">{{ item.checks.total_price }} р.</p>
-                                        <p v-else>{{ totalPriceUpdate }} р.</p>
+                                    <div class="form__block">
+                                        <label class="title title--3">Список покупок</label>
+                                        <ul class="form__block-lists">
+                                            {{ getItemsUpdate(item.checks.id) }}
+                                            <li v-for="el in getItemsNew" :key="item.id">
+                                                <p>Название:</p> <input type="text" v-model="el.name">
+                                                <p>Цена:</p><input type="number" v-model="el.price"
+                                                                   @blur='totalPriceSumUpdate()'>
+                                                <p>р.</p>
+                                                <p>Кол-во:</p> <input type="number" v-model="el.count"
+                                                                      @blur='totalPriceSumUpdate()'>
+                                                <p>шт.</p>
+                                                <div class="form__block-lists__delete"
+                                                     @click="removeItemUpdate(el.id);deleteItem(el.id)">
+                                                    <img src="../assets/img/svg/exit.svg" alt="exit">
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="form__block-lists__add" @click="addItemUpdate()"> + добавить новую
+                                            запись
+                                        </div>
+                                        <div class="form__block-price">
+                                            <label class="title title--3">Итоговая цена: </label>
+                                            <p v-if="totalPriceUpdate===0">{{ item.checks.total_price }} р.</p>
+                                            <p v-else>{{ totalPriceUpdate }} р.</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form__block">
-                                    <label class="title title--3">Категория</label>
-                                    <categories-selector :option="categories"
-                                                         @getSelect="getSelect"
-                                                         :id="item.category.id"
-                                    ></categories-selector>
-                                </div>
-                                <div class="form__block">
-                                    <label class="title title--3">Категория</label>
-                                    <budget-selector :option="categoriesBudget"
-                                                     @getSelect="getSelectBudget"
-                                                     :id="item.budget.id"
-                                    ></budget-selector>
-                                </div>
-                                <div class="form__block">
-                                    <label class="title title--3">Дата</label>
-                                    <VueDatePicker
-                                        v-model="item.checks.date"
-                                        locale="ru"
-                                        vertical
-                                        :startDate="new Date()"
-                                        format=" dd/MM/yyyy HH:mm"
-                                        required
-                                    />
-                                </div>
-                                <div class="form__block">
-                                    <label class="title title--3">Адресс магазина</label>
-                                    <input type="text" v-model="item.shop.id" required/>
-                                </div>
-                                <button class="form__btn" @click="updateData(item.id, item)">
-                                    Изменить
-                                </button>
-                            </form>
-                        </template>
-                    </Modal>
-                </teleport>
-                <div class="item__content">
-                    <h3 class="title title--4">{{ item.checks.title }}</h3>
-                    <div class="item-action">
-                        <button @click="modalOpen(index)" :data-item="item.id">
-                            <img src="../assets/img/svg/pen.svg" alt="update"/>
-                        </button>
-                        <button @click="deleteData(item.id,item)">
-                            <img src="../assets/img/svg/trash.svg" alt="delete"/>
-                        </button>
+                                    <div class="form__block">
+                                        <label class="title title--3">Категория</label>
+                                        <categories-selector :option="categories"
+                                                             @getSelect="getSelect"
+                                                             :id="item.category.id"
+                                        ></categories-selector>
+                                    </div>
+                                    <div class="form__block">
+                                        <label class="title title--3">Категория</label>
+                                        <budget-selector :option="categoriesBudget"
+                                                         @getSelect="getSelectBudget"
+                                                         :id="item.budget.id"
+                                        ></budget-selector>
+                                    </div>
+                                    <div class="form__block">
+                                        <label class="title title--3">Дата</label>
+                                        <VueDatePicker
+                                            v-model="item.checks.date"
+                                            locale="ru"
+                                            vertical
+                                            :startDate="new Date()"
+                                            format=" dd/MM/yyyy HH:mm"
+                                            required
+                                        />
+                                    </div>
+                                    <div class="form__block">
+                                        <label class="title title--3">Адресс магазина</label>
+                                        <input type="text" v-model="item.shop.id" required/>
+                                    </div>
+                                    <button class="form__btn" @click="updateData(item.id, item)">
+                                        Изменить
+                                    </button>
+                                </form>
+                            </template>
+                        </Modal>
+                    </teleport>
+                    <div class="item__content">
+                        <h3 class="title title--4">{{ item.checks.title }}</h3>
+                        <div class="item-action">
+                            <button @click="modalOpen(index)" :data-item="item.id">
+                                <img src="../assets/img/svg/pen.svg" alt="update"/>
+                            </button>
+                            <button @click="deleteData(item.id,item)">
+                                <img src="../assets/img/svg/trash.svg" alt="delete"/>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="profile__livetape-pagination" v-if="links">
+                <div class="profile__livetape-pagination__wrap-item" v-if="current_page!==1"
+                     @click="fetchData(Number(current_page-1))">назад
+                </div>
+                <div class="profile__livetape-pagination__wrap" v-for="link in links.links" :key="link.label">
+                    <div class="profile__livetape-pagination__wrap-item" v-if="Number(link.label)"
+                         @click="fetchData(Number(link.label))" :class="link.active?'active':''">{{ link.label }}
                     </div>
                 </div>
-            </li>
-        </ul>
+                <div class="profile__livetape-pagination__wrap-item" v-if="current_page!== links.last_page"
+                     @click="fetchData(Number(current_page+1))"> вперед
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -177,6 +195,8 @@ import BudgetSelector from "../components/BudgetSelector.vue";
 
 
 const data = ref(null);
+const links = ref(null);
+const current_page = ref(null);
 const modal = ref(false);
 const modalIndex = ref(null);
 const modalForCreate = ref(false);
@@ -197,8 +217,6 @@ const tempBudgetId = ref(null);
 const getItems = ref([]);
 const getItemsNew = ref([]);
 let count = 1
-
-
 
 
 const addItem = () => {
@@ -295,11 +313,17 @@ const modalCreate = () => {
     modalForCreate.value = !modalForCreate.value;
     console.log(modalForCreate.value);
 };
-const fetchData = async () => {
+const fetchData = async (page) => {
+    if (!page) {
+        page = 1;
+    }
     axios
-        .get('http://127.0.0.1:8000/api/v1/expenses/' + id)
+        .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {params: {page: page}})
         .then((response) => {
             data.value = response.data.data;
+            links.value = response.data.meta
+            current_page.value = response.data.meta.current_page;
+            console.log(links.value)
             data.value.forEach((el) => {
                 getItems.value.push(el.checks)
                 //console.log(getItems.value)
