@@ -18,7 +18,6 @@ class CheckResource extends JsonResource
             'id'=>$this->id,
             'title'=>$this->title,
             'total_price'=>$this->total_price,
-            'date'=>$this->date,
             'items' => ItemResource::collection($this->item),
         ];
     }

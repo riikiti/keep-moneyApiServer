@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('shops_id');
             $table->unsignedBigInteger('categories_id');
             $table->unsignedBigInteger('budget_id')->nullable();
+            $table->timestamp('date');
             $table->timestamps();
 
             $table->index('categories_id', 'categories_check_idx');

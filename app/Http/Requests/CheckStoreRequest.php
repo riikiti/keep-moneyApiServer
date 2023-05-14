@@ -24,7 +24,7 @@ class CheckStoreRequest extends FormRequest
         return [
             'title'=>'required|max:255',
             'total_price'=>'required',
-            'date'=>'required|date',
+
         ];
     }
 }

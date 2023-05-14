@@ -320,7 +320,7 @@ const fetchData = async (page) => {
         page = 1;
     }
     axios
-        .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {params: {page: page}})
+        .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {params: {page: page,per_page: 2}})
         .then((response) => {
             data.value = response.data.data;
             links.value = response.data.meta
@@ -347,7 +347,7 @@ const posthData = async (createData) => {
         .post("http://127.0.0.1:8000/api/v1/check", {
             title: createData.title,
             total_price: totalPrice.value,
-            date: createData.date,
+
         })
         .then((response) => {
             // console.log(response.data);
@@ -377,7 +377,8 @@ const posthData = async (createData) => {
                     check_id: checkId.value,
                     shops_id: 1,
                     categories_id: selectCategories.id,
-                    budget_id: selectBudget.id
+                    budget_id: selectBudget.id,
+                    date: createData.date,
                 })
                 .then((response) => {
                     console.log(response.data);

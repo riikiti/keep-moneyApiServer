@@ -21,6 +21,7 @@ class ExpensesResource extends JsonResource
             'shop'=>new ShopsResource($this->shops),
             'category'=>new CategoriesResource($this->categories),
             'budget'=>new BudgetResource($this->budget),
+            'date'=>$this->date,
         ];
     }
 }

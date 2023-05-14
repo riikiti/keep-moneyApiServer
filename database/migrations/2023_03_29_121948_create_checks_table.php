@@ -18,7 +18,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('title');
             $table->unsignedDouble('total_price');
-            $table->timestamp('date');
+            //$table->timestamp('date');
             $table->timestamps();
         });
     }
