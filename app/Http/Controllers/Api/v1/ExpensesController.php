@@ -31,17 +31,17 @@ class ExpensesController extends Controller
     public function show($id)
     {
         if (empty($_GET['start'])) {
-            $start = "2000-05-12 13:18:56";
+            $start = "1970-01-01 00:00:00";
         } else {
             $start = $_GET['start'];
         }
         if (empty($_GET['finish'])) {
-            $finish = date('Y-m-d H:i:s');
+            $finish = date('Y-m-d H:i:s',strtotime('+3 hours'));
         } else {
             $finish = $_GET['finish'];
         }
         if (empty($_GET['per_page'])) {
-            $per_page = 2;
+            $per_page = 10;
         } else {
             $per_page = $_GET['per_page'];
         }

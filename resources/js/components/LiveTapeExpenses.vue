@@ -48,6 +48,7 @@
                                 <label class="title title--3">Дата</label>
                                 <VueDatePicker
                                     v-model="createData.date"
+                                    timezone="UTC"
                                     locale="ru"
                                     vertical
                                     :startDate="new Date()"
@@ -133,7 +134,7 @@
                                     <div class="form__block">
                                         <label class="title title--3">Дата</label>
                                         <VueDatePicker
-                                            v-model="item.checks.date"
+                                            v-model="item.date"
                                             locale="ru"
                                             vertical
                                             :startDate="new Date()"
@@ -168,7 +169,7 @@
 
             <div class="profile__livetape-pagination" v-if="links && links.last_page>1">
                 <div class="profile__livetape-pagination__wrap-item" v-if="current_page!==1"
-                     @click="fetchData(Number(current_page-1))">   <img src="../assets/img/svg/arrowBlack.svg" alt="arrow">
+                     @click="fetchData(Number(current_page-1))"><img src="../assets/img/svg/arrowBlack.svg" alt="arrow">
                 </div>
                 <div class="profile__livetape-pagination__wrap" v-for="link in links.links" :key="link.label">
                     <div class="profile__livetape-pagination__wrap-item"
@@ -176,7 +177,8 @@
                          @click="fetchData(Number(link.label))" :class="link.active?'active':''">{{ link.label }}
                     </div>
                 </div>
-                <div class="profile__livetape-pagination__wrap-item  profile__livetape-pagination__wrap-item__next" v-if="current_page!== links.last_page"
+                <div class="profile__livetape-pagination__wrap-item  profile__livetape-pagination__wrap-item__next"
+                     v-if="current_page!== links.last_page"
                      @click="fetchData(Number(current_page+1))">
                     <img src="../assets/img/svg/arrowBlack.svg" alt="arrow">
                 </div>
@@ -320,7 +322,7 @@ const fetchData = async (page) => {
         page = 1;
     }
     axios
-        .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {params: {page: page,per_page: 2}})
+        .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {params: {page: page, per_page: 5}})
         .then((response) => {
             data.value = response.data.data;
             links.value = response.data.meta
@@ -473,7 +475,7 @@ const updateData = async (item_id, item) => {
         .put("http://127.0.0.1:8000/api/v1/check/" + item.checks.id, {
             title: item.checks.title,
             total_price: totalPriceUpdate.value,
-            date: item.checks.date,
+
         })
         .then((response) => {
             console.log(response.data);
@@ -527,7 +529,8 @@ const updateData = async (item_id, item) => {
                     check_id: item.checks.id,
                     shops_id: 1,
                     categories_id: selectCategories.id,
-                    budget_id: selectBudget.id
+                    budget_id: selectBudget.id,
+                    date: item.date,
                 })
                 .then((response) => {
                     console.log(response.data);
