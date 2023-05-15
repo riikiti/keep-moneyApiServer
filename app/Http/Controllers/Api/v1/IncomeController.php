@@ -30,7 +30,25 @@ class IncomeController extends Controller
      */
     public function show($id)
     {
-        return  IncomeResource::collection(Income::all()->where('user_id',$id));
+        if (empty($_GET['start'])) {
+            $start = "1970-01-01 00:00:00";
+        } else {
+            $start = $_GET['start'];
+        }
+        if (empty($_GET['finish'])) {
+            $finish = date('Y-m-d H:i:s',strtotime('+3 hours'));
+        } else {
+            $finish = $_GET['finish'];
+        }
+        if (empty($_GET['per_page'])) {
+            $per_page = 10;
+        } else {
+            $per_page = $_GET['per_page'];
+        }
+        return  IncomeResource::collection(Income::where('user_id',$id)
+            ->where('date', '>=', $start)
+            ->where('date', '<=', $finish)
+            ->paginate($per_page));
     }
 
     /**

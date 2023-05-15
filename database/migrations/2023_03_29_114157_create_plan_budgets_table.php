@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('title')->nullable();
             $table->unsignedBigInteger('budget_id');
-            $table->unsignedDouble('budget_on_start');
+            $table->double('budget_on_start');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('value');
             $table->timestamp('period_start');
