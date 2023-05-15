@@ -216,9 +216,12 @@ const updateData = async (item_id, item) => {
         console.log(item.date)
     } catch {
     }
-
+    if (!selectCategories.id) {
+        selectCategories.id = item.category.id
+    }
+    console.log(selectCategories.id,item.category.id)
     axios
-        .put("http://127.0.0.1:8000/api/v1/income/" + item_id, {
+        .put("http://127.0.0.1:8000/api/v1/income/" + item.id, {
             title: item.title,
             price: item.price,
             categories_id: selectCategories.id,
