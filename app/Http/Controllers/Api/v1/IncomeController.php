@@ -40,15 +40,34 @@ class IncomeController extends Controller
         } else {
             $finish = $_GET['finish'];
         }
-        if (empty($_GET['per_page'])) {
-            $per_page = 10;
+        if (empty($_GET['category'])) {
+            $category = '%';
         } else {
-            $per_page = $_GET['per_page'];
+            $category = $_GET['category'];
         }
-        return  IncomeResource::collection(Income::where('user_id',$id)
-            ->where('date', '>=', $start)
-            ->where('date', '<=', $finish)
-            ->paginate($per_page));
+
+        if (empty($_GET['paginate']) || $_GET['paginate'] !== "true") {
+            return IncomeResource::collection(Income::all()
+                ->where('user_id', $id)
+                ->where('date', '>=', $start)
+                ->where('date', '<=', $finish)
+            );
+        }
+        else {
+            if (empty($_GET['per_page'])) {
+                $per_page = 10;
+            } else {
+                $per_page = $_GET['per_page'];
+            }
+
+            return  IncomeResource::collection(Income::where('user_id',$id)
+                ->where('categories_id', 'LIKE', $category)
+                ->where('date', '>=', $start)
+                ->where('date', '<=', $finish)
+                ->paginate($per_page));
+        }
+
+
     }
 
     /**

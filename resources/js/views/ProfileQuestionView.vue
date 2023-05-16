@@ -1,21 +1,15 @@
 <template>
 
     <div class="profile" :class="{ 'profile-active': menu}">
-        <div class="profile__header">
-            <h1 class="title title--2">Часто задаваемые вопросы?</h1>
-        </div>
+        <h1 class="title title--2">Часто задаваемые вопросы?</h1>
+        здесть будет аккордион с вопросами
         <ProfileAside @openMenu="openMenu()"></ProfileAside>
-        <div class="profile__content">
-            здесть будет аккордион с вопросами
-        </div>
-        <live-tape></live-tape>
     </div>
 </template>
 
 
 <script setup>
 import ProfileAside from "../components/PortfolioAside.vue";
-import LiveTape from "../components/LiveTapeIncome.vue";
 import {ref} from "vue";
 
 const menu = ref(ref(localStorage.getItem("is_expanded") === "true"));

@@ -36,20 +36,36 @@ class ExpensesController extends Controller
             $start = $_GET['start'];
         }
         if (empty($_GET['finish'])) {
-            $finish = date('Y-m-d H:i:s',strtotime('+3 hours'));
+            $finish = date('Y-m-d H:i:s', strtotime('+3 hours'));
         } else {
             $finish = $_GET['finish'];
         }
-        if (empty($_GET['per_page'])) {
-            $per_page = 10;
+        if (empty($_GET['category'])) {
+            $category = '%';
         } else {
-            $per_page = $_GET['per_page'];
+            $category = $_GET['category'];
         }
 
-        return ExpensesResource::collection(Expenses::where('user_id', $id)
-            ->where('date', '>=', $start)
-            ->where('date', '<=', $finish)
-            ->paginate($per_page));
+        if (empty($_GET['paginate']) || $_GET['paginate'] !== "true") {
+            return ExpensesResource::collection(Expenses::all()
+                ->where('user_id', $id)
+                ->where('date', '>=', $start)
+                ->where('date', '<=', $finish)
+            );
+        } else {
+            if (empty($_GET['per_page'])) {
+                $per_page = 10;
+            } else {
+                $per_page = $_GET['per_page'];
+            }
+            return ExpensesResource::collection(Expenses::where('user_id', $id)
+                ->where('categories_id', 'LIKE', $category)
+                ->where('date', '>=', $start)
+                ->where('date', '<=', $finish)
+                ->paginate($per_page));
+        }
+
+
     }
 
     /**
