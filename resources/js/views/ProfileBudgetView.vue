@@ -11,7 +11,7 @@
                 <swiper></swiper>
             </div>
             <div class="profile__content-item"><h2 class="title title--3">Количество денег на всех картах</h2>
-                <charts-expenses></charts-expenses>
+                <charts-budget></charts-budget>
             </div>
             <div class="profile__content-item"><h2 class="title title--3">Планы</h2><bar-plan></bar-plan></div>
         </div>
@@ -23,7 +23,7 @@
 <script setup>
 import ProfileAside from "../components/PortfolioAside.vue";
 import LiveTape from "../components/LiveTapePlanBudget.vue";
-import ChartsExpenses from "../components/ChartExpenses.vue";
+import ChartsBudget from "../components/ChartBudget.vue";
 import BarPlan from "../components/BarPlan.vue";
 import Swiper from "../components/SwiperCards.vue";
 import {ref} from "vue";
