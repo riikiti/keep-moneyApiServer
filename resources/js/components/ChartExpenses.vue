@@ -1,5 +1,10 @@
 <template>
     <div class="charts">
+
+        <h2 class="title title--3">
+            <slot name="title"></slot>
+        </h2>
+
         <div v-if="!data">
             <preloader></preloader>
         </div>

@@ -9,5 +9,26 @@
         position: absolute;
         bottom: 10px;
         left: 0;
+        white-space: nowrap;
+    }
+    &-select{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        .modal__select{
+            margin: 0 auto;
+           max-width: 200px;
+            width: 100%;
+          &-selected{
+              height: 20px;
+              border: none;
+              justify-content: initial;
+              span{
+                  margin-right: 10px;
+              }
+          }
+        }
     }
 }
+
+

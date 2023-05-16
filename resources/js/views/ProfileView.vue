@@ -8,8 +8,11 @@
         <ProfileAside @openMenu="openMenu()"></ProfileAside>
         <div class="profile__content">
             <div class="profile__content-item">
-                <h2 class="title title--3">График расходов</h2>
-                <charts-expenses></charts-expenses>
+                <charts-expenses>
+                    <template v-slot:title>
+                      График расходов
+                    </template>
+                </charts-expenses>
             </div>
             <div class="profile__content-item">
                 <h2 class="title title--3">График Доходов</h2>

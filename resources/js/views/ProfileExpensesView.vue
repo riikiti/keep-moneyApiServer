@@ -10,11 +10,19 @@
             <h2 class="title title--3">Расхроды</h2>
             <bar-expenses></bar-expenses>
         </div>
-        <div class="profile__content-item"><h2 class="title title--3">Расходы по конкретной категории</h2>
-            <charts-expenses></charts-expenses>
+        <div class="profile__content-item">
+            <charts-expenses-with-select>
+                <template v-slot:title>
+                  Расходы по категории:
+                </template>
+            </charts-expenses-with-select>
         </div>
-        <div class="profile__content-item"><h2 class="title title--3">Расходы по всем категориям</h2>
-            <charts-expenses></charts-expenses>
+        <div class="profile__content-item">
+            <charts-expenses>
+                <template v-slot:title>
+                    Расходы по всем категориям
+                </template>
+            </charts-expenses>
         </div>
     </div>
     <live-tape></live-tape>
@@ -25,6 +33,7 @@
 <script setup>
 import ProfileAside from "../components/PortfolioAside.vue";
 import LiveTape from "../components/LiveTapeExpenses.vue";
+import ChartsExpensesWithSelect from "../components/ChartExpensesWithSelect.vue";
 import ChartsExpenses from "../components/ChartExpenses.vue";
 import BarExpenses from "../components/BarEpenses.vue";
 import {ref} from "vue";
