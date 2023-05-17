@@ -36,7 +36,7 @@ class IncomeController extends Controller
             $start = $_GET['start'];
         }
         if (empty($_GET['finish'])) {
-            $finish = date('Y-m-d H:i:s',strtotime('+3 hours'));
+            $finish = date('Y-m-d H:i:s', strtotime('+3 hours'));
         } else {
             $finish = $_GET['finish'];
         }
@@ -46,28 +46,16 @@ class IncomeController extends Controller
             $category = $_GET['category'];
         }
 
-        if (empty($_GET['paginate']) || $_GET['paginate'] !== "true") {
-            return IncomeResource::collection(Income::all()
-                ->where('user_id', $id)
-                ->where('date', '>=', $start)
-                ->where('date', '<=', $finish)
-            );
+        if (empty($_GET['per_page'])) {
+            $per_page = 10;
+        } else {
+            $per_page = $_GET['per_page'];
         }
-        else {
-            if (empty($_GET['per_page'])) {
-                $per_page = 10;
-            } else {
-                $per_page = $_GET['per_page'];
-            }
-
-            return  IncomeResource::collection(Income::where('user_id',$id)
-                ->where('categories_id', 'LIKE', $category)
-                ->where('date', '>=', $start)
-                ->where('date', '<=', $finish)
-                ->paginate($per_page));
-        }
-
-
+        return IncomeResource::collection(Income::where('user_id', $id)
+            ->where('categories_id', 'LIKE', $category)
+            ->where('date', '>=', $start)
+            ->where('date', '<=', $finish)
+            ->paginate($per_page));
     }
 
     /**

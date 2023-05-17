@@ -1,0 +1,199 @@
+<template>
+
+    <div class="charts ">
+        <div class="charts-select">
+            <h2 class="title title--3">
+                <slot name="title"></slot>
+            </h2>
+            <categories-selector :option="categories"
+                                 @getSelect="getSelect"
+            ></categories-selector>
+        </div>
+        <div v-if="!data">
+            <preloader></preloader>
+        </div>
+        <vue-echarts v-else :option="option" ref="chart" class="ChartExpensesWithSelect"/>
+        <h4 class="title title--4">Всего: {{ all }} р.
+        </h4>
+
+
+    </div>
+</template>
+
+<script setup>
+import {VueEcharts} from "vue3-echarts";
+import Preloader from "../components/Preloader.vue";
+import {onMounted, ref} from "vue";
+import axios from "axios";
+import CategoriesSelector from "../components/CategoriesSelector.vue";
+
+const data = ref(null);
+const all = ref(0)
+const categories = ref();
+const selectCategories = ref({});
+const id = localStorage.getItem('id');
+let chart = ref(null);
+const newData = ref([])
+
+console.log(chart)
+
+const option = ref({
+    tooltip: {
+        trigger: "item",
+    },
+    legend: {
+        top: "5%",
+        left: "center",
+    },
+    series: [
+        {
+            name: "Значение:",
+            type: "pie",
+            radius: ["40%", "70%"],
+            avoidLabelOverlap: false,
+            label: {
+                show: false,
+                position: "center",
+            },
+            emphasis: {
+                label: {
+                    show: true,
+                    fontSize: 40,
+                    fontWeight: "bold",
+                },
+            },
+            labelLine: {
+                show: false,
+            },
+
+            data: [],
+        },
+    ],
+});
+
+
+const getSelect = (item) => {
+    console.log(item.id)
+    selectCategories.id = item.id
+    selectCategories.name = item.name
+    newData.value = [];
+    axios
+        .get('http://127.0.0.1:8000/api/v1/income/' + id, {
+            params: {
+                category: selectCategories.id
+            }
+        })
+        .then((response) => {
+            // console.log(response.data.data)
+            all.value = 0;
+            data.value = response.data.data;
+            const res = {};
+            data.value.forEach(item => {
+                console.log(333333333, item.title)
+                if (res[item.title]) {
+                    res[item.title] += item.price;
+                } else {
+                    res[item.title] = item.price;
+                }
+                all.value += item.price;
+            });
+
+            const keys = Object.keys(res);
+            //console.log(keys)
+            console.log(data.value, newData.value)
+            keys.forEach((key, index) => {
+                console.log(`${key}: ${res[key]}`);
+                newData.value.push({value: res[key], name: key})
+
+            });
+            chart.value.setOption({
+                tooltip: {
+                    trigger: "item",
+                },
+                legend: {
+                    top: "5%",
+                    left: "center",
+                },
+                series: [
+                    {
+                        name: "Значение:",
+                        type: "pie",
+                        radius: ["40%", "70%"],
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: false,
+                            position: "center",
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: 40,
+                                fontWeight: "bold",
+                            },
+                        },
+                        labelLine: {
+                            show: false,
+                        },
+
+                        data: newData.value,
+                    },
+                ],
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+
+}
+
+const fetchData = async () => {
+    axios
+        .get('http://127.0.0.1:8000/api/v1/income/' + id)
+        .then((response) => {
+            // console.log(response.data.data)
+            all.value = 0;
+            data.value = response.data.data;
+            const res = {};
+            data.value.forEach(item => {
+                if (res[item.title]) {
+                    res[item.title] += item.price;
+                } else {
+                    res[item.title] = item.price;
+                }
+                all.value += item.price;
+            });
+
+            const keys = Object.keys(res);
+            //console.log(keys)
+            keys.forEach((key, index) => {
+                console.log(`${key}: ${res[key]}`);
+                option.value.series[0].data.push({value: res[key], name: key})
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+const fetchCategories = async () => {
+    axios
+        .get('http://127.0.0.1:8000/api/v1/income-categories')
+        .then((response) => {
+            categories.value = response.data.data;
+            console.log(categories.value);
+            fetchData();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+
+fetchCategories()
+
+
+onMounted(fetchData, fetchCategories)
+</script>
+
+<style>
+</style>

@@ -10,8 +10,12 @@
                 <h2 class="title title--3">Доходы</h2>
                 <bar-income></bar-income>
             </div>
-            <div class="profile__content-item"><h2 class="title title--3">Доходы по конкретной категории</h2>
-                <charts-income></charts-income>
+            <div class="profile__content-item">
+                <charts-income-with-select>
+                    <template v-slot:title>
+                        Доходы по категории
+                    </template>
+                </charts-income-with-select>
             </div>
             <div class="profile__content-item"><h2 class="title title--3">Доходы по всем категориям</h2>
                 <charts-income></charts-income>
@@ -26,6 +30,7 @@
 import ProfileAside from "../components/PortfolioAside.vue";
 import LiveTape from "../components/LiveTapeIncome.vue";
 import ChartsIncome from "../components/ChartIncome.vue";
+import ChartsIncomeWithSelect from "../components/ChartIncomeWithSelect.vue";
 import BarIncome from "../components/BarIncome.vue";
 import {ref} from "vue";
 
