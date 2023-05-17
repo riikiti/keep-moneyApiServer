@@ -45,27 +45,16 @@ class ExpensesController extends Controller
         } else {
             $category = $_GET['category'];
         }
-
-        if (empty($_GET['paginate']) || $_GET['paginate'] !== "true") {
-            return ExpensesResource::collection(Expenses::all()
-                ->where('user_id', $id)
-                ->where('date', '>=', $start)
-                ->where('date', '<=', $finish)
-            );
+        if (empty($_GET['per_page'])) {
+            $per_page = 10;
         } else {
-            if (empty($_GET['per_page'])) {
-                $per_page = 10;
-            } else {
-                $per_page = $_GET['per_page'];
-            }
-            return ExpensesResource::collection(Expenses::where('user_id', $id)
-                ->where('categories_id', 'LIKE', $category)
-                ->where('date', '>=', $start)
-                ->where('date', '<=', $finish)
-                ->paginate($per_page));
+            $per_page = $_GET['per_page'];
         }
-
-
+        return ExpensesResource::collection(Expenses::where('user_id', $id)
+            ->where('categories_id', 'LIKE', $category)
+            ->where('date', '>=', $start)
+            ->where('date', '<=', $finish)
+            ->paginate($per_page));
     }
 
     /**
