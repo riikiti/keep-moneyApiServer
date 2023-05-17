@@ -156,10 +156,10 @@ const fetchData = async () => {
             data.value = response.data.data;
             const res = {};
             data.value.forEach(item => {
-                if (res[item.category.name]) {
-                    res[item.category.name] += item.checks.total_price;
+                if (res[item.checks.title]) {
+                    res[item.checks.title] += item.checks.total_price;
                 } else {
-                    res[item.category.name] = item.checks.total_price;
+                    res[item.checks.title] = item.checks.total_price;
                 }
                 all.value += item.checks.total_price;
             });
