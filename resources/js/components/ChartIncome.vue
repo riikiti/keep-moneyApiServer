@@ -6,6 +6,7 @@
             </h2>
             <categories-selector :option="period"
                                  @getSelect="getPeriod"
+                                 :id="3"
             >
                 <template v-slot:title>
                     периуд
@@ -87,7 +88,6 @@ const option = ref({
 });
 
 
-
 const getPeriod = (item) => {
     switch (item.id) {
         case 1:
@@ -100,12 +100,12 @@ const getPeriod = (item) => {
             finishDate.value = yearAgo;
             break;
     }
-    console.log(44444444,finishDate.value)
+    console.log(44444444, finishDate.value)
     newData.value = [];
     axios
         .get('http://127.0.0.1:8000/api/v1/income/' + id, {
             params: {
-                start:finishDate.value,
+                start: finishDate.value,
             }
         })
         .then((response) => {

@@ -6,6 +6,7 @@
             </h2>
             <categories-selector :option="period"
                                  @getSelect="getPeriod"
+                                 :id="3"
             >
                 <template v-slot:title>
                     периуд
