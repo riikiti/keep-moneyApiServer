@@ -9,7 +9,7 @@
                             <h2 class="title title--2">Создание записи</h2>
                             <div class="form__block">
                                 <label class="title title--3">Название</label>
-                                <input type="text" v-model="createData.title" required/>
+                                <input type="text" v-model="createData.title"/>
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Максимальная планируемая цена</label>
@@ -192,6 +192,11 @@ const posthData = async (createData) => {
         console.log(createData.dateFinish)
     } catch {
     }
+
+    if (!createData.title) {
+        createData.title = selectCategories.name.toString() + " " + createData.dateStart.slice(0, 11)+ " - "+ createData.dateFinish.slice(0, 11);
+    }
+
     axios
         .post("http://127.0.0.1:8000/api/v1/plan", {
             title: createData.title,
@@ -237,8 +242,14 @@ const updateData = async (item) => {
 
             if (!selectCategories.id) {
                 selectCategories.id = item.category.id
+                selectCategories.name = item.category.name
                 console.log(111111111111, selectCategories.id)
             }
+
+            if (item.title==="") {
+                item.title = selectCategories.name.toString() + " " + afterDate.dateStart.slice(0, 11)+ " - "+ afterDate.dateFinish.slice(0, 11);
+            }
+
             axios
                 .put("http://127.0.0.1:8000/api/v1/plan/" + item.id, {
                     title: item.title,
@@ -265,7 +276,11 @@ const updateData = async (item) => {
 
             if (!selectCategories.id) {
                 selectCategories.id = item.category.id
+                selectCategories.name = item.category.name
                 console.log(111111111111, selectCategories.id)
+            }
+            if (item.title==="") {
+                item.title = selectCategories.name.toString() + " " + afterDate.dateStart.slice(0, 11)+ " - "+ afterDate.dateFinish.slice(0, 11);
             }
 
             axios

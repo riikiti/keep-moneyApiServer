@@ -9,7 +9,7 @@
                             <h2 class="title title--2">Создание записи</h2>
                             <div class="form__block">
                                 <label class="title title--3">Название</label>
-                                <input type="text" v-model="createData.title" required/>
+                                <input type="text" v-model="createData.title"/>
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Цена</label>
@@ -162,7 +162,7 @@ const fetchData = async (page) => {
         page = 1;
     }
     axios
-        .get('http://127.0.0.1:8000/api/v1/income/' + id, {params: {page: page,paginate:true, per_page: 1}})
+        .get('http://127.0.0.1:8000/api/v1/income/' + id, {params: {page: page, paginate: true, per_page: 5}})
         .then((response) => {
             data.value = response.data.data;
             links.value = response.data.meta
@@ -180,6 +180,10 @@ const posthData = async (createData) => {
         console.log(createData)
     } catch {
     }
+    if (!createData.title) {
+        createData.title = selectCategories.name.toString() + " " + createData.date.slice(0, 11);
+    }
+
     axios
         .post("http://127.0.0.1:8000/api/v1/income", {
             title: createData.title,
@@ -218,8 +222,14 @@ const updateData = async (item_id, item) => {
     }
     if (!selectCategories.id) {
         selectCategories.id = item.category.id
+        selectCategories.name=item.category.name
     }
-    console.log(selectCategories.id,item.category.id)
+
+    if (item.title === "") {
+        item.title = selectCategories.name + " " + item.date.slice(0, 11);
+    }
+
+    console.log(selectCategories.id, item.category.id)
     axios
         .put("http://127.0.0.1:8000/api/v1/income/" + item.id, {
             title: item.title,

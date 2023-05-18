@@ -9,7 +9,7 @@
                             <h2 class="title title--2">Создание записи</h2>
                             <div class="form__block">
                                 <label class="title title--3">Название</label>
-                                <input type="text" v-model="createData.title" required/>
+                                <input type="text" v-model="createData.title" />
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Список покупок</label>
@@ -342,6 +342,9 @@ const posthData = async (createData) => {
         createData.date = createData.date.toISOString().substring(0, 19).replace("T", " ");
         console.log(createData)
     } catch {
+    }
+    if (!createData.title) {
+        createData.title = selectCategories.name.toString() + " " + createData.date.slice(0, 11);
     }
     totalPriceSum()
     console.log(createData.title, totalPrice, createData.date)
