@@ -13,14 +13,14 @@
         <div class="profile__content-item">
             <charts-expenses-with-select>
                 <template v-slot:title>
-                  Расходы по категории:
+                  Расходы по :
                 </template>
             </charts-expenses-with-select>
         </div>
         <div class="profile__content-item">
             <charts-expenses>
                 <template v-slot:title>
-                    Расходы по всем категориям
+                    Расходы
                 </template>
             </charts-expenses>
         </div>

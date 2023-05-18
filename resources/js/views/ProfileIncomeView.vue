@@ -13,12 +13,16 @@
             <div class="profile__content-item">
                 <charts-income-with-select>
                     <template v-slot:title>
-                        Доходы по категории
+                        Доходы по
                     </template>
                 </charts-income-with-select>
             </div>
-            <div class="profile__content-item"><h2 class="title title--3">Доходы по всем категориям</h2>
-                <charts-income></charts-income>
+            <div class="profile__content-item">
+                <charts-income>
+                    <template v-slot:title>
+                        Доходы
+                    </template>
+                </charts-income>
             </div>
         </div>
         <live-tape></live-tape>

@@ -10,13 +10,16 @@
             <div class="profile__content-item">
                 <charts-expenses>
                     <template v-slot:title>
-                      График расходов
+                        Расходы
                     </template>
                 </charts-expenses>
             </div>
             <div class="profile__content-item">
-                <h2 class="title title--3">График Доходов</h2>
-                <charts-income></charts-income>
+                <charts-income>
+                    <template v-slot:title>
+                        Доходы
+                    </template>
+                </charts-income>
             </div>
             <div class="profile__content-item__two-case">
                 <h2 class="title title--3">Ваши карты</h2>
