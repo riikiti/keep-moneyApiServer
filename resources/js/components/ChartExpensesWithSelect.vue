@@ -7,11 +7,23 @@
             </h2>
             <categories-selector :option="categories"
                                  @getSelect="getSelect"
-            ></categories-selector>
+            >
+                <template v-slot:title>
+                    категория
+                </template>
+            </categories-selector>
+            <categories-selector :option="period"
+                                 @getSelect="getPeriod"
+            >
+                <template v-slot:title>
+                    периуд
+                </template>
+            </categories-selector>
         </div>
         <div v-if="!data">
             <preloader></preloader>
         </div>
+
         <vue-echarts v-else :option="option" ref="chart" class="ChartExpensesWithSelect"/>
         <h4 class="title title--4">Всего: {{ all }} р.
         </h4>
@@ -33,9 +45,27 @@ const selectCategories = ref({});
 const id = localStorage.getItem('id');
 let chart = ref(null);
 const newData = ref([])
-let today = new Date();
-today.setMonth(today.getMonth() - 1);
-console.log(today)
+let monthAgo = new Date();
+let weekAgo = new Date();
+let yearAgo = new Date();
+
+const period = [{name: "неделя", id: 1},
+    {name: "месяц", id: 2},
+    {name: "год", id: 3},]
+
+
+const finishDate = ref(null);
+
+console.log(weekAgo.getDate() - 7,weekAgo.getMonth()+1)
+
+yearAgo.setFullYear(yearAgo.getFullYear() - 1);
+weekAgo.setDate(weekAgo.getDate() - 7);
+monthAgo.setMonth(monthAgo.getMonth() - 1);
+monthAgo = monthAgo.getFullYear().toString() + "-" + (monthAgo.getMonth()+1).toString() + "-" + monthAgo.getDate().toString();
+weekAgo = weekAgo.getFullYear().toString() + "-" + (weekAgo.getMonth()+1).toString() + "-" + weekAgo.getDate().toString();
+yearAgo = yearAgo.getFullYear().toString() + "-" + (yearAgo.getMonth()+1).toString() + "-" + yearAgo.getDate().toString();
+console.log(weekAgo, monthAgo, yearAgo)
+
 
 const option = ref({
     tooltip: {
@@ -72,15 +102,114 @@ const option = ref({
 });
 
 
-const getSelect = (item) => {
-    console.log(item.id)
-    selectCategories.id = item.id
-    selectCategories.name = item.name
+const getPeriod = (item) => {
+    switch (item.id) {
+        case 1:
+            finishDate.value = weekAgo;
+            break;
+        case 2:
+            finishDate.value = monthAgo;
+            break;
+        case 3:
+            finishDate.value = yearAgo;
+            break;
+    }
+    console.log(44444444,finishDate.value)
+    let category=ref(null);
+    if (selectCategories.id) {
+        category.value = null;
+    } else {
+        category.value = selectCategories.id
+    }
     newData.value = [];
     axios
         .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {
             params: {
-                category: selectCategories.id
+                category: selectCategories.id,
+                start:finishDate.value,
+            }
+        })
+        .then((response) => {
+            // console.log(response.data.data)
+            all.value = 0;
+            data.value = response.data.data;
+            const res = {};
+            data.value.forEach(item => {
+                console.log(333333333, item.checks.title)
+                if (res[item.checks.title]) {
+                    res[item.checks.title] += item.checks.total_price;
+                } else {
+                    res[item.checks.title] = item.checks.total_price;
+                }
+                all.value += item.checks.total_price;
+            });
+
+            const keys = Object.keys(res);
+            //console.log(keys)
+            console.log(data.value, newData.value)
+            keys.forEach((key, index) => {
+                console.log(`${key}: ${res[key]}`);
+                newData.value.push({value: res[key], name: key})
+
+            });
+            chart.value.setOption({
+                tooltip: {
+                    trigger: "item",
+                },
+                legend: {
+                    top: "5%",
+                    left: "center",
+                },
+                series: [
+                    {
+                        name: "Значение:",
+                        type: "pie",
+                        radius: ["40%", "70%"],
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: false,
+                            position: "center",
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: 40,
+                                fontWeight: "bold",
+                            },
+                        },
+                        labelLine: {
+                            show: false,
+                        },
+
+                        data: newData.value,
+                    },
+                ],
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+}
+
+
+const getSelect = (item) => {
+    console.log(item.id)
+    selectCategories.id = item.id
+    selectCategories.name = item.name
+    const finish=ref(null);
+    if (!finishDate.value) {
+        finish.value = null
+    }else {
+        finish.value=finishDate.value;
+    }
+
+    newData.value = [];
+    axios
+        .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {
+            params: {
+                category: selectCategories.id,
+                start:finish.value,
             }
         })
         .then((response) => {
@@ -177,11 +306,10 @@ const fetchData = async () => {
 };
 
 
-const showAll=()=>{
+const showAll = () => {
     newData.value = [];
     axios
-        .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {
-        })
+        .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {})
         .then((response) => {
             // console.log(response.data.data)
             all.value = 0;

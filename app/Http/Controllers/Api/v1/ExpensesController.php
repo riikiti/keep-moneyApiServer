@@ -46,14 +46,14 @@ class ExpensesController extends Controller
             $category = $_GET['category'];
         }
         if (empty($_GET['per_page'])) {
-            $per_page = 10;
+            $per_page = 1000;
         } else {
             $per_page = $_GET['per_page'];
         }
         return ExpensesResource::collection(Expenses::where('user_id', $id)
             ->where('categories_id', 'LIKE', $category)
             ->where('date', '>=', $start)
-            ->where('date', '<=', $finish)
+            ->where('date', '<', $finish)
             ->paginate($per_page));
     }
 

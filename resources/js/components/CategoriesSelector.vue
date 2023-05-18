@@ -4,7 +4,7 @@
              :class="{ 'modal__select-active': showCategory}"><span> {{ data }}</span>
             <img
                 src="../assets/img/svg/arrowBlack.svg" alt=""></div>
-        <div v-else class="modal__select-selected" @click="showCategories"><span>Выберите категорию</span><img
+        <div v-else class="modal__select-selected" @click="showCategories"><span><slot name="title"></slot></span><img
             src="../assets/img/svg/arrowBlack.svg" alt=""></div>
 
         <div class="modal__select-list">
