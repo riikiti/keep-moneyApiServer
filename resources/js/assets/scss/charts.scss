@@ -11,6 +11,12 @@
         left: 0;
         white-space: nowrap;
     }
+    button{
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        white-space: nowrap;
+    }
     &-select{
         display: flex;
         flex-direction: row;

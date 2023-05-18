@@ -15,8 +15,7 @@
         <vue-echarts v-else :option="option" ref="chart" class="ChartExpensesWithSelect"/>
         <h4 class="title title--4">Всего: {{ all }} р.
         </h4>
-
-
+        <button class="button" @click="showAll()">Все</button>
     </div>
 </template>
 
@@ -34,8 +33,9 @@ const selectCategories = ref({});
 const id = localStorage.getItem('id');
 let chart = ref(null);
 const newData = ref([])
-
-console.log(chart)
+let today = new Date();
+today.setMonth(today.getMonth() - 1);
+console.log(today)
 
 const option = ref({
     tooltip: {
@@ -175,6 +175,74 @@ const fetchData = async () => {
             console.log(error);
         });
 };
+
+
+const showAll=()=>{
+    newData.value = [];
+    axios
+        .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {
+        })
+        .then((response) => {
+            // console.log(response.data.data)
+            all.value = 0;
+            data.value = response.data.data;
+            const res = {};
+            data.value.forEach(item => {
+                console.log(333333333, item.checks.title)
+                if (res[item.checks.title]) {
+                    res[item.checks.title] += item.checks.total_price;
+                } else {
+                    res[item.checks.title] = item.checks.total_price;
+                }
+                all.value += item.checks.total_price;
+            });
+
+            const keys = Object.keys(res);
+            //console.log(keys)
+            console.log(data.value, newData.value)
+            keys.forEach((key, index) => {
+                console.log(`${key}: ${res[key]}`);
+                newData.value.push({value: res[key], name: key})
+
+            });
+            chart.value.setOption({
+                tooltip: {
+                    trigger: "item",
+                },
+                legend: {
+                    top: "5%",
+                    left: "center",
+                },
+                series: [
+                    {
+                        name: "Значение:",
+                        type: "pie",
+                        radius: ["40%", "70%"],
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: false,
+                            position: "center",
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: 40,
+                                fontWeight: "bold",
+                            },
+                        },
+                        labelLine: {
+                            show: false,
+                        },
+
+                        data: newData.value,
+                    },
+                ],
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
 const fetchCategories = async () => {
     axios
         .get('http://127.0.0.1:8000/api/v1/categories')
