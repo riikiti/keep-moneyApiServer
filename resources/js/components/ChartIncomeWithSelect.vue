@@ -27,7 +27,6 @@
         <vue-echarts v-else :option="option" ref="chart" class="ChartExpensesWithSelect"/>
         <h4 class="title title--4">Всего: {{ all }} р.
         </h4>
-        <button class="button" @click="showAll()">Все</button>
     </div>
 </template>
 
@@ -296,76 +295,13 @@ const fetchData = async () => {
             console.log(error);
         });
 };
-const showAll = () => {
-    newData.value = [];
-    axios
-        .get('http://127.0.0.1:8000/api/v1/income/' + id, {})
-        .then((response) => {
-            // console.log(response.data.data)
-            all.value = 0;
-            data.value = response.data.data;
-            const res = {};
-            data.value.forEach(item => {
-                if (res[item.title]) {
-                    res[item.title] += item.price;
-                } else {
-                    res[item.title] = item.price;
-                }
-                all.value += item.price;
-            });
-
-            const keys = Object.keys(res);
-            //console.log(keys)
-            console.log(data.value, newData.value)
-            keys.forEach((key, index) => {
-                console.log(`${key}: ${res[key]}`);
-                newData.value.push({value: res[key], name: key})
-
-            });
-            chart.value.setOption({
-                tooltip: {
-                    trigger: "item",
-                },
-                legend: {
-                    top: "5%",
-                    left: "center",
-                },
-                series: [
-                    {
-                        name: "Значение:",
-                        type: "pie",
-                        radius: ["40%", "70%"],
-                        avoidLabelOverlap: false,
-                        label: {
-                            show: false,
-                            position: "center",
-                        },
-                        emphasis: {
-                            label: {
-                                show: true,
-                                fontSize: 40,
-                                fontWeight: "bold",
-                            },
-                        },
-                        labelLine: {
-                            show: false,
-                        },
-
-                        data: newData.value,
-                    },
-                ],
-            })
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
 
 const fetchCategories = async () => {
     axios
         .get('http://127.0.0.1:8000/api/v1/income-categories')
         .then((response) => {
             categories.value = response.data.data;
+            categories.value.push({id:0,name:'все'});
             console.log(categories.value);
             fetchData();
         })
