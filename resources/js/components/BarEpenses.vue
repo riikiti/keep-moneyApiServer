@@ -36,15 +36,18 @@ const newData = ref([])
 let monthAgo = new Date();
 let weekAgo = new Date();
 let yearAgo = new Date();
-const periodDate=ref(['Пон', 'Вт', 'Сре', 'Чет', 'Пят', 'Суб', 'Воск']);
+const periodDate = ref(['Пон', 'Вт', 'Сре', 'Чет', 'Пят', 'Суб', 'Воск']);
+const firstEnter = ref(null)
 
 const period = [{name: "неделя", id: 1},
-    {name: "месяц", id: 2},
+    {name: "этот месяц", id: 2},
     {name: "год", id: 3},]
 
 
 const finishDate = ref(null);
 
+
+firstEnter.id = 1;
 console.log(weekAgo.getDate() - 7, weekAgo.getMonth() + 1)
 
 yearAgo.setFullYear(yearAgo.getFullYear() - 1);
@@ -66,86 +69,40 @@ const option = ref({
     },
     series: [
         {
-            data: [120, 200, 150, 80, 70, 110, 130],
+            data: [],
             type: 'bar'
         }
     ]
 });
 
-const fetchData = async () => {
-    axios
-        .get('http://127.0.0.1:8000/api/v1/expenses/' + id,{ params: {
-                start: finishDate.value,
-            }})
-        .then((response) => {
-            // console.log(response.data.data)
-            data.value = response.data.data;
-            const res = {};
-            data.value.forEach(item => {
-                console.log(333333333, item.checks.title)
-                if (res[item.date]) {
-                    res[item.date] += item.checks.total_price;
-                } else {
-                    res[item.date] = item.checks.total_price;
-                }
-                all.value += item.checks.total_price;
-            });
 
-            const keys = Object.keys(res);
-            //console.log(keys)
-            keys.forEach((key, index) => {
-                console.log(`${key}: ${res[key]}`);
-                newData.value.push({value: res[key], name: key})
-            });
-            keys.forEach((key, index) => {
-                console.log(`${key}: ${res[key]}`);
-                newData.value.push({value: res[key], name: key})
-            });
-            bar.value.setOption({
-                    xAxis: {
-                        type: 'category',
-                        data: periodDate.value
-                    },
-                    tooltip: {
-                        trigger: "item",
-                    },
-                    yAxis: {
-                        type: 'value'
-                    },
-                    series: [
-                        {
-                            data: newData.value,
-                            type: 'bar'
-                        }
-                    ]
-                }
-            )
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-};
+function getDaysInMonth(year, month) {
+    const date = new Date(year, month, 1);
+    const days = [];
+    while (date.getMonth() === month) {
+        days.push(new Date(date).getDate());
+        date.setDate(date.getDate() + 1);
+    }
+    return days;
+}
+
 
 const getPeriod = (item) => {
+    newData.value = [];
     switch (item.id) {
         case 1:
             finishDate.value = weekAgo;
-            periodDate.value=['Пон', 'Вт', 'Сре', 'Чет', 'Пят', 'Суб', 'Воск'];
+            periodDate.value = ['Пон', 'Вт', 'Сре', 'Чет', 'Пят', 'Суб', 'Воск'];
             break;
         case 2:
             finishDate.value = monthAgo;
-            let currentDate= new Date()+1;
-            let ma=currentDate.getMonth()+1
-
-            periodDate.value=['Пон', 'Вт', 'Сре', 'Чет', 'Пят', 'Суб', 'Воск'];
+            periodDate.value = getDaysInMonth(new Date().getFullYear(), new Date().getMonth());
             break;
         case 3:
             finishDate.value = yearAgo;
-            periodDate.value=['Янв', 'Фев', 'Март', 'Апр', 'Май', 'Июнь', 'Июль','Авг', 'Сен', 'Окт', 'Нояб', 'Дек'];
+            periodDate.value = ['Янв', 'Фев', 'Март', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сен', 'Окт', 'Нояб', 'Дек'];
             break;
     }
-    console.log(44444444, finishDate.value)
-    newData.value = [];
     axios
         .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {
             params: {
@@ -159,10 +116,10 @@ const getPeriod = (item) => {
             const res = {};
             data.value.forEach(item => {
                 console.log(333333333, item.checks.title)
-                if (res[item.date]) {
-                    res[item.date] += item.checks.total_price;
+                if (res[item.checks.title]) {
+                    res[item.checks.title] += item.checks.total_price;
                 } else {
-                    res[item.date] = item.checks.total_price;
+                    res[item.checks.title] = item.checks.total_price;
                 }
                 all.value += item.checks.total_price;
             });
@@ -173,8 +130,9 @@ const getPeriod = (item) => {
             keys.forEach((key, index) => {
                 console.log(`${key}: ${res[key]}`);
                 newData.value.push({value: res[key], name: key})
-            });
-            bar.value.setOption({
+            })
+            setTimeout(() => {
+                bar.value.setOption({
                     xAxis: {
                         type: 'category',
                         data: periodDate.value
@@ -191,15 +149,14 @@ const getPeriod = (item) => {
                             type: 'bar'
                         }
                     ]
-                }
-            ).catch((error) => {
-                    console.log(error);
-                });
+                })
+            }, 400);
         })
+        .catch((error) => {
+            console.log(error);
+        });
 }
-
-
-onMounted(fetchData)
+getPeriod(firstEnter)
 </script>
 
 <style>
