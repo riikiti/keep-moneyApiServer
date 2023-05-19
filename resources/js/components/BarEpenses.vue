@@ -36,6 +36,7 @@ const newData = ref([])
 let monthAgo = new Date();
 let weekAgo = new Date();
 let yearAgo = new Date();
+let today = new Date();
 const periodDate = ref(['Пон', 'Вт', 'Сре', 'Чет', 'Пят', 'Суб', 'Воск']);
 const firstEnter = ref(null)
 
@@ -56,7 +57,9 @@ monthAgo.setMonth(monthAgo.getMonth() - 1);
 monthAgo = monthAgo.getFullYear().toString() + "-" + (monthAgo.getMonth() + 1).toString() + "-" + monthAgo.getDate().toString();
 weekAgo = weekAgo.getFullYear().toString() + "-" + (weekAgo.getMonth() + 1).toString() + "-" + weekAgo.getDate().toString();
 yearAgo = yearAgo.getFullYear().toString() + "-" + (yearAgo.getMonth() + 1).toString() + "-" + yearAgo.getDate().toString();
+today = today.getFullYear().toString() + "-" + (today.getMonth() + 1).toString() + "-" + today.getDate().toString();
 console.log(weekAgo, monthAgo, yearAgo)
+const dates = ref(null);
 
 
 const option = ref({
@@ -87,12 +90,32 @@ function getDaysInMonth(year, month) {
 }
 
 
+function getDates(startDate, endDate) {
+    const dates = [];
+    let currentDate = new Date(startDate);
+
+    while (currentDate <= endDate) {
+        currentDate.setDate(currentDate.getDate() + 1);
+        dates.push(currentDate.toISOString().slice(0, 10));
+        // console.log("current date =",currentDate)
+    }
+    // console.log("dates",dates)
+    return dates;
+}
+
+
 const getPeriod = (item) => {
     newData.value = [];
     switch (item.id) {
         case 1:
             finishDate.value = weekAgo;
-            periodDate.value = ['Пон', 'Вт', 'Сре', 'Чет', 'Пят', 'Суб', 'Воск'];
+            dates.value = getDates(weekAgo, new Date());
+            const perDate=ref([]);
+            dates.value.forEach((el) => {
+              perDate.value.push(el.slice(5, 10));
+            })
+            console.log(perDate.value)
+            periodDate.value =  perDate.value
             break;
         case 2:
             finishDate.value = monthAgo;
