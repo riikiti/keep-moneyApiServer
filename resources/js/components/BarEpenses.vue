@@ -95,10 +95,16 @@ function getDaysInMonth(year, month) {
 
 
 function getAllMonthsInYear(year) {
+    const currentDate = new Date();
+    const lastYearDate = new Date(currentDate.getFullYear() - 1, currentDate.getMonth(), currentDate.getDate());
+
     const months = [];
-    for (let month = 1; month <= 12; month++) {
-        const monthString = month < 10 ? `0${month}` : `${month}`;
-        months.push(`${monthString}-${year}`);
+
+    for (let d = lastYearDate; d <= currentDate; d.setMonth(d.getMonth() + 1)) {
+        const month = d.getMonth() + 1;
+        const year = d.getFullYear();
+        const monthYear = `${year}-${month.toString().padStart(2, '0')}`;
+        months.push(monthYear);
     }
     return months;
 }
@@ -152,15 +158,28 @@ const getPeriod = (item) => {
             all.value = 0;
             data.value = response.data.data;
             const res = {};
-            data.value.forEach(item => {
-                console.log(333333333, item.checks.title)
-                if (res[item.date.slice(0, 10)]) {
-                    res[item.date.slice(0, 10)] += item.checks.total_price;
-                } else {
-                    res[item.date.slice(0, 10)] = item.checks.total_price;
-                }
-                all.value += item.checks.total_price;
-            });
+            if (item.id !== 3) {
+                data.value.forEach(item => {
+                    console.log(333333333, item.checks.title)
+                    if (res[item.date.slice(0, 10)]) {
+                        res[item.date.slice(0, 10)] += item.checks.total_price;
+                    } else {
+                        res[item.date.slice(0, 10)] = item.checks.total_price;
+                    }
+                    all.value += item.checks.total_price;
+                });
+            }else{
+                data.value.forEach(item => {
+                    console.log(333333333, item.checks.title)
+                    if (res[item.date.slice(0, 7)]) {
+                        res[item.date.slice(0, 7)] += item.checks.total_price;
+                    } else {
+                        res[item.date.slice(0, 7)] = item.checks.total_price;
+                    }
+                    all.value += item.checks.total_price;
+                });
+            }
+
 
             console.log("res=", res)
             const keys = Object.keys(res);
@@ -174,7 +193,7 @@ const getPeriod = (item) => {
             const result = [];
             let count = 0;
             newData.value.sort((a, b) => new Date(a.name) - new Date(b.name));
-            newData.value.push({value:0,name:"0"})
+            newData.value.push({value: 0, name: "0"})
             console.log(newData.value)
             console.log(periodDate.value)
 
@@ -182,7 +201,7 @@ const getPeriod = (item) => {
                 case 1:
                     periodDate.value.forEach((data) => {
                         console.log(data, newData.value[count].name.slice(5, 10))
-                        if (newData.value[count].name ===0){
+                        if (newData.value[count].name === 0) {
                             return false
                         }
                         if (data === newData.value[count].name.slice(5, 10)) {
@@ -196,7 +215,7 @@ const getPeriod = (item) => {
                 case 2:
                     periodDate.value.forEach((data) => {
                         //console.log(Number(data), newData.value[count].name.slice(8, 10))
-                        if (newData.value[count].name ==="0"){
+                        if (newData.value[count].name === "0") {
                             return false
                         }
                         if (Number(data) === Number(newData.value[count].name.slice(8, 10))) {
@@ -209,11 +228,11 @@ const getPeriod = (item) => {
                     break;
                 case 3:
                     periodDate.value.forEach((data) => {
-                        console.log(Number(data), newData.value[count].name.slice(0, 7))
-                        if (newData.value[count].name ==="0"){
+                        console.log(data, newData.value[count].name.slice(0, 7))
+                        if (newData.value[count].name === "0") {
                             return false
                         }
-                        if (Number(data) === Number(newData.value[count].name.slice(0, 7))) {
+                        if (data === newData.value[count].name.slice(0, 7)) {
                             result.push({value: newData.value[count].value, name: newData.value[count].name})
                             count++;
                         } else {
@@ -223,7 +242,7 @@ const getPeriod = (item) => {
                     break;
             }
 
-            console.log("result=",result)
+            console.log("result=", result)
             setTimeout(() => {
                 bar.value.setOption({
                     xAxis: {
@@ -325,11 +344,11 @@ const getAllPeriod = (item) => {
             const result = [];
             let count = 0;
             newData.value.sort((a, b) => new Date(a.name) - new Date(b.name));
-            newData.value.push({value:0,name:0})
+            newData.value.push({value: 0, name: 0})
             console.log(newData.value)
             periodDate.value.forEach((data) => {
                 //console.log(Number(data), newData.value[count].name.slice(8, 10))
-                if (newData.value[count].name ===0){
+                if (newData.value[count].name === 0) {
                     return false
                 }
                 if (Number(data) === Number(newData.value[count].name.slice(8, 10))) {
