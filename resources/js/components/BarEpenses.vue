@@ -154,14 +154,15 @@ const getPeriod = (item) => {
             const res = {};
             data.value.forEach(item => {
                 console.log(333333333, item.checks.title)
-                if (res[item.checks.title]) {
-                    res[item.checks.title] += item.checks.total_price;
+                if (res[item.date.slice(0, 10)]) {
+                    res[item.date.slice(0, 10)] += item.checks.total_price;
                 } else {
-                    res[item.checks.title] = item.checks.total_price;
+                    res[item.date.slice(0, 10)] = item.checks.total_price;
                 }
                 all.value += item.checks.total_price;
             });
 
+            console.log("res=", res)
             const keys = Object.keys(res);
             //console.log(keys)
             console.log(data.value, newData.value)
@@ -169,6 +170,25 @@ const getPeriod = (item) => {
                 console.log(`${key}: ${res[key]}`);
                 newData.value.push({value: res[key], name: key})
             })
+
+            const result = [];
+            let count = 0;
+            newData.value.sort((a, b) => new Date(a.name) - new Date(b.name));
+            newData.value.push({value:0,name:0})
+            console.log(newData.value)
+            periodDate.value.forEach((data) => {
+                //console.log(Number(data), newData.value[count].name.slice(8, 10))
+                if (newData.value[count].name ===0){
+                    return false
+                }
+                if (Number(data) === Number(newData.value[count].name.slice(8, 10))) {
+                    result.push({value: newData.value[count].value, name: newData.value[count].name})
+                    count++;
+                } else {
+                    result.push({value: null, name: null})
+                }
+            })
+            console.log(result)
             setTimeout(() => {
                 bar.value.setOption({
                     xAxis: {
@@ -183,7 +203,7 @@ const getPeriod = (item) => {
                     },
                     series: [
                         {
-                            data: newData.value,
+                            data: result,
                             type: 'bar'
                         }
                     ]
@@ -224,12 +244,12 @@ fetchCategories()
 
 const getAllPeriod = (item) => {
     newData.value = [];
-    let dateStart = item.name+"-01";
+    let dateStart = item.name + "-01";
     const date = new Date(dateStart);
     const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
     const lastDayStr = lastDay.toString().padStart(2, "0");
     const lastDayOfMonth = dateStart.slice(0, 8) + lastDayStr;
-    console.log(dateStart,"-",lastDayOfMonth); // "2023-05-31"
+    console.log(dateStart, "-", lastDayOfMonth); // "2023-05-31"
     const datesArray = [];
     for (let d = date; d <= new Date(lastDayOfMonth); d.setDate(d.getDate() + 1)) {
         datesArray.push(new Date(d).toISOString().slice(8, 10));
@@ -240,7 +260,7 @@ const getAllPeriod = (item) => {
         .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {
             params: {
                 start: dateStart,
-                finish:lastDayOfMonth
+                finish: lastDayOfMonth
             }
         })
         .then((response) => {
@@ -250,14 +270,15 @@ const getAllPeriod = (item) => {
             const res = {};
             data.value.forEach(item => {
                 console.log(333333333, item.checks.title)
-                if (res[item.checks.title]) {
-                    res[item.checks.title] += item.checks.total_price;
+                if (res[item.date.slice(0, 10)]) {
+                    res[item.date.slice(0, 10)] += item.checks.total_price;
                 } else {
-                    res[item.checks.title] = item.checks.total_price;
+                    res[item.date.slice(0, 10)] = item.checks.total_price;
                 }
                 all.value += item.checks.total_price;
             });
 
+            console.log("res=", res)
             const keys = Object.keys(res);
             //console.log(keys)
             console.log(data.value, newData.value)
@@ -265,6 +286,25 @@ const getAllPeriod = (item) => {
                 console.log(`${key}: ${res[key]}`);
                 newData.value.push({value: res[key], name: key})
             })
+
+            const result = [];
+            let count = 0;
+            newData.value.sort((a, b) => new Date(a.name) - new Date(b.name));
+            newData.value.push({value:0,name:0})
+            console.log(newData.value)
+            periodDate.value.forEach((data) => {
+                //console.log(Number(data), newData.value[count].name.slice(8, 10))
+                if (newData.value[count].name ===0){
+                    return false
+                }
+                if (Number(data) === Number(newData.value[count].name.slice(8, 10))) {
+                    result.push({value: newData.value[count].value, name: newData.value[count].name})
+                    count++;
+                } else {
+                    result.push({value: null, name: null})
+                }
+            })
+            console.log(result)
             setTimeout(() => {
                 bar.value.setOption({
                     xAxis: {
@@ -279,7 +319,7 @@ const getAllPeriod = (item) => {
                     },
                     series: [
                         {
-                            data: newData.value,
+                            data: result,
                             type: 'bar'
                         }
                     ]
