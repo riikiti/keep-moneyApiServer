@@ -174,21 +174,56 @@ const getPeriod = (item) => {
             const result = [];
             let count = 0;
             newData.value.sort((a, b) => new Date(a.name) - new Date(b.name));
-            newData.value.push({value:0,name:0})
+            newData.value.push({value:0,name:"0"})
             console.log(newData.value)
-            periodDate.value.forEach((data) => {
-                //console.log(Number(data), newData.value[count].name.slice(8, 10))
-                if (newData.value[count].name ===0){
-                    return false
-                }
-                if (Number(data) === Number(newData.value[count].name.slice(8, 10))) {
-                    result.push({value: newData.value[count].value, name: newData.value[count].name})
-                    count++;
-                } else {
-                    result.push({value: null, name: null})
-                }
-            })
-            console.log(result)
+            console.log(periodDate.value)
+
+            switch (item.id) {
+                case 1:
+                    periodDate.value.forEach((data) => {
+                        console.log(data, newData.value[count].name.slice(5, 10))
+                        if (newData.value[count].name ===0){
+                            return false
+                        }
+                        if (data === newData.value[count].name.slice(5, 10)) {
+                            result.push({value: newData.value[count].value, name: newData.value[count].name})
+                            count++;
+                        } else {
+                            result.push({value: null, name: null})
+                        }
+                    })
+                    break;
+                case 2:
+                    periodDate.value.forEach((data) => {
+                        //console.log(Number(data), newData.value[count].name.slice(8, 10))
+                        if (newData.value[count].name ==="0"){
+                            return false
+                        }
+                        if (Number(data) === Number(newData.value[count].name.slice(8, 10))) {
+                            result.push({value: newData.value[count].value, name: newData.value[count].name})
+                            count++;
+                        } else {
+                            result.push({value: null, name: null})
+                        }
+                    })
+                    break;
+                case 3:
+                    periodDate.value.forEach((data) => {
+                        console.log(Number(data), newData.value[count].name.slice(0, 7))
+                        if (newData.value[count].name ==="0"){
+                            return false
+                        }
+                        if (Number(data) === Number(newData.value[count].name.slice(0, 7))) {
+                            result.push({value: newData.value[count].value, name: newData.value[count].name})
+                            count++;
+                        } else {
+                            result.push({value: null, name: null})
+                        }
+                    })
+                    break;
+            }
+
+            console.log("result=",result)
             setTimeout(() => {
                 bar.value.setOption({
                     xAxis: {
