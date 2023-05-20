@@ -7,8 +7,11 @@
         <ProfileAside @openMenu="openMenu()"></ProfileAside>
         <div class="profile__content">
             <div class="profile__content-item__two-case">
-                <h2 class="title title--3">Доходы</h2>
-                <bar-income></bar-income>
+                <bar-income>
+                    <template v-slot:title>
+                        Доходы
+                    </template>
+                </bar-income>
             </div>
             <div class="profile__content-item">
                 <charts-income-with-select>
