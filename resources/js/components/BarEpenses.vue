@@ -4,14 +4,16 @@
             <h2 class="title title--3">
                 <slot name="title"></slot>
             </h2>
-            <categories-selector :option="period"
-                                 @getSelect="getPeriod"
-                                 :id="1"
-            >
-                <template v-slot:title>
-                    периуд
-                </template>
-            </categories-selector>
+            <ul class="bar-select__navbar">
+                <li v-for="period in periods" :key="period.id" @click="getPeriod(period)">{{ period.name }}</li>
+                <categories-selector :option="period"
+                                     @getSelect="getAllPeriod"
+                >
+                    <template v-slot:title>
+                        периуд
+                    </template>
+                </categories-selector>
+            </ul>
         </div>
         <div v-if="!data">
             <preloader></preloader>
@@ -28,6 +30,7 @@ import Preloader from "../components/Preloader.vue";
 import axios from "axios";
 import CategoriesSelector from "../components/CategoriesSelector.vue";
 
+
 const data = ref(null);
 const id = localStorage.getItem('id');
 const all = ref(0)
@@ -40,9 +43,10 @@ let today = new Date();
 const periodDate = ref(['Пон', 'Вт', 'Сре', 'Чет', 'Пят', 'Суб', 'Воск']);
 const firstEnter = ref(null)
 
-const period = [{name: "неделя", id: 1},
+const periods = [{name: "неделя", id: 1},
     {name: "этот месяц", id: 2},
     {name: "год", id: 3},]
+const period = ref([])
 
 
 const finishDate = ref(null);
@@ -90,6 +94,16 @@ function getDaysInMonth(year, month) {
 }
 
 
+function getAllMonthsInYear(year) {
+    const months = [];
+    for (let month = 1; month <= 12; month++) {
+        const monthString = month < 10 ? `0${month}` : `${month}`;
+        months.push(`${monthString}-${year}`);
+    }
+    return months;
+}
+
+
 function getDates(startDate, endDate) {
     const dates = [];
     let currentDate = new Date(startDate);
@@ -110,12 +124,12 @@ const getPeriod = (item) => {
         case 1:
             finishDate.value = weekAgo;
             dates.value = getDates(weekAgo, new Date());
-            const perDate=ref([]);
+            const perDate = ref([]);
             dates.value.forEach((el) => {
-              perDate.value.push(el.slice(5, 10));
+                perDate.value.push(el.slice(5, 10));
             })
             console.log(perDate.value)
-            periodDate.value =  perDate.value
+            periodDate.value = perDate.value
             break;
         case 2:
             finishDate.value = monthAgo;
@@ -123,7 +137,8 @@ const getPeriod = (item) => {
             break;
         case 3:
             finishDate.value = yearAgo;
-            periodDate.value = ['Янв', 'Фев', 'Март', 'Апр', 'Май', 'Июнь', 'Июль', 'Авг', 'Сен', 'Окт', 'Нояб', 'Дек'];
+            periodDate.value = getAllMonthsInYear(new Date().getFullYear());
+            console.log(periodDate.value)
             break;
     }
     axios
@@ -180,6 +195,102 @@ const getPeriod = (item) => {
         });
 }
 getPeriod(firstEnter)
+
+const fetchCategories = async () => {
+    axios
+        .get('http://127.0.0.1:8000/api/v1/expenses')
+        .then((response) => {
+            period.value = response.data.data;
+            let uniqueMonths = [];
+            let id = 1;
+            period.value.forEach((el) => {
+                let month = el.date.slice(0, 7);
+                if (!uniqueMonths.some((m) => m.name === month)) {
+                    uniqueMonths.push({id: id, name: month});
+                    id++;
+                }
+            });
+            period.value = uniqueMonths;
+            console.log(period.value)
+
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+};
+
+fetchCategories()
+
+
+const getAllPeriod = (item) => {
+    newData.value = [];
+    let dateStart = item.name+"-01";
+    const date = new Date(dateStart);
+    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    const lastDayStr = lastDay.toString().padStart(2, "0");
+    const lastDayOfMonth = dateStart.slice(0, 8) + lastDayStr;
+    console.log(dateStart,"-",lastDayOfMonth); // "2023-05-31"
+    const datesArray = [];
+    for (let d = date; d <= new Date(lastDayOfMonth); d.setDate(d.getDate() + 1)) {
+        datesArray.push(new Date(d).toISOString().slice(8, 10));
+    }
+    finishDate.value = monthAgo;
+    periodDate.value = datesArray;
+    axios
+        .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {
+            params: {
+                start: dateStart,
+                finish:lastDayOfMonth
+            }
+        })
+        .then((response) => {
+            // console.log(response.data.data)
+            all.value = 0;
+            data.value = response.data.data;
+            const res = {};
+            data.value.forEach(item => {
+                console.log(333333333, item.checks.title)
+                if (res[item.checks.title]) {
+                    res[item.checks.title] += item.checks.total_price;
+                } else {
+                    res[item.checks.title] = item.checks.total_price;
+                }
+                all.value += item.checks.total_price;
+            });
+
+            const keys = Object.keys(res);
+            //console.log(keys)
+            console.log(data.value, newData.value)
+            keys.forEach((key, index) => {
+                console.log(`${key}: ${res[key]}`);
+                newData.value.push({value: res[key], name: key})
+            })
+            setTimeout(() => {
+                bar.value.setOption({
+                    xAxis: {
+                        type: 'category',
+                        data: periodDate.value
+                    },
+                    tooltip: {
+                        trigger: "item",
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            data: newData.value,
+                            type: 'bar'
+                        }
+                    ]
+                })
+            }, 400);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
 </script>
 
 <style>
