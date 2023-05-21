@@ -338,7 +338,7 @@ const updateData = async (item_id, item) => {
 
         axios
             .put("http://127.0.0.1:8000/api/v1/reduse-budget/" + oldId, {
-                update_budget: oldPrice,
+                update_budget: oldPrice[0],
             })
             .then((response) => {
                 console.log(response);
