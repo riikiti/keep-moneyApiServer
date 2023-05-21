@@ -12,7 +12,8 @@ class Income extends Model
 {
     use HasFactory;
     protected $table = 'incomes';
-    protected $fillable =['title','categories_id','price','date','user_id'];
+    //protected $fillable =['title','categories_id','price','date','user_id'];
+    protected $guarded=[];
     public function categories(): BelongsTo
     {
         return $this->belongsTo(IncomeCategories::class);
@@ -21,6 +22,9 @@ class Income extends Model
     {
         return $this->belongsTo(User::class);
     }
-
+    public function budget(): BelongsTo
+    {
+        return $this->belongsTo(Budget::class);
+    }
 
 }

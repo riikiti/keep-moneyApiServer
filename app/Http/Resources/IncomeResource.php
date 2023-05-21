@@ -21,6 +21,7 @@ class IncomeResource extends JsonResource
             'price'=>$this->price,
             'date'=>$this->date,
           //  'users'=> new UsersResource($this->user),
+            'budget'=>new BudgetResource($this->budget),
             'user_id'=>$this->user_id
         ];
     }

@@ -26,6 +26,7 @@ class IncomeStoreRequest extends FormRequest
             'categories_id'=>'required',
             'price'=>'required',
             'date'=>'required|date',
+            'budget_id'=>'required',
             'user_id'=>'required',
         ];
     }

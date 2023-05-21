@@ -45,7 +45,7 @@ class BudgetController extends Controller
      */
     public function show($id)
     {
-        return  BudgetResource::collection(Budget::all()->where('user_id',$id));
+        return BudgetResource::collection(Budget::all()->where('user_id', $id));
     }
 
     /**
@@ -56,7 +56,6 @@ class BudgetController extends Controller
         $budget = Budget::findOrFail($id);
         $budget->update($request->validated());
         return new BudgetResource($budget);
-
     }
 
     /**

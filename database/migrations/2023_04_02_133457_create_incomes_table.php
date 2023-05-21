@@ -17,6 +17,7 @@ return new class extends Migration {
             $table->unsignedDouble('price');
             $table->timestamp('date');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('budget_id')->nullable();
             $table->timestamps();
 
             $table->index('categories_id', 'income_categories_idx');
@@ -27,6 +28,11 @@ return new class extends Migration {
             $table->index('user_id', 'user_income_idx');
             $table->foreign('user_id', 'user_income_fk')->on('users')->references('id') ->onUpdate('cascade')
                 ->onDelete('cascade');
+
+            $table->index('budget_id', 'budget_income_idx');
+            $table->foreign('budget_id', 'budget_income_fk')->on('budgets')->references('id') ->onUpdate('cascade')
+                ->onDelete('cascade');
+
         });
     }
 
