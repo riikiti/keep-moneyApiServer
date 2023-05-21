@@ -9,7 +9,7 @@
                             <h2 class="title title--2">Создание записи</h2>
                             <div class="form__block">
                                 <label class="title title--3">Название</label>
-                                <input type="text" v-model="createData.title" />
+                                <input type="text" v-model="createData.title"/>
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Список покупок</label>
@@ -80,6 +80,7 @@
             </div>
             <ul v-else>
                 <li v-for="(item, index) in data" :key="item.id" class="item">
+                    {{ memberOldValue(item.checks.total_price, item.budget.id) }}
                     <teleport to=".modals" v-if="modal && modalIndex === index">
                         <Modal :status="modal" :item="item" @modalClose="modalOpen()">
                             <template v-slot:modalContent>
@@ -222,6 +223,15 @@ const getItems = ref([]);
 const getItemsNew = ref([]);
 let count = 1
 
+let oldPrice = [];
+let oldId = 0;
+
+
+const memberOldValue = (price, id) => {
+    oldPrice.push(Number(price));
+    oldId = Number(id);
+}
+
 
 const addItem = () => {
     items.value.push({name: '', price: 0, count: 1, id: count});
@@ -322,7 +332,7 @@ const fetchData = async (page) => {
         page = 1;
     }
     axios
-        .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {params: {page: page,paginate:true, per_page: 5}})
+        .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {params: {page: page, paginate: true, per_page: 5}})
         .then((response) => {
             data.value = response.data.data;
             links.value = response.data.meta
@@ -474,164 +484,211 @@ const updateData = async (item_id, item) => {
     }
     console.log(item);
 
-    axios
-        .put("http://127.0.0.1:8000/api/v1/check/" + item.checks.id, {
-            title: item.checks.title,
-            total_price: totalPriceUpdate.value,
+    if (!selectCategories.id) {
+        selectCategories.id = item.category.id
+        console.log(66666666)
+    }
 
-        })
-        .then((response) => {
-            console.log(response.data);
-            //checkId.value = response.data.id;
+
+    if (!selectBudget.id) {
+        selectBudget.id = item.budget.id
+        axios
+            .put("http://127.0.0.1:8000/api/v1/check/" + item.checks.id, {
+                title: item.checks.title,
+                total_price: totalPriceUpdate.value,
+
+            })
+            .then((response) => {
+                console.log(response.data);
+                //checkId.value = response.data.id;
 //todo что делать если один из item был удален?(вызывать  deleteData() в самом списке items, поменявь в делетеДата на удаление item)
 // todo сделать totalPriceUpdate чтобы небыл равен 0
-            getItemsNew.value.forEach((el) => {
-                console.log(el);
+                getItemsNew.value.forEach((el) => {
+                    console.log(el);
 
-                if (el.newItem === true) {
-                    console.log(11111111111111, el, checkId.value)
-                    axios
-                        .post("http://127.0.0.1:8000/api/v1/item", {
-                            name: el.name,
-                            price: Number(el.price),
-                            count: Number(el.count),
-                            check_id: Number(item.checks.id)
-                        })
-                        .then((response) => {
-                            console.log(response.data);
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        });
-                } else {
+                    if (el.newItem === true) {
+                        console.log(11111111111111, el, checkId.value)
+                        axios
+                            .post("http://127.0.0.1:8000/api/v1/item", {
+                                name: el.name,
+                                price: Number(el.price),
+                                count: Number(el.count),
+                                check_id: Number(item.checks.id)
+                            })
+                            .then((response) => {
+                                console.log(response.data);
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                    } else {
 
-                    axios
-                        .put("http://127.0.0.1:8000/api/v1/item/" + el.id, {
-                            name: el.name,
-                            price: Number(el.price),
-                            count: Number(el.count),
-                            check_id: Number(el.check_id)
-                        })
-                        .then((response) => {
-                            console.log(response.data);
+                        axios
+                            .put("http://127.0.0.1:8000/api/v1/item/" + el.id, {
+                                name: el.name,
+                                price: Number(el.price),
+                                count: Number(el.count),
+                                check_id: Number(el.check_id)
+                            })
+                            .then((response) => {
+                                console.log(response.data);
 
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        });
-                }
-            })
-            console.log(5555555, selectCategories.id, selectBudget.id)
-            if (!selectCategories.id) {
-                selectCategories.id = item.category.id
-                console.log(66666666)
-            }
-            if (!selectBudget.id) {
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                    }
+                })
+                console.log(5555555, selectCategories.id, selectBudget.id)
+
+                console.log("item price", item.checks.total_price, "old price", oldPrice)
+
                 selectBudget.id = item.budget.id
-                console.log(66666666)
-            }
-            console.log(5555555, selectCategories.id, selectBudget.id)
-            axios
-                .put("http://127.0.0.1:8000/api/v1/expenses/" + item.id, {
-                    user_id: id,
-                    check_id: item.checks.id,
-                    shops_id: item.shop.id,
-                    categories_id: selectCategories.id,
-                    budget_id: selectBudget.id,
-                    date: item.date,
-                })
-                .then((response) => {
-                    console.log(response.data);
-                    fetchData()
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+                console.log(5555555, selectCategories.id, selectBudget.id)
 
+                axios
+                    .put("http://127.0.0.1:8000/api/v1/expenses/" + item.id, {
+                        user_id: id,
+                        check_id: item.checks.id,
+                        shops_id: item.shop.id,
+                        categories_id: selectCategories.id,
+                        budget_id: selectBudget.id,
+                        date: item.date,
+                    })
+                    .then((response) => {
+                        console.log(response.data);
+                        fetchData()
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
 
-    //update budget
+                axios
+                    .put("http://127.0.0.1:8000/api/v1/increase-budget/" + selectBudget.id, {
+                        update_budget: oldPrice[0],
+                    })
+                    .then((response) => {
+                        console.log(response.data);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+                axios
+                    .put("http://127.0.0.1:8000/api/v1/reduse-budget/" + selectBudget.id, {
+                        update_budget: totalPriceUpdate.value,
+                    })
+                    .then((response) => {
+                        console.log(response.data);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
 
-    console.log(tempBudgetId.value !== selectBudget.id)
-    if (tempBudgetId.value !== selectBudget.id) {
-
-        const oldBudget = ref(null)
-        categoriesBudget.value.forEach((el) => {
-            if (el.id === selectBudget.id) {
-                updateBudget.value = el;
-            }
-            if (el.id === tempBudgetId.value) {
-                oldBudget.value = el;
-            }
-        })
-        oldBudget.budget += Number(tempTotalPrice.value);
-        console.log(updateBudget.value, updateBudget.value.budget)
-        axios
-            .put("http://127.0.0.1:8000/api/v1/budget/" + tempBudgetId.value, {
-                bank_id: oldBudget.value.bank.id,
-                type: oldBudget.value.type,
-                numbers: oldBudget.value.numbers,
-                budget: parseFloat(oldBudget.value.budget),
-                last_date: oldBudget.value.last_date,
-                user_id: id
-
-            })
-            .then((response) => {
-                console.log(333333, response.data);
             })
             .catch((error) => {
                 console.log(error);
             });
 
-
-        updateBudget.value.budget -= Number(totalPrice.value);
-        console.log(updateBudget.value, updateBudget.value.budget)
-        axios
-            .put("http://127.0.0.1:8000/api/v1/budget/" + selectBudget.id, {
-                bank_id: updateBudget.value.bank.id,
-                type: updateBudget.value.type,
-                numbers: updateBudget.value.numbers,
-                budget: parseFloat(updateBudget.value.budget),
-                last_date: updateBudget.value.last_date,
-                user_id: id
-            })
-            .then((response) => {
-                console.log(333333, response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
 
     } else {
-        //update budget
-        categoriesBudget.value.forEach((el) => {
-            if (el.id === selectBudget.id) {
-                updateBudget.value = el;
-            }
-        })
-        console.log(totalPrice.value)
-        //updateBudget.value.budget -= Number(totalPrice.value);
-        console.log(updateBudget.value, updateBudget.value.budget)
+
         axios
-            .put("http://127.0.0.1:8000/api/v1/budget/" + selectBudget.id, {
-                bank_id: updateBudget.value.bank.id,
-                type: updateBudget.value.type,
-                numbers: updateBudget.value.numbers,
-                budget: parseFloat(updateBudget.value.budget),
-                last_date: updateBudget.value.last_date,
-                user_id: id
+            .put("http://127.0.0.1:8000/api/v1/check/" + item.checks.id, {
+                title: item.checks.title,
+                total_price: totalPriceUpdate.value,
 
             })
             .then((response) => {
-                console.log(333333, response.data);
+                console.log(response.data);
+                //checkId.value = response.data.id;
+//todo что делать если один из item был удален?(вызывать  deleteData() в самом списке items, поменявь в делетеДата на удаление item)
+// todo сделать totalPriceUpdate чтобы небыл равен 0
+                getItemsNew.value.forEach((el) => {
+                    console.log(el);
+
+                    if (el.newItem === true) {
+                        console.log(11111111111111, el, checkId.value)
+                        axios
+                            .post("http://127.0.0.1:8000/api/v1/item", {
+                                name: el.name,
+                                price: Number(el.price),
+                                count: Number(el.count),
+                                check_id: Number(item.checks.id)
+                            })
+                            .then((response) => {
+                                console.log(response.data);
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                    } else {
+
+                        axios
+                            .put("http://127.0.0.1:8000/api/v1/item/" + el.id, {
+                                name: el.name,
+                                price: Number(el.price),
+                                count: Number(el.count),
+                                check_id: Number(el.check_id)
+                            })
+                            .then((response) => {
+                                console.log(response.data);
+
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
+                    }
+                })
+                console.log(5555555, selectCategories.id, selectBudget.id)
+
+                console.log("item price", item.checks.total_price, "old price", oldPrice)
+
+                axios
+                    .put("http://127.0.0.1:8000/api/v1/expenses/" + item.id, {
+                        user_id: id,
+                        check_id: item.checks.id,
+                        shops_id: item.shop.id,
+                        categories_id: selectCategories.id,
+                        budget_id: selectBudget.id,
+                        date: item.date,
+                    })
+                    .then((response) => {
+                        console.log(response.data);
+                        fetchData()
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+
+                axios
+                    .put("http://127.0.0.1:8000/api/v1/increase-budget/ " + oldId, {
+                        update_budget: oldPrice[0],
+                    })
+                    .then((response) => {
+                        console.log(response.data);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+                axios
+                    .put("http://127.0.0.1:8000/api/v1/reduse-budget/" + selectBudget.id, {
+                        update_budget: totalPriceUpdate.value,
+                    })
+                    .then((response) => {
+                        console.log(response.data);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+
+
             })
             .catch((error) => {
                 console.log(error);
             });
+
     }
+
 
 };
 
