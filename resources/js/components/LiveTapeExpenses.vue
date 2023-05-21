@@ -80,11 +80,13 @@
             </div>
             <ul v-else>
                 <li v-for="(item, index) in data" :key="item.id" class="item">
-                    {{ memberOldValue(item.checks.total_price, item.budget.id) }}
+
                     <teleport to=".modals" v-if="modal && modalIndex === index">
                         <Modal :status="modal" :item="item" @modalClose="modalOpen()">
                             <template v-slot:modalContent>
-
+                                {{ getItemsUpdate(item.checks.id) }}
+                                {{ totalPriceSumUpdate() }}
+                                {{ memberOldValue(totalPriceUpdate, item.budget.id) }}
                                 <form class="form" @submit.prevent="modalOpen()">
                                     <h2 class="title title--2">Изаменение записи "{{ item.checks.title }}"</h2>
                                     <div class="form__block">
@@ -94,7 +96,7 @@
                                     <div class="form__block">
                                         <label class="title title--3">Список покупок</label>
                                         <ul class="form__block-lists">
-                                            {{ getItemsUpdate(item.checks.id) }}
+
                                             <li v-for="el in getItemsNew" :key="item.id">
                                                 <p>Название:</p> <input type="text" v-model="el.name">
                                                 <p>Цена:</p><input type="number" v-model="el.price"
@@ -224,12 +226,13 @@ const getItemsNew = ref([]);
 let count = 1
 
 let oldPrice = [];
-let oldId = 0;
+let oldId = [];
 
 
 const memberOldValue = (price, id) => {
+    console.log(price,id)
     oldPrice.push(Number(price));
-    oldId = Number(id);
+    oldId.push(Number(id));
 }
 
 
@@ -277,7 +280,7 @@ const totalPriceSum = () => {
 }
 
 
-const totalPriceSumUpdate = (item) => {
+const totalPriceSumUpdate = () => {
     totalPriceUpdate.value = 0
     getItemsNew.value.forEach((el) => {
         console.log(el.price)
@@ -539,11 +542,7 @@ const updateData = async (item_id, item) => {
                             });
                     }
                 })
-                console.log(5555555, selectCategories.id, selectBudget.id)
-
                 console.log("item price", item.checks.total_price, "old price", oldPrice)
-
-                selectBudget.id = item.budget.id
                 console.log(5555555, selectCategories.id, selectBudget.id)
 
                 axios
@@ -569,6 +568,7 @@ const updateData = async (item_id, item) => {
                     })
                     .then((response) => {
                         console.log(response.data);
+                        oldPrice=[];
                     })
                     .catch((error) => {
                         console.log(error);
@@ -579,6 +579,7 @@ const updateData = async (item_id, item) => {
                     })
                     .then((response) => {
                         console.log(response.data);
+                        oldPrice=[];
                     })
                     .catch((error) => {
                         console.log(error);
@@ -661,11 +662,13 @@ const updateData = async (item_id, item) => {
                     });
 
                 axios
-                    .put("http://127.0.0.1:8000/api/v1/increase-budget/ " + oldId, {
+                    .put("http://127.0.0.1:8000/api/v1/increase-budget/ " + oldId[0], {
                         update_budget: oldPrice[0],
                     })
                     .then((response) => {
                         console.log(response.data);
+                        oldPrice=[];
+                        oldId=[];
                     })
                     .catch((error) => {
                         console.log(error);
@@ -676,6 +679,8 @@ const updateData = async (item_id, item) => {
                     })
                     .then((response) => {
                         console.log(response.data);
+                        oldPrice=[];
+                        oldId=[];
                     })
                     .catch((error) => {
                         console.log(error);
