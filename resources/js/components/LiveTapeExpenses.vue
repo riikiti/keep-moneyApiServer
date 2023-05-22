@@ -4,7 +4,7 @@
             <button class="button" @click="modalCreate()">Создать запись</button>
             <teleport to=".modals" v-if="modalForCreate">
                 <Modal :status="modalForCreate" @modalClose="modalCreate()">
-                    <template  v-if="!formSubmitted" v-slot:modalContent>
+                    <template v-if="!formSubmitted" v-slot:modalContent>
                         <form class="form" @submit.prevent="modalOpen()">
                             <h2 class="title title--2">Создание записи</h2>
                             <div class="form__block">
@@ -36,7 +36,11 @@
                                 <label class="title title--3">Категория</label>
                                 <categories-selector :option="categories"
                                                      @getSelect="getSelect"
-                                ></categories-selector>
+                                >
+                                    <template v-slot:title>
+                                        Выберите категорию
+                                    </template>
+                                </categories-selector>
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Категория</label>
@@ -131,7 +135,11 @@
                                         <categories-selector :option="categories"
                                                              @getSelect="getSelect"
                                                              :id="item.category.id"
-                                        ></categories-selector>
+                                        >
+                                            <template v-slot:title>
+                                                Выберите категорию
+                                            </template>
+                                        </categories-selector>
                                     </div>
                                     <div class="form__block">
                                         <label class="title title--3">Категория</label>
@@ -235,7 +243,7 @@ const checkId = ref(null);
 const getItems = ref([]);
 const getItemsNew = ref([]);
 const formSubmitted = ref(false);
-const formSubmittedUpdated= ref(false);
+const formSubmittedUpdated = ref(false);
 let count = 1
 
 let oldPrice = [];
@@ -243,7 +251,7 @@ let oldId = [];
 
 
 const memberOldValue = (price, id) => {
-    console.log(price,id)
+    console.log(price, id)
     oldPrice.push(Number(price));
     oldId.push(Number(id));
 }
@@ -582,7 +590,7 @@ const updateData = async (item_id, item) => {
                     })
                     .then((response) => {
                         console.log(response.data);
-                        oldPrice=[];
+                        oldPrice = [];
                     })
                     .catch((error) => {
                         console.log(error);
@@ -593,7 +601,7 @@ const updateData = async (item_id, item) => {
                     })
                     .then((response) => {
                         console.log(response.data);
-                        oldPrice=[];
+                        oldPrice = [];
                     })
                     .catch((error) => {
                         console.log(error);
@@ -681,8 +689,8 @@ const updateData = async (item_id, item) => {
                     })
                     .then((response) => {
                         console.log(response.data);
-                        oldPrice=[];
-                        oldId=[];
+                        oldPrice = [];
+                        oldId = [];
                     })
                     .catch((error) => {
                         console.log(error);
@@ -693,8 +701,8 @@ const updateData = async (item_id, item) => {
                     })
                     .then((response) => {
                         console.log(response.data);
-                        oldPrice=[];
-                        oldId=[];
+                        oldPrice = [];
+                        oldId = [];
                     })
                     .catch((error) => {
                         console.log(error);

@@ -19,7 +19,11 @@
                                 <label class="title title--3">Выбор карты</label>
                                 <categories-selector :option="categories"
                                                      @getSelect="getSelect"
-                                ></categories-selector>
+                                >
+                                    <template v-slot:title>
+                                        Выберите карту
+                                    </template>
+                                </categories-selector>
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">На какой периуд</label>
@@ -81,7 +85,11 @@
                                             <categories-selector :option="categories"
                                                                  @getSelect="getSelect"
                                                                  :id="item.budgets.id"
-                                            ></categories-selector>
+                                            >
+                                                <template v-slot:title>
+                                                    Выберите карту
+                                                </template>
+                                            </categories-selector>
                                         </div>
                                         <div class="form__block">
                                             <p>Оставить старые даты: {{ item.period_start }} - {{
@@ -182,7 +190,7 @@ const percent = ref(null)
 const updateDate = ref(null);
 const afterDate = ref(null);
 const formSubmitted = ref(false);
-const formSubmittedUpdated= ref(false);
+const formSubmittedUpdated = ref(false);
 
 
 const getSelect = (item) => {
@@ -224,7 +232,7 @@ const fetchData = async (page) => {
         page = 1;
     }
     axios
-        .get('http://127.0.0.1:8000/api/v1/plan-budget/' + id, {params: {page: page,paginate:true, per_page: 1}})
+        .get('http://127.0.0.1:8000/api/v1/plan-budget/' + id, {params: {page: page, paginate: true, per_page: 1}})
         .then((response) => {
             data.value = response.data.data;
             data.value.reverse();

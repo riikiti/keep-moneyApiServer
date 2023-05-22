@@ -19,7 +19,11 @@
                                 <label class="title title--3">Категория</label>
                                 <categories-selector :option="categories"
                                                      @getSelect="getSelect"
-                                ></categories-selector>
+                                >
+                                    <template v-slot:title>
+                                        Выберите категорию
+                                    </template>
+                                </categories-selector>
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Категория</label>
@@ -85,7 +89,11 @@
                                         <categories-selector :option="categories"
                                                              @getSelect="getSelect"
                                                              :id="item.category.id"
-                                        ></categories-selector>
+                                        >
+                                            <template v-slot:title>
+                                                Выберите категорию
+                                            </template>
+                                        </categories-selector>
                                     </div>
                                     <div class="form__block">
                                         <label class="title title--3">Категория</label>
@@ -179,7 +187,7 @@ const id = localStorage.getItem('id');
 const selectCategories = ref({});
 const selectBudget = ref({});
 const formSubmitted = ref(false);
-const formSubmittedUpdated= ref(false);
+const formSubmittedUpdated = ref(false);
 let oldPrice = [];
 let oldId = 0;
 

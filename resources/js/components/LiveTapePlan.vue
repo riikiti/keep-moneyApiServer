@@ -19,7 +19,11 @@
                                 <label class="title title--3">Категория</label>
                                 <categories-selector :option="categories"
                                                      @getSelect="getSelect"
-                                ></categories-selector>
+                                >
+                                    <template v-slot:title>
+                                        Выберите категорию
+                                    </template>
+                                </categories-selector>
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Дата</label>
@@ -80,7 +84,11 @@
                                             <categories-selector :option="categories"
                                                                  @getSelect="getSelect"
                                                                  :id="item.category.id"
-                                            ></categories-selector>
+                                            >
+                                                <template v-slot:title>
+                                                    Выберите категорию
+                                                </template>
+                                            </categories-selector>
                                         </div>
                                         <div class="form__block">
                                             <p>Оставить старые даты: {{ item.period_start }} - {{
@@ -172,7 +180,7 @@ const selectCategories = ref({});
 const updateDate = ref(null);
 const afterDate = ref(null);
 const formSubmitted = ref(false);
-const formSubmittedUpdated= ref(false);
+const formSubmittedUpdated = ref(false);
 
 const getSelect = (item) => {
     console.log(item.id)
@@ -196,7 +204,7 @@ const fetchData = async (page) => {
         page = 1;
     }
     axios
-        .get('http://127.0.0.1:8000/api/v1/plan/' + id, {params: {page: page,paginate:true, per_page: 1}})
+        .get('http://127.0.0.1:8000/api/v1/plan/' + id, {params: {page: page, paginate: true, per_page: 1}})
         .then((response) => {
             data.value = response.data.data;
             data.value.reverse();
@@ -219,7 +227,7 @@ const posthData = async (createData) => {
     }
 
     if (!createData.title) {
-        createData.title = selectCategories.name.toString() + " " + createData.dateStart.slice(0, 11)+ " - "+ createData.dateFinish.slice(0, 11);
+        createData.title = selectCategories.name.toString() + " " + createData.dateStart.slice(0, 11) + " - " + createData.dateFinish.slice(0, 11);
     }
 
     axios
@@ -272,8 +280,8 @@ const updateData = async (item) => {
                 console.log(111111111111, selectCategories.id)
             }
 
-            if (item.title==="") {
-                item.title = selectCategories.name.toString() + " " + afterDate.dateStart.slice(0, 11)+ " - "+ afterDate.dateFinish.slice(0, 11);
+            if (item.title === "") {
+                item.title = selectCategories.name.toString() + " " + afterDate.dateStart.slice(0, 11) + " - " + afterDate.dateFinish.slice(0, 11);
             }
 
             axios
@@ -306,8 +314,8 @@ const updateData = async (item) => {
                 selectCategories.name = item.category.name
                 console.log(111111111111, selectCategories.id)
             }
-            if (item.title==="") {
-                item.title = selectCategories.name.toString() + " " + afterDate.dateStart.slice(0, 11)+ " - "+ afterDate.dateFinish.slice(0, 11);
+            if (item.title === "") {
+                item.title = selectCategories.name.toString() + " " + afterDate.dateStart.slice(0, 11) + " - " + afterDate.dateFinish.slice(0, 11);
             }
 
             axios
