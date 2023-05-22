@@ -245,3 +245,22 @@
 .dp__selection_preview, .dp__action_buttons {
     font-size: 14px;
 }
+
+
+.form__submitted{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 600px;
+    &-logo{
+        width: 150px;
+        margin: 0 auto;
+    }
+    h2{
+      margin-top: 30px;
+    }
+    button{
+        margin-top: 30px;
+        max-width: 400px;
+    }
+}

@@ -2,10 +2,11 @@
     <div class="profile__livetape">
         <div class="profile__livetape-button">
             <button class="button" @click="modalCreate()">Создать запись</button>
+            {{ formSubmitted }}
             <teleport to=".modals" v-if="modalForCreate">
                 <Modal :status="modalForCreate" @modalClose="modalCreate()">
-                    <template v-slot:modalContent v-if="result!==true">
-                        <form class="form">
+                    <template v-if="!formSubmitted" v-slot:modalContent>
+                        <form class="form" @submit.prevent="modalOpen()">
                             <h2 class="title title--2">Создание записи</h2>
                             <div class="form__block">
                                 <label class="title title--3">Название</label>
@@ -38,14 +39,20 @@
                                     required
                                 />
                             </div>
-                            <div class="form__btn" @click="posthData(createData)">
+                            <button class="form__btn" @click="posthData(createData)">
                                 Создать
-                            </div>
+                            </button>
                         </form>
                     </template>
-                    <template v-slot:modalContent v-else>
-                        <div>
-                            <img src="../assets/img/svg/complete.webp" alt="complete">
+                    <template v-else v-slot:modalContent>
+                        <div class="form__submitted">
+                            <div class="form__submitted-logo">
+                                <img src="../assets/img/svg/complete.webp" alt="confirm">
+                            </div>
+                            <h2 class="title title--2">Запись успешно создана</h2>
+                            <button class="form__btn" @click="modalCreate()">
+                                Закрыть
+                            </button>
                         </div>
                     </template>
                 </Modal>
@@ -62,7 +69,7 @@
                 <li v-for="(item, index) in data" :key="item.id" class="item">
                     {{ memberOldValue(item.price, item.budget.id) }}
                     <teleport to=".modals" v-if="modal && modalIndex === index">
-                        <Modal :status="modal" :item="item">
+                        <Modal :status="modal" :item="item" @modalClose="modalOpen()">
                             <template v-slot:modalContent>
                                 <form class="form" @submit.prevent="modalOpen()">
                                     <h2 class="title title--2">Изаменение записи "{{ item.title }}"</h2>
@@ -161,9 +168,10 @@ const categoriesBudget = ref(null);
 const id = localStorage.getItem('id');
 const selectCategories = ref({});
 const selectBudget = ref({});
+const formSubmitted = ref(false);
 let oldPrice = [];
 let oldId = 0;
-const result = ref(false);
+
 
 const getSelect = (item) => {
     console.log(item.id)
@@ -203,7 +211,6 @@ const fetchData = async (page) => {
         .get('http://127.0.0.1:8000/api/v1/income/' + id, {params: {page: page, paginate: true, per_page: 5}})
         .then((response) => {
             data.value = response.data.data;
-            data.value.reverse();
             links.value = response.data.meta
             current_page.value = response.data.meta.current_page;
             console.log(links.value)
@@ -235,7 +242,7 @@ const posthData = async (createData) => {
         })
         .then((response) => {
             console.log(response.data);
-
+            formSubmitted.value = true;
             //modalCreate();
             fetchData();
         })
@@ -297,7 +304,6 @@ const updateData = async (item_id, item) => {
             .then((response) => {
                 console.log(response.data);
                 fetchData();
-                result.value = true;
             })
             .catch((error) => {
                 console.log(error);
