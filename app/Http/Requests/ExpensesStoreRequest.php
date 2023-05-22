@@ -24,7 +24,6 @@ class ExpensesStoreRequest extends FormRequest
         return [
             'user_id'=>'required',
             'check_id'=>'required',
-            'shops_id'=>'required',
             'categories_id'=>'required',
             'budget_id'=>'required',
             'date'=>'required|date',

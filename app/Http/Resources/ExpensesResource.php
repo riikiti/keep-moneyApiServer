@@ -18,7 +18,6 @@ class ExpensesResource extends JsonResource
             'id'=>$this->id,
             'user_id'=>$this->user_id,
             'checks'=>new CheckResource($this->check),
-            'shop'=>new ShopsResource($this->shops),
             'category'=>new CategoriesResource($this->categories),
             'budget'=>new BudgetResource($this->budget),
             'date'=>$this->date,

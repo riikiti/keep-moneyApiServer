@@ -175,6 +175,7 @@ const fetchData = async (page) => {
         .get('http://127.0.0.1:8000/api/v1/plan/' + id, {params: {page: page,paginate:true, per_page: 1}})
         .then((response) => {
             data.value = response.data.data;
+            data.value.reverse();
             links.value = response.data.meta
             current_page.value = response.data.meta.current_page;
             console.log(links.value)

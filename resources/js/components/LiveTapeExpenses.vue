@@ -56,11 +56,6 @@
                                     required
                                 />
                             </div>
-
-                            <div class="form__block">
-                                <label class="title title--3">Адресс магазина</label>
-                                <input type="text" v-model="createData.address" required/>
-                            </div>
                             <button class="form__btn" @click="posthData(createData)">
                                 Создать
                             </button>
@@ -145,10 +140,6 @@
                                             required
                                         />
                                     </div>
-                                    <div class="form__block">
-                                        <label class="title title--3">Адресс магазина</label>
-                                        <input type="text" v-model="item.shop.id" required/>
-                                    </div>
                                     <button class="form__btn" @click="updateData(item.id, item)">
                                         Изменить
                                     </button>
@@ -219,8 +210,6 @@ const item = ref('');
 const totalPrice = ref(0)
 const totalPriceUpdate = ref(0)
 const checkId = ref(null);
-const tempTotalPrice = ref(null);
-const tempBudgetId = ref(null);
 const getItems = ref([]);
 const getItemsNew = ref([]);
 let count = 1
@@ -338,6 +327,7 @@ const fetchData = async (page) => {
         .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {params: {page: page, paginate: true, per_page: 5}})
         .then((response) => {
             data.value = response.data.data;
+            data.value.reverse();
             links.value = response.data.meta
             current_page.value = response.data.meta.current_page;
             console.log(links.value)
@@ -393,7 +383,6 @@ const posthData = async (createData) => {
                 .post("http://127.0.0.1:8000/api/v1/expenses", {
                     user_id: id,
                     check_id: checkId.value,
-                    shops_id: 1,
                     categories_id: selectCategories.id,
                     budget_id: selectBudget.id,
                     date: createData.date,
@@ -549,7 +538,6 @@ const updateData = async (item_id, item) => {
                     .put("http://127.0.0.1:8000/api/v1/expenses/" + item.id, {
                         user_id: id,
                         check_id: item.checks.id,
-                        shops_id: item.shop.id,
                         categories_id: selectCategories.id,
                         budget_id: selectBudget.id,
                         date: item.date,
@@ -648,7 +636,6 @@ const updateData = async (item_id, item) => {
                     .put("http://127.0.0.1:8000/api/v1/expenses/" + item.id, {
                         user_id: id,
                         check_id: item.checks.id,
-                        shops_id: item.shop.id,
                         categories_id: selectCategories.id,
                         budget_id: selectBudget.id,
                         date: item.date,

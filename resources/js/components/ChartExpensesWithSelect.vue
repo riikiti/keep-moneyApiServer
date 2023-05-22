@@ -71,10 +71,6 @@ const option = ref({
     tooltip: {
         trigger: "item",
     },
-    legend: {
-        top: "5%",
-        left: "center",
-    },
     series: [
         {
             name: "Значение:",
@@ -156,10 +152,6 @@ const getPeriod = (item) => {
                 tooltip: {
                     trigger: "item",
                 },
-                legend: {
-                    top: "5%",
-                    left: "center",
-                },
                 series: [
                     {
                         name: "Значение:",
@@ -239,10 +231,7 @@ const getSelect = (item) => {
                 tooltip: {
                     trigger: "item",
                 },
-                legend: {
-                    top: "5%",
-                    left: "center",
-                },
+
                 series: [
                     {
                         name: "Значение:",

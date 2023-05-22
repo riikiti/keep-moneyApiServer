@@ -4,8 +4,8 @@
             <button class="button" @click="modalCreate()">Создать запись</button>
             <teleport to=".modals" v-if="modalForCreate">
                 <Modal :status="modalForCreate" @modalClose="modalCreate()">
-                    <template v-slot:modalContent>
-                        <form class="form" @submit.prevent="modalOpen()">
+                    <template v-slot:modalContent v-if="result!==true">
+                        <form class="form">
                             <h2 class="title title--2">Создание записи</h2>
                             <div class="form__block">
                                 <label class="title title--3">Название</label>
@@ -38,10 +38,15 @@
                                     required
                                 />
                             </div>
-                            <button class="form__btn" @click="posthData(createData)">
+                            <div class="form__btn" @click="posthData(createData)">
                                 Создать
-                            </button>
+                            </div>
                         </form>
+                    </template>
+                    <template v-slot:modalContent v-else>
+                        <div>
+                            <img src="../assets/img/svg/complete.webp" alt="complete">
+                        </div>
                     </template>
                 </Modal>
             </teleport>
@@ -57,7 +62,7 @@
                 <li v-for="(item, index) in data" :key="item.id" class="item">
                     {{ memberOldValue(item.price, item.budget.id) }}
                     <teleport to=".modals" v-if="modal && modalIndex === index">
-                        <Modal :status="modal" :item="item" @modalClose="modalOpen()">
+                        <Modal :status="modal" :item="item">
                             <template v-slot:modalContent>
                                 <form class="form" @submit.prevent="modalOpen()">
                                     <h2 class="title title--2">Изаменение записи "{{ item.title }}"</h2>
@@ -158,6 +163,7 @@ const selectCategories = ref({});
 const selectBudget = ref({});
 let oldPrice = [];
 let oldId = 0;
+const result = ref(false);
 
 const getSelect = (item) => {
     console.log(item.id)
@@ -197,6 +203,7 @@ const fetchData = async (page) => {
         .get('http://127.0.0.1:8000/api/v1/income/' + id, {params: {page: page, paginate: true, per_page: 5}})
         .then((response) => {
             data.value = response.data.data;
+            data.value.reverse();
             links.value = response.data.meta
             current_page.value = response.data.meta.current_page;
             console.log(links.value)
@@ -229,7 +236,7 @@ const posthData = async (createData) => {
         .then((response) => {
             console.log(response.data);
 
-            modalCreate();
+            //modalCreate();
             fetchData();
         })
         .catch((error) => {
@@ -290,6 +297,7 @@ const updateData = async (item_id, item) => {
             .then((response) => {
                 console.log(response.data);
                 fetchData();
+                result.value = true;
             })
             .catch((error) => {
                 console.log(error);

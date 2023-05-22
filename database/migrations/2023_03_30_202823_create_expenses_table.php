@@ -18,7 +18,6 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('check_id')->nullable();
-            $table->unsignedBigInteger('shops_id');
             $table->unsignedBigInteger('categories_id');
             $table->unsignedBigInteger('budget_id')->nullable();
             $table->timestamp('date');
@@ -26,11 +25,6 @@ return new class extends Migration
 
             $table->index('categories_id', 'categories_check_idx');
             $table->foreign('categories_id', 'categories_check_fk')->on('categories')->references('id') ->onUpdate('cascade')
-                ->onDelete('cascade');
-
-
-            $table->index('shops_id', 'shops_idx');
-            $table->foreign('shops_id', 'shops_fk')->on('shops')->references('id') ->onUpdate('cascade')
                 ->onDelete('cascade');
 
 
