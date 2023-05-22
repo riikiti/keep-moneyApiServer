@@ -2,7 +2,6 @@
     <div class="profile__livetape">
         <div class="profile__livetape-button">
             <button class="button" @click="modalCreate()">Создать запись</button>
-            {{ formSubmitted }}
             <teleport to=".modals" v-if="modalForCreate">
                 <Modal :status="modalForCreate" @modalClose="modalCreate()">
                     <template v-if="!formSubmitted" v-slot:modalContent>
@@ -70,7 +69,7 @@
                     {{ memberOldValue(item.price, item.budget.id) }}
                     <teleport to=".modals" v-if="modal && modalIndex === index">
                         <Modal :status="modal" :item="item" @modalClose="modalOpen()">
-                            <template v-slot:modalContent>
+                            <template v-if="!formSubmittedUpdated" v-slot:modalContent>
                                 <form class="form" @submit.prevent="modalOpen()">
                                     <h2 class="title title--2">Изаменение записи "{{ item.title }}"</h2>
                                     <div class="form__block">
@@ -105,10 +104,21 @@
                                             format="dd/MM/yyyy HH:mm"
                                         />
                                     </div>
-                                    <button class="form__btn" @click="updateData(item.id, item)">
+                                    <button class="form__btn" @click.prevent="updateData(item.id, item)">
                                         Изменить
                                     </button>
                                 </form>
+                            </template>
+                            <template v-else v-slot:modalContent>
+                                <div class="form__submitted">
+                                    <div class="form__submitted-logo">
+                                        <img src="../assets/img/svg/complete.webp" alt="confirm">
+                                    </div>
+                                    <h2 class="title title--2">Запись успешно изменена</h2>
+                                    <button class="form__btn" @click="modalOpen()">
+                                        Закрыть
+                                    </button>
+                                </div>
                             </template>
                         </Modal>
                     </teleport>
@@ -169,6 +179,7 @@ const id = localStorage.getItem('id');
 const selectCategories = ref({});
 const selectBudget = ref({});
 const formSubmitted = ref(false);
+const formSubmittedUpdated= ref(false);
 let oldPrice = [];
 let oldId = 0;
 
@@ -303,6 +314,7 @@ const updateData = async (item_id, item) => {
             })
             .then((response) => {
                 console.log(response.data);
+                formSubmittedUpdated.value = true;
                 fetchData();
             })
             .catch((error) => {
@@ -344,6 +356,7 @@ const updateData = async (item_id, item) => {
             })
             .then((response) => {
                 console.log(response.data);
+                formSubmittedUpdated.value = true;
                 fetchData();
             })
             .catch((error) => {

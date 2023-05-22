@@ -4,7 +4,7 @@
             <button class="button" @click="modalCreate()">Создать запись</button>
             <teleport to=".modals" v-if="modalForCreate">
                 <Modal :status="modalForCreate" @modalClose="modalCreate()">
-                    <template v-slot:modalContent>
+                    <template  v-if="!formSubmitted" v-slot:modalContent>
                         <form class="form" @submit.prevent="modalOpen()">
                             <h2 class="title title--2">Создание записи</h2>
                             <div class="form__block">
@@ -61,6 +61,17 @@
                             </button>
                         </form>
                     </template>
+                    <template v-else v-slot:modalContent>
+                        <div class="form__submitted">
+                            <div class="form__submitted-logo">
+                                <img src="../assets/img/svg/complete.webp" alt="confirm">
+                            </div>
+                            <h2 class="title title--2">Запись успешно создана</h2>
+                            <button class="form__btn" @click="modalCreate()">
+                                Закрыть
+                            </button>
+                        </div>
+                    </template>
                 </Modal>
             </teleport>
         </div>
@@ -78,7 +89,7 @@
 
                     <teleport to=".modals" v-if="modal && modalIndex === index">
                         <Modal :status="modal" :item="item" @modalClose="modalOpen()">
-                            <template v-slot:modalContent>
+                            <template v-if="!formSubmittedUpdated" v-slot:modalContent>
                                 {{ getItemsUpdate(item.checks.id) }}
                                 {{ totalPriceSumUpdate() }}
                                 {{ memberOldValue(totalPriceUpdate, item.budget.id) }}
@@ -140,10 +151,21 @@
                                             required
                                         />
                                     </div>
-                                    <button class="form__btn" @click="updateData(item.id, item)">
+                                    <button class="form__btn" @click.prevent="updateData(item.id, item)">
                                         Изменить
                                     </button>
                                 </form>
+                            </template>
+                            <template v-else v-slot:modalContent>
+                                <div class="form__submitted">
+                                    <div class="form__submitted-logo">
+                                        <img src="../assets/img/svg/complete.webp" alt="confirm">
+                                    </div>
+                                    <h2 class="title title--2">Запись успешно изменена</h2>
+                                    <button class="form__btn" @click="modalOpen()">
+                                        Закрыть
+                                    </button>
+                                </div>
                             </template>
                         </Modal>
                     </teleport>
@@ -212,6 +234,8 @@ const totalPriceUpdate = ref(0)
 const checkId = ref(null);
 const getItems = ref([]);
 const getItemsNew = ref([]);
+const formSubmitted = ref(false);
+const formSubmittedUpdated= ref(false);
 let count = 1
 
 let oldPrice = [];
@@ -389,7 +413,8 @@ const posthData = async (createData) => {
                 })
                 .then((response) => {
                     console.log(response.data);
-                    modalCreate()
+                    formSubmitted.value = true;
+                    //modalCreate()
                     fetchData()
                 })
                 .catch((error) => {
@@ -544,6 +569,7 @@ const updateData = async (item_id, item) => {
                     })
                     .then((response) => {
                         console.log(response.data);
+                        formSubmittedUpdated.value = true;
                         fetchData()
                     })
                     .catch((error) => {
@@ -642,6 +668,7 @@ const updateData = async (item_id, item) => {
                     })
                     .then((response) => {
                         console.log(response.data);
+                        formSubmittedUpdated.value = true;
                         fetchData()
                     })
                     .catch((error) => {
