@@ -108,4 +108,8 @@
         width: 100%;
         text-align: center;
     }
+    &__empty{
+        display: flex;
+        flex-direction: column;
+    }
 }

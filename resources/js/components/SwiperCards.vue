@@ -1,8 +1,9 @@
 <template>
+
     <button class="button" @click="modalCreate()">Создать карту</button>
     <teleport to=".modals" v-if="modalForCreate">
         <Modal :status="modalForCreate" @modalClose="modalCreate()">
-            <template v-slot:modalContent>
+            <template v-if="!formSubmitted" v-slot:modalContent>
                 <form class="form" @submit.prevent="modalOpen()">
                     <h2 class="title title--2">Создание карты</h2>
                     <div class="form__block">
@@ -46,9 +47,30 @@
                     </button>
                 </form>
             </template>
+            <template v-else v-slot:modalContent>
+                <div class="form__submitted">
+                    <div class="form__submitted-logo">
+                        <img src="../assets/img/svg/complete.webp" alt="confirm">
+                    </div>
+                    <h2 class="title title--2">Карта успешно создана</h2>
+                    <button class="form__btn" @click="modalCreate()">
+                        Закрыть
+                    </button>
+                </div>
+            </template>
         </Modal>
     </teleport>
     <swiper :slides-per-view="1" :modules="modules" :pagination="true" :grab-cursor="true" class="swiper" v-if="data">
+        <swiper-slide v-if="data.length===0">
+            <div class="bank-card__wrap">
+                <div class="bank-card__empty">
+                    <h3 class="title title--3">
+                        Карт не добавлено
+                    </h3>
+                    <p>добавьте карту для взаимодействия с ней.</p>
+                </div>
+            </div>
+        </swiper-slide>
         <swiper-slide v-for="(item, index) in data" :key="item.id">
             <div class="bank-card__wrap">
                 <div class="bank-card__content" :style="{ color: item.bank.text_color , background: item.bank.color }">
@@ -77,9 +99,10 @@
                             <h2 class="title title--2">Добавить на счет</h2>
                             <div class="form__block">
                                 <label class="title title--3">Значение</label>
-                                <input type="number" v-model="dataForUpdate.plus" min="0" required/>
+                                <input type="number" v-model="plus" min="0" required/>
                             </div>
-                            <button class="form__btn" @click="updateData(modalItem)">
+                            {{modalItem}}
+                            <button class="form__btn" @click="increase(modalItem)">
                                 Добавить
                             </button>
                         </form>
@@ -93,9 +116,9 @@
                             <h2 class="title title--2">Вычесть из счета</h2>
                             <div class="form__block">
                                 <label class="title title--3">Значение</label>
-                                <input type="number" v-model="dataForUpdate.minus" min="0" required/>
+                                <input type="number" v-model="minus" min="0" required/>
                             </div>
-                            <button class="form__btn" @click="updateData(modalItem)">
+                            <button class="form__btn" @click="reduse(modalItem)">
                                 Убрать
                             </button>
                         </form>
@@ -104,8 +127,8 @@
             </teleport>
             <teleport to=".modals" v-if="modalForUpdate && modalItem === index">
                 <Modal :status="modalForUpdate" :item="modalItem" @modalClose="modalUpdate()">
-                    <template v-slot:modalContent>
-                        <form class="form" @submit.prevent="modalUpdate()">
+                    <template v-if="!formSubmittedUpdated" v-slot:modalContent>
+                        <form class="form">
                             <h2 class="title title--2">Создание карты</h2>
                             <div class="form__block">
                                 <label class="title title--3">Банк</label>
@@ -149,6 +172,17 @@
                             </button>
                         </form>
                     </template>
+                    <template v-else v-slot:modalContent>
+                        <div class="form__submitted">
+                            <div class="form__submitted-logo">
+                                <img src="../assets/img/svg/complete.webp" alt="confirm">
+                            </div>
+                            <h2 class="title title--2">Карта успешно изменена</h2>
+                            <button class="form__btn" @click="modalUpdate()">
+                                Закрыть
+                            </button>
+                        </div>
+                    </template>
                 </Modal>
             </teleport>
         </swiper-slide>
@@ -177,11 +211,15 @@ const modalForCreate = ref(false);
 const modalItem = ref(null);
 const data = ref(null);
 const type = ref(null);
-const id = localStorage.getItem('id');
+let id = localStorage.getItem('id');
 const dataForUpdate = ref({});
 const createData = ref([]);
 const selectCategories = ref({});
 const banks = ref(null)
+const minus=ref(0);
+const plus=ref(0)
+const formSubmitted = ref(false);
+const formSubmittedUpdated = ref(false);
 
 
 const getSelect = (item) => {
@@ -190,6 +228,37 @@ const getSelect = (item) => {
     selectCategories.name = item.name
 }
 
+
+const increase=(item)=>{
+    console.log(plus)
+    axios
+        .put("http://127.0.0.1:8000/api/v1/increase-budget/" + item.id, {
+            update_budget: plus.value,
+        })
+        .then((response) => {
+            console.log(response);
+            plus.value=0;
+            fetchData();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+const reduse = (item)=>{
+    axios
+        .put("http://127.0.0.1:8000/api/v1/reduse-budget/" + item.id, {
+            update_budget: minus.value,
+        })
+        .then((response) => {
+            console.log(response.data);
+            minus.value=0
+            fetchData();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
 
 const fetchData = async () => {
     axios
@@ -206,6 +275,7 @@ const fetchData = async () => {
 
 
 const posthData = async (createData) => {
+    let id = localStorage.getItem('id');
     axios
         .post("http://127.0.0.1:8000/api/v1/budget", {
             type: createData.type,
@@ -217,7 +287,8 @@ const posthData = async (createData) => {
         })
         .then((response) => {
             console.log(response.data);
-            modalCreate();
+            formSubmitted.value = true;
+            //modalCreate();
             fetchData();
         })
         .catch((error) => {
@@ -253,6 +324,7 @@ const cardType = (item) => {
 
 const modalCreate = () => {
     modalForCreate.value = !modalForCreate.value;
+    formSubmitted.value = false;
     console.log(modalForCreate.value);
 };
 
@@ -272,6 +344,7 @@ const modalOpenMinus = (index) => {
 const modalUpdate = (index) => {
     modalItem.value = index;
     modalForUpdate.value = !modalForUpdate.value;
+    formSubmittedUpdated.value = false;
     console.log(modalForUpdate.value);
 };
 
@@ -283,19 +356,8 @@ const updateData = async (item) => {
     dataForUpdate.numbers = item.numbers;
     dataForUpdate.budget = item.budget;
     dataForUpdate.last_date = item.last_date;
-
+    formSubmittedUpdated.value = true;
     console.log(2222, dataForUpdate.value.plus);
-    if (dataForUpdate.value.plus != null) {
-        console.log(dataForUpdate.budget)
-        dataForUpdate.budget += dataForUpdate.value.plus
-        console.log(3333333333, dataForUpdate.budget)
-    }
-
-    if (dataForUpdate.value.minus != null) {
-        console.log(dataForUpdate.budget)
-        dataForUpdate.budget -= dataForUpdate.value.minus
-        console.log(33333333333, dataForUpdate.budget)
-    }
     if (!selectCategories.id) {
         selectCategories.id = item.bank.id
     }
@@ -311,7 +373,9 @@ const updateData = async (item) => {
         })
         .then((response) => {
             console.log(response.data);
+            formSubmittedUpdated.value = true;
             fetchData();
+            //modalItem.value=null;
         })
         .catch((error) => {
             console.log(error);
