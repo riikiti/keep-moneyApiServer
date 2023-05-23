@@ -287,12 +287,14 @@ const posthData = async (createData) => {
         })
         .then((response) => {
             console.log(response.data);
+            fetchData();
             formSubmitted.value = true;
             //modalCreate();
-            fetchData();
+
         })
         .catch((error) => {
             console.log(error);
+            fetchData()
         });
 };
 
@@ -326,6 +328,7 @@ const modalCreate = () => {
     modalForCreate.value = !modalForCreate.value;
     formSubmitted.value = false;
     console.log(modalForCreate.value);
+    fetchData()
 };
 
 
