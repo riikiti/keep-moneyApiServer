@@ -15,6 +15,12 @@
                 </categories-selector>
             </ul>
         </div>
+        <div v-if="period.length===0" class="bar__empty">
+            <h3 class="title title--3">
+                Доходов пока нет
+            </h3>
+            <p>добавьте доходы для отображения графика доходов.</p>
+        </div>
         <div v-if="!data">
             <preloader></preloader>
         </div>

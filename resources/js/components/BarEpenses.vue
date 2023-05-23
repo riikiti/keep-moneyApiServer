@@ -15,10 +15,17 @@
                 </categories-selector>
             </ul>
         </div>
+        <div v-if="period.length===0" class="bar__empty">
+            <h3 class="title title--3">
+                Затрат пока нет
+            </h3>
+            <p>добавьте расходы для отображения графика расходов.</p>
+        </div>
         <div v-if="!data">
             <preloader></preloader>
         </div>
         <vue-echarts v-else :option="option" ref="bar"/>
+
 
     </div>
 </template>
@@ -157,6 +164,7 @@ const getPeriod = (item) => {
             // console.log(response.data.data)
             all.value = 0;
             data.value = response.data.data;
+            console.log(response.data)
             const res = {};
             if (item.id !== 3) {
                 data.value.forEach(item => {
@@ -168,7 +176,7 @@ const getPeriod = (item) => {
                     }
                     all.value += item.checks.total_price;
                 });
-            }else{
+            } else {
                 data.value.forEach(item => {
                     console.log(333333333, item.checks.title)
                     if (res[item.date.slice(0, 7)]) {

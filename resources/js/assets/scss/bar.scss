@@ -38,4 +38,14 @@
             }
         }
     }
+
+    &__empty{
+        width: 100%;
+        position: absolute;
+        top: 50%;
+        margin: 0 auto;
+        p{
+            text-align: center;
+        }
+    }
 }
