@@ -68,6 +68,7 @@
             <div v-if="data == null">
                 <Preloader></Preloader>
             </div>
+
             <ul v-else>
                 <li v-for="(item, index) in data" :key="item.id" class="item">
                     {{ memberOldValue(item.price, item.budget.id) }}
@@ -142,7 +143,13 @@
                         </div>
                     </div>
                 </li>
+                <div v-if="links.total===0" class="profile__livetape-content__nothing">
+                    <h3 class="title title--3">
+                        Пополнений пока нет
+                    </h3>
+                </div>
             </ul>
+
             <div class="profile__livetape-pagination" v-if="links && links.last_page>1">
                 <div class="profile__livetape-pagination__wrap-item" v-if="current_page!==1"
                      @click="fetchData(Number(current_page-1))"><img src="../assets/img/svg/arrowBlack.svg" alt="arrow">
@@ -232,7 +239,7 @@ const fetchData = async (page) => {
             data.value = response.data.data;
             links.value = response.data.meta
             current_page.value = response.data.meta.current_page;
-            console.log(links.value)
+            console.log(links.value.total)
             console.log(data.value)
         })
         .catch((error) => {

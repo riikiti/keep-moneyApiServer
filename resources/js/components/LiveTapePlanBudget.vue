@@ -143,6 +143,11 @@
                             </div>
                         </div>
                     </li>
+                    <div v-if="links.total===0" class="profile__livetape-content__nothing">
+                        <h3 class="title title--3">
+                            Планов пока нет
+                        </h3>
+                    </div>
                 </ul>
                 <div class="profile__livetape-pagination" v-if="links && links.last_page>1">
                     <div class="profile__livetape-pagination__wrap-item" v-if="current_page!==1"

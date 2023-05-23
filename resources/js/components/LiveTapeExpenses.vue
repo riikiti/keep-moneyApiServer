@@ -189,6 +189,11 @@
                         </div>
                     </div>
                 </li>
+                <div v-if="links.total===0" class="profile__livetape-content__nothing">
+                    <h3 class="title title--3">
+                        Затрат пока нет
+                    </h3>
+                </div>
             </ul>
 
             <div class="profile__livetape-pagination" v-if="links && links.last_page>1">

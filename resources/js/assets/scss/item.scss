@@ -48,9 +48,12 @@
         span{
             margin-left: 10px;
         }
+
     }
 
     &:nth-of-type(even) {
         background-color: $light-white;
     }
 }
+
+
