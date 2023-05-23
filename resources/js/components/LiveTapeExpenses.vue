@@ -5,6 +5,7 @@
             <teleport to=".modals" v-if="modalForCreate">
                 <Modal :status="modalForCreate" @modalClose="modalCreate()">
                     <template v-if="!formSubmitted" v-slot:modalContent>
+                        <div v-if="categoriesBudget.length>0">
                         <form class="form" @submit.prevent="modalOpen()">
                             <h2 class="title title--2">Создание записи</h2>
                             <div class="form__block">
@@ -64,6 +65,19 @@
                                 Создать
                             </button>
                         </form>
+                        </div>
+                        <div v-else>
+                            <div class="form__submitted">
+                                <div class="form__submitted-logo">
+                                    <img src="../assets/img/svg/x.png" alt="error">
+                                </div>
+                                <h2 class="title title--2">Карты отсутсвуют</h2>
+                                <p>для создания расходов, создайте карту</p>
+                                <button class="form__btn" @click="modalCreate()">
+                                    Закрыть
+                                </button>
+                            </div>
+                        </div>
                     </template>
                     <template v-else v-slot:modalContent>
                         <div class="form__submitted">

@@ -5,42 +5,56 @@
             <teleport to=".modals" v-if="modalForCreate">
                 <Modal :status="modalForCreate" @modalClose="modalCreate()">
                     <template v-if="!formSubmitted" v-slot:modalContent>
-                        <form class="form" @submit.prevent="modalOpen()">
-                            <h2 class="title title--2">Создание плана</h2>
-                            <div class="form__block">
-                                <label class="title title--3">Комментарий</label>
-                                <input type="text" v-model="createData.title" required/>
+                        <div v-if="categories.length>0">
+                            <form class="form" @submit.prevent="modalOpen()">
+                                <h2 class="title title--2">Создание плана</h2>
+                                <div class="form__block">
+                                    <label class="title title--3">Комментарий</label>
+                                    <input type="text" v-model="createData.title" required/>
+                                </div>
+                                <div class="form__block">
+                                    <label class="title title--3">Планируемое значение по карте</label>
+                                    <input type="number" v-model="createData.price" required/>
+                                </div>
+                                <div class="form__block">
+                                    <label class="title title--3">Выбор карты</label>
+                                    <categories-selector :option="categories"
+                                                         @getSelect="getSelect"
+                                    >
+                                        <template v-slot:title>
+                                            Выберите карту
+                                        </template>
+                                    </categories-selector>
+                                </div>
+                                <div class="form__block">
+                                    <label class="title title--3">На какой периуд</label>
+                                    <VueDatePicker
+                                        v-model="createData.date"
+                                        locale="ru"
+                                        vertical
+                                        range
+                                        :startDate="new Date()"
+                                        format=" dd/MM/yyyy HH:mm"
+                                        required
+                                    />
+                                </div>
+                                <button class="form__btn" @click="posthData(createData)">
+                                    Создать
+                                </button>
+                            </form>
+                        </div>
+                        <div v-else>
+                            <div class="form__submitted">
+                                <div class="form__submitted-logo">
+                                    <img src="../assets/img/svg/x.png" alt="error">
+                                </div>
+                                <h2 class="title title--2">Карты отсутсвуют</h2>
+                                <p>для создания плана, создайте карту</p>
+                                <button class="form__btn" @click="modalCreate()">
+                                    Закрыть
+                                </button>
                             </div>
-                            <div class="form__block">
-                                <label class="title title--3">Планируемое значение по карте</label>
-                                <input type="number" v-model="createData.price" required/>
-                            </div>
-                            <div class="form__block">
-                                <label class="title title--3">Выбор карты</label>
-                                <categories-selector :option="categories"
-                                                     @getSelect="getSelect"
-                                >
-                                    <template v-slot:title>
-                                        Выберите карту
-                                    </template>
-                                </categories-selector>
-                            </div>
-                            <div class="form__block">
-                                <label class="title title--3">На какой периуд</label>
-                                <VueDatePicker
-                                    v-model="createData.date"
-                                    locale="ru"
-                                    vertical
-                                    range
-                                    :startDate="new Date()"
-                                    format=" dd/MM/yyyy HH:mm"
-                                    required
-                                />
-                            </div>
-                            <button class="form__btn" @click="posthData(createData)">
-                                Создать
-                            </button>
-                        </form>
+                        </div>
                     </template>
                     <template v-else v-slot:modalContent>
                         <div class="form__submitted">

@@ -5,47 +5,61 @@
             <teleport to=".modals" v-if="modalForCreate">
                 <Modal :status="modalForCreate" @modalClose="modalCreate()">
                     <template v-if="!formSubmitted" v-slot:modalContent>
-                        <form class="form" @submit.prevent="modalOpen()">
-                            <h2 class="title title--2">Создание записи</h2>
-                            <div class="form__block">
-                                <label class="title title--3">Название</label>
-                                <input type="text" v-model="createData.title"/>
+                        <div v-if="categoriesBudget.length>0">
+                            <form class="form" @submit.prevent="modalOpen()">
+                                <h2 class="title title--2">Создание записи</h2>
+                                <div class="form__block">
+                                    <label class="title title--3">Название</label>
+                                    <input type="text" v-model="createData.title"/>
+                                </div>
+                                <div class="form__block">
+                                    <label class="title title--3">Цена</label>
+                                    <input type="number" v-model="createData.price" required/>
+                                </div>
+                                <div class="form__block">
+                                    <label class="title title--3">Категория</label>
+                                    <categories-selector :option="categories"
+                                                         @getSelect="getSelect"
+                                    >
+                                        <template v-slot:title>
+                                            Выберите категорию
+                                        </template>
+                                    </categories-selector>
+                                </div>
+                                <div class="form__block">
+                                    <label class="title title--3">Категория</label>
+                                    <budget-selector :option="categoriesBudget"
+                                                     @getSelect="getSelectBudget"
+                                    ></budget-selector>
+                                </div>
+                                <div class="form__block">
+                                    <label class="title title--3">Дата</label>
+                                    <VueDatePicker
+                                        v-model="createData.date"
+                                        locale="ru"
+                                        vertical
+                                        :startDate="new Date()"
+                                        format=" dd/MM/yyyy HH:mm"
+                                        required
+                                    />
+                                </div>
+                                <button class="form__btn" @click="posthData(createData)">
+                                    Создать
+                                </button>
+                            </form>
+                        </div>
+                        <div v-else>
+                            <div class="form__submitted">
+                                <div class="form__submitted-logo">
+                                    <img src="../assets/img/svg/x.png" alt="error">
+                                </div>
+                                <h2 class="title title--2">Карты отсутсвуют</h2>
+                                <p>для создания дохода, создайте карту</p>
+                                <button class="form__btn" @click="modalCreate()">
+                                    Закрыть
+                                </button>
                             </div>
-                            <div class="form__block">
-                                <label class="title title--3">Цена</label>
-                                <input type="number" v-model="createData.price" required/>
-                            </div>
-                            <div class="form__block">
-                                <label class="title title--3">Категория</label>
-                                <categories-selector :option="categories"
-                                                     @getSelect="getSelect"
-                                >
-                                    <template v-slot:title>
-                                        Выберите категорию
-                                    </template>
-                                </categories-selector>
-                            </div>
-                            <div class="form__block">
-                                <label class="title title--3">Категория</label>
-                                <budget-selector :option="categoriesBudget"
-                                                 @getSelect="getSelectBudget"
-                                ></budget-selector>
-                            </div>
-                            <div class="form__block">
-                                <label class="title title--3">Дата</label>
-                                <VueDatePicker
-                                    v-model="createData.date"
-                                    locale="ru"
-                                    vertical
-                                    :startDate="new Date()"
-                                    format=" dd/MM/yyyy HH:mm"
-                                    required
-                                />
-                            </div>
-                            <button class="form__btn" @click="posthData(createData)">
-                                Создать
-                            </button>
-                        </form>
+                        </div>
                     </template>
                     <template v-else v-slot:modalContent>
                         <div class="form__submitted">
