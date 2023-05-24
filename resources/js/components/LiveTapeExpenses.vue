@@ -365,10 +365,13 @@ const modalOpen = (index) => {
     modalIndex.value = index;
     modal.value = !modal.value;
     console.log(modal.value);
+    formSubmitted.value = false;
+    formSubmittedUpdated.value = false;
 };
 const modalCreate = () => {
     modalForCreate.value = !modalForCreate.value;
     console.log(modalForCreate.value);
+    formSubmitted.value = false;
 };
 const fetchData = async (page) => {
     if (!page) {
@@ -391,20 +394,20 @@ const fetchData = async (page) => {
             console.log(error);
         });
 };
-const posthData = async (createData) => {
+const posthData = async (create) => {
     try {
-        createData.date = createData.date.toISOString().substring(0, 19).replace("T", " ");
-        console.log(createData)
+        create.date = create.date.toISOString().substring(0, 19).replace("T", " ");
+        console.log(create)
     } catch {
     }
-    if (!createData.title) {
-        createData.title = selectCategories.name.toString() + " " + createData.date.slice(0, 11);
+    if (!create.title) {
+        create.title = selectCategories.name.toString() + " " + create.date.slice(0, 11);
     }
     totalPriceSum()
-    console.log(createData.title, totalPrice, createData.date)
+    console.log(create.title, totalPrice, create.date)
     axios
         .post("http://127.0.0.1:8000/api/v1/check", {
-            title: createData.title,
+            title: create.title,
             total_price: totalPrice.value,
 
         })
@@ -412,7 +415,7 @@ const posthData = async (createData) => {
             // console.log(response.data);
             checkId.value = response.data.id;
             console.log(checkId.value)
-
+            formSubmitted.value = true;
             console.log(items.value);
             items.value.forEach((el) => {
                 console.log(el.name, el.price, el.count, checkId.value);
@@ -436,7 +439,7 @@ const posthData = async (createData) => {
                     check_id: checkId.value,
                     categories_id: selectCategories.id,
                     budget_id: selectBudget.id,
-                    date: createData.date,
+                    date: create.date,
                 })
                 .then((response) => {
                     console.log(response.data);
@@ -474,6 +477,10 @@ const posthData = async (createData) => {
         })
         .then((response) => {
             console.log(333333, response.data);
+            formSubmitted.value = true;
+            createData.value=[];
+            items.value=[];
+            totalPrice.value=0;
         })
         .catch((error) => {
             console.log(error);

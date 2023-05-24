@@ -10,7 +10,7 @@
                                 <h2 class="title title--2">Создание плана</h2>
                                 <div class="form__block">
                                     <label class="title title--3">Комментарий</label>
-                                    <input type="text" v-model="createData.title" required/>
+                                    <input type="text" v-model="createData.title"/>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Планируемое значение по карте</label>
@@ -239,11 +239,15 @@ const modalOpen = (index) => {
     modalIndex.value = index;
     modal.value = !modal.value;
     console.log(modal.value);
+    formSubmitted.value = false;
+    formSubmittedUpdated.value = false;
 };
 
 const modalCreate = () => {
     modalForCreate.value = !modalForCreate.value;
     console.log(modalForCreate.value);
+    formSubmitted.value = false;
+    formSubmittedUpdated.value = false;
 };
 
 const fetchData = async (page) => {
@@ -264,30 +268,35 @@ const fetchData = async (page) => {
             console.log(error);
         });
 };
-const posthData = async (createData) => {
-    console.log(createData.date)
+const posthData = async (create) => {
+    console.log(create.date)
     try {
-        createData.dateStart = createData.date[0].toISOString().substring(0, 19).replace("T", " ");
-        createData.dateFinish = createData.date[1].toISOString().substring(0, 19).replace("T", " ");
-        console.log(createData.dateStart)
-        console.log(createData.dateFinish)
+        create.dateStart = create.date[0].toISOString().substring(0, 19).replace("T", " ");
+        create.dateFinish = create.date[1].toISOString().substring(0, 19).replace("T", " ");
+        console.log(create.dateStart)
+        console.log(create.dateFinish)
     } catch {
     }
     console.log(selectBudget)
+    if (!create.title) {
+        create.title = selectBudget.budget.toString() + " " + create.dateStart.slice(0, 11) + " - " + create.dateFinish.slice(0, 11);
+    }
+
 
     axios
         .post("http://127.0.0.1:8000/api/v1/plan-budget", {
-            title: createData.title,
-            value: createData.price,
+            title: create.title,
+            value: create.price,
             budget_id: selectBudget.id,
-            period_start: createData.dateStart,
-            period_finish: createData.dateFinish,
+            period_start: create.dateStart,
+            period_finish: create.dateFinish,
             budget_on_start: selectBudget.budget,
             user_id: id
         })
         .then((response) => {
             console.log(response.data);
             formSubmitted.value = true;
+            createData.value=[];
             //modalCreate();
             fetchData();
         })

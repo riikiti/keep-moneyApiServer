@@ -186,6 +186,21 @@ const updateDate = ref(null);
 const afterDate = ref(null);
 const formSubmitted = ref(false);
 const formSubmittedUpdated = ref(false);
+const percent = ref(null)
+
+const getPercent = (item) => {
+    percent.value = 0
+    if (Number(item.budgets.budget) < Number(item.budget_on_start)) {
+        percent.value = ((100 + ((Number(item.budgets.budget) / Number(item.budget_on_start)) * -100)) * -1).toFixed(2)
+    } else {
+        percent.value = ((Number(item.budgets.budget) / Number(item.value)) * 100).toFixed(2)
+    }
+    if (Number(item.budgets.budget) === Number(item.budget_on_start)) {
+        percent.value = 0
+    }
+}
+
+
 
 const getSelect = (item) => {
     console.log(item.id)
@@ -197,11 +212,15 @@ const modalOpen = (index) => {
     modalIndex.value = index;
     modal.value = !modal.value;
     console.log(modal.value);
+    formSubmitted.value = false;
+    formSubmittedUpdated.value = false;
 };
 
 const modalCreate = () => {
     modalForCreate.value = !modalForCreate.value;
     console.log(modalForCreate.value);
+    formSubmitted.value = false;
+    formSubmittedUpdated.value = false;
 };
 
 const fetchData = async (page) => {
@@ -209,7 +228,7 @@ const fetchData = async (page) => {
         page = 1;
     }
     axios
-        .get('http://127.0.0.1:8000/api/v1/plan/' + id, {params: {page: page, paginate: true, per_page: 1}})
+        .get('http://127.0.0.1:8000/api/v1/plan/' + id, {params: {page: page, per_page: 1}})
         .then((response) => {
             data.value = response.data.data;
             data.value.reverse();
@@ -222,31 +241,32 @@ const fetchData = async (page) => {
             console.log(error);
         });
 };
-const posthData = async (createData) => {
+const posthData = async (create) => {
     try {
-        createData.dateStart = createData.date[0].toISOString().substring(0, 19).replace("T", " ");
-        createData.dateFinish = createData.date[1].toISOString().substring(0, 19).replace("T", " ");
-        console.log(createData.dateStart)
-        console.log(createData.dateFinish)
+        create.dateStart = create.date[0].toISOString().substring(0, 19).replace("T", " ");
+        create.dateFinish = create.date[1].toISOString().substring(0, 19).replace("T", " ");
+        console.log(create.dateStart)
+        console.log(create.dateFinish)
     } catch {
     }
 
-    if (!createData.title) {
-        createData.title = selectCategories.name.toString() + " " + createData.dateStart.slice(0, 11) + " - " + createData.dateFinish.slice(0, 11);
+    if (!create.title) {
+        create.title = selectCategories.name.toString() + " " + create.dateStart.slice(0, 11) + " - " + create.dateFinish.slice(0, 11);
     }
 
     axios
         .post("http://127.0.0.1:8000/api/v1/plan", {
-            title: createData.title,
-            max_price: createData.price,
+            title: create.title,
+            max_price: create.price,
             categories_id: selectCategories.id,
-            period_start: createData.dateStart,
-            period_finish: createData.dateFinish,
+            period_start: create.dateStart,
+            period_finish: create.dateFinish,
             user_id: id
         })
         .then((response) => {
             console.log(response.data);
             formSubmitted.value = true;
+            createData.value=[]
             //modalCreate();
             fetchData();
         })

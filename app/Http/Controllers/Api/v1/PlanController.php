@@ -37,7 +37,7 @@ class PlanController extends Controller
             $start = $_GET['start'];
         }
         if (empty($_GET['finish'])) {
-            $finish = date('Y-m-d H:i:s',strtotime('+3 hours'));
+            $finish = "2070-01-01 00:00:00";
         } else {
             $finish = $_GET['finish'];
         }

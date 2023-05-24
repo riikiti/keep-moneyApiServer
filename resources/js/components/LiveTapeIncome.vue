@@ -223,11 +223,13 @@ const modalOpen = (index) => {
     modalIndex.value = index;
     modal.value = !modal.value;
     console.log(modal.value);
+    formSubmittedUpdated.value = false;
 };
 
 const modalCreate = () => {
     modalForCreate.value = !modalForCreate.value;
     console.log(modalForCreate.value);
+    formSubmitted.value = false;
 };
 
 
@@ -260,23 +262,23 @@ const fetchData = async (page) => {
             console.log(error);
         });
 };
-const posthData = async (createData) => {
+const posthData = async (create) => {
     try {
-        createData.date = createData.date.toISOString().substring(0, 19).replace("T", " ");
-        console.log(createData)
+        create.date = create.date.toISOString().substring(0, 19).replace("T", " ");
+        console.log(create)
     } catch {
     }
-    if (!createData.title) {
-        createData.title = selectCategories.name.toString() + " " + createData.date.slice(0, 11);
+    if (!create.title) {
+        create.title = selectCategories.name.toString() + " " + create.date.slice(0, 11);
     }
     console.log(selectBudget.id)
 
     axios
         .post("http://127.0.0.1:8000/api/v1/income", {
-            title: createData.title,
-            price: createData.price,
+            title: create.title,
+            price: create.price,
             categories_id: selectCategories.id,
-            date: createData.date,
+            date: create.date,
             user_id: id,
             budget_id: selectBudget.id
         })
@@ -291,10 +293,11 @@ const posthData = async (createData) => {
         });
     axios
         .put("http://127.0.0.1:8000/api/v1/increase-budget/" + selectBudget.id, {
-            update_budget: createData.price,
+            update_budget: create.price,
         })
         .then((response) => {
             console.log(response);
+            createData.value=[]
         })
         .catch((error) => {
             console.log(error);
