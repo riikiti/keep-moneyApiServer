@@ -224,12 +224,16 @@ const modalOpen = (index) => {
     modal.value = !modal.value;
     console.log(modal.value);
     formSubmittedUpdated.value = false;
+    selectCategories.id=null;
+    selectBudget.id=null;
 };
 
 const modalCreate = () => {
     modalForCreate.value = !modalForCreate.value;
     console.log(modalForCreate.value);
     formSubmitted.value = false;
+    selectCategories.id=null;
+    selectBudget.id=null;
 };
 
 

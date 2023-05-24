@@ -101,7 +101,6 @@
                                 <label class="title title--3">Значение</label>
                                 <input type="number" v-model="plus" min="0" required/>
                             </div>
-                            {{modalItem}}
                             <button class="form__btn" @click="increase(modalItem)">
                                 Добавить
                             </button>

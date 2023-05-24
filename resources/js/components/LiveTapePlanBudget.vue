@@ -241,6 +241,7 @@ const modalOpen = (index) => {
     console.log(modal.value);
     formSubmitted.value = false;
     formSubmittedUpdated.value = false;
+    selectBudget.id=null;
 };
 
 const modalCreate = () => {
@@ -248,6 +249,7 @@ const modalCreate = () => {
     console.log(modalForCreate.value);
     formSubmitted.value = false;
     formSubmittedUpdated.value = false;
+    selectBudget.id=null;
 };
 
 const fetchData = async (page) => {

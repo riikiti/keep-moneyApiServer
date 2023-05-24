@@ -367,8 +367,12 @@ const modalOpen = (index) => {
     console.log(modal.value);
     formSubmitted.value = false;
     formSubmittedUpdated.value = false;
+    selectCategories.id=null;
+    selectBudget.id=null;
 };
 const modalCreate = () => {
+    selectCategories.id=null;
+    selectBudget.id=null;
     modalForCreate.value = !modalForCreate.value;
     console.log(modalForCreate.value);
     formSubmitted.value = false;
