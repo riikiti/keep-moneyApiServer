@@ -1,5 +1,7 @@
 <template>
-    <div v-if="!data"><preloader></preloader></div>
+    <div v-if="!data">
+        <preloader></preloader>
+    </div>
     <vue-echarts v-else :option="option" ref="bar"/>
 </template>
 
@@ -10,10 +12,8 @@ import Preloader from "../components/Preloader.vue";
 import axios from "axios";
 
 const data = ref(null);
+const bar = ref()
 
-const labelRight = {
-    position: 'right'
-};
 
 const option = ref({
     tooltip: {
@@ -37,10 +37,10 @@ const option = ref({
     },
     yAxis: {
         type: 'category',
-        axisLine: { show: false },
-        axisLabel: { show: false },
-        axisTick: { show: false },
-        splitLine: { show: false },
+        axisLine: {show: false},
+        axisLabel: {show: false},
+        axisTick: {show: false},
+        splitLine: {show: false},
         data: [
             'ten',
             'nine',
@@ -64,15 +64,15 @@ const option = ref({
                 formatter: '{b}'
             },
             data: [
-                { value: -0.07, label: labelRight },
-                { value: -0.09, label: labelRight },
+                -0.07,
+                -0.09,
                 0.2,
                 0.44,
-                { value: -0.23, label: labelRight },
+                -0.23,
                 0.08,
-                { value: -0.17, label: labelRight },
+                -0.17,
                 0.47,
-                { value: -0.36, label: labelRight },
+                -0.36,
                 0.18
             ]
         }
@@ -81,18 +81,22 @@ const option = ref({
 
 const id = localStorage.getItem('id');
 
+
 const fetchData = async () => {
+    let periodsTitle = [];
+    let periodValue = [];
     axios
-        .get('http://127.0.0.1:8000/api/v1/income/' + id)
+        .get('http://127.0.0.1:8000/api/v1/plan-budget/' + id)
         .then((response) => {
             // console.log(response.data.data)
             data.value = response.data.data;
             const res = {};
             data.value.forEach(item => {
-                if (res[item.category.name]) {
-                    res[item.category.name] += item.price;
+                console.log(item)
+                if (res[item.title]) {
+                    res[item.title] += item.budget_on_start/(item.budgets.budget);
                 } else {
-                    res[item.category.name] = item.price;
+                    res[item.title] = item.budget_on_start/(item.budgets.budget);
                 }
             });
 
@@ -100,9 +104,54 @@ const fetchData = async () => {
             //console.log(keys)
             keys.forEach((key, index) => {
                 console.log(`${key}: ${res[key]}`);
-
-               // option.value.series[0].data.push({value: res[key], name: key})
+                periodsTitle.push(key)
+                periodValue.push(res[key]);
             });
+
+            setTimeout(() => {
+                bar.value.setOption({
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    grid: {
+                        top: 30,
+                        bottom: 30
+                    },
+                    xAxis: {
+                        type: 'value',
+                        position: 'top',
+                        splitLine: {
+                            lineStyle: {
+                                type: 'dashed'
+                            }
+                        }
+                    },
+                    yAxis: {
+                        type: 'category',
+                        axisLine: {show: false},
+                        axisLabel: {show: false},
+                        axisTick: {show: false},
+                        splitLine: {show: false},
+                        data: periodsTitle
+                    },
+                    series: [
+                        {
+                            name: 'Значение:',
+                            type: 'bar',
+                            stack: 'Total',
+                            label: {
+                                show: true,
+                                formatter: '{b}'
+                            },
+                            data:  periodValue
+                        }
+                    ]
+                }, 400);
+
+            })
         })
         .catch((error) => {
             console.log(error);
