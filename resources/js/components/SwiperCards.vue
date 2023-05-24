@@ -126,7 +126,7 @@
                 </Modal>
             </teleport>
             <teleport to=".modals" v-if="modalForUpdate && modalItem === index">
-                <Modal :status="modalForUpdate" :item="modalItem" @modalClose="modalUpdate()">
+                <Modal :status="modalForUpdate" @modalClose="modalUpdate()">
                     <template v-if="!formSubmittedUpdated" v-slot:modalContent>
                         <form class="form">
                             <h2 class="title title--2">Создание карты</h2>
@@ -286,14 +286,18 @@ const posthData = async (createData) => {
             user_id: id
         })
         .then((response) => {
+            formSubmitted.value = true;
+            selectCategories.id=null;
+            console.log(selectCategories.id)
             console.log(response.data);
             fetchData();
-            formSubmitted.value = true;
+
             //modalCreate();
 
         })
         .catch((error) => {
             console.log(error);
+            selectCategories.id=null;
             fetchData()
         });
 };
@@ -329,6 +333,7 @@ const modalCreate = () => {
     formSubmitted.value = false;
     console.log(modalForCreate.value);
     fetchData()
+    selectCategories.id=null;
 };
 
 
@@ -349,6 +354,7 @@ const modalUpdate = (index) => {
     modalForUpdate.value = !modalForUpdate.value;
     formSubmittedUpdated.value = false;
     console.log(modalForUpdate.value);
+    selectCategories.id=null;
 };
 
 

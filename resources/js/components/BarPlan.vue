@@ -93,10 +93,10 @@ const fetchData = async () => {
             const res = {};
             data.value.forEach(item => {
                 console.log(item)
-                if (res[item.title]) {
-                    res[item.title] += item.budget_on_start/(item.budgets.budget);
+                if (item.budget_on_start > item.budgets.budget) {
+                    res[item.budgets.bank.name +" "+ item.budgets.numbers  +" Цель:"+ item.value] = -item.budgets.budget / (item.budget_on_start);
                 } else {
-                    res[item.title] = item.budget_on_start/(item.budgets.budget);
+                    res[item.budgets.bank.name +" "+ item.budgets.numbers  +" Цель:"+ item.value] = item.budgets.budget / item.value;
                 }
             });
 
@@ -146,7 +146,7 @@ const fetchData = async () => {
                                 show: true,
                                 formatter: '{b}'
                             },
-                            data:  periodValue
+                            data: periodValue
                         }
                     ]
                 }, 400);
