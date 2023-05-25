@@ -1,5 +1,11 @@
 <template>
     <div class="charts">
+
+        <div class="charts-select">
+            <h2 class="title title--3">
+                <slot name="title"></slot>
+            </h2>
+        </div>
         <div v-if="!data">
             <preloader></preloader>
         </div>

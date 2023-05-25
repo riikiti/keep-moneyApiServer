@@ -1,8 +1,15 @@
 <template>
-    <div v-if="!data">
-        <preloader></preloader>
+    <div class="bar">
+        <div class="bar-select">
+            <h2 class="title title--3">
+                <slot name="title"></slot>
+            </h2>
+        </div>
+        <div v-if="!data">
+            <preloader></preloader>
+        </div>
+        <vue-echarts v-else :option="option" ref="bar"/>
     </div>
-    <vue-echarts v-else :option="option" ref="bar"/>
 </template>
 
 <script setup>
@@ -94,9 +101,9 @@ const fetchData = async () => {
             data.value.forEach(item => {
                 console.log(item)
                 if (item.budget_on_start > item.budgets.budget) {
-                    res[item.budgets.bank.name +" "+ item.budgets.numbers  +" Цель:"+ item.value] = -item.budgets.budget / (item.budget_on_start);
+                    res[item.budgets.bank.name + " " + item.budgets.numbers + " Цель:" + item.value] = -item.budgets.budget / (item.budget_on_start);
                 } else {
-                    res[item.budgets.bank.name +" "+ item.budgets.numbers  +" Цель:"+ item.value] = item.budgets.budget / item.value;
+                    res[item.budgets.bank.name + " " + item.budgets.numbers + " Цель:" + item.value] = item.budgets.budget / item.value;
                 }
             });
 

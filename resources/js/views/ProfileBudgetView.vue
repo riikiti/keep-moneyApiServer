@@ -10,10 +10,18 @@
                 <h2 class="title title--3">Бюджет</h2>
                 <swiper></swiper>
             </div>
-            <div class="profile__content-item"><h2 class="title title--3">Количество денег на всех картах</h2>
-                <charts-budget></charts-budget>
+            <div class="profile__content-item">
+                <charts-budget>
+                    <template v-slot:title>
+                        Количество денег на всех картах
+                    </template>
+                </charts-budget>
             </div>
-            <div class="profile__content-item"><h2 class="title title--3">Планы</h2><bar-plan></bar-plan></div>
+            <div class="profile__content-item"><bar-plan>
+                <template v-slot:title>
+                    Планы по бюджету
+                </template>
+            </bar-plan></div>
         </div>
         <live-tape></live-tape>
     </div>

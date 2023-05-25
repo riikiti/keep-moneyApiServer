@@ -15,11 +15,11 @@
                 </charts-expenses>
             </div>
             <div class="profile__content-item">
-                <charts-income>
+                <bar-plan-category>
                     <template v-slot:title>
-                        Доходы
+                        Планы по категориям
                     </template>
-                </charts-income>
+                </bar-plan-category>
             </div>
             <div class="profile__content-item__two-case">
                 <h2 class="title title--3">Ваши карты</h2>
@@ -35,7 +35,7 @@
 import ProfileAside from "../components/PortfolioAside.vue";
 import LiveTape from "../components/LiveTapePlan.vue";
 import ChartsExpenses from "../components/ChartExpenses.vue";
-import ChartsIncome from "../components/ChartIncome.vue";
+import BarPlanCategory from "../components/BarPlanCategory.vue";
 import Swiper from "../components/SwiperCards.vue";
 import {ref} from "vue";
 

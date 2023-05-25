@@ -230,7 +230,7 @@ const fetchData = async (page) => {
         page = 1;
     }
     axios
-        .get('http://127.0.0.1:8000/api/v1/plan/' + id, {params: {page: page, per_page: 1}})
+        .get('http://127.0.0.1:8000/api/v1/plan/' + id, {params: {page: page, per_page: 5}})
         .then((response) => {
             data.value = response.data.data;
             data.value.reverse();
