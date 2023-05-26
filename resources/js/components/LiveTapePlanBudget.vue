@@ -257,7 +257,7 @@ const fetchData = async (page) => {
         page = 1;
     }
     axios
-        .get('http://127.0.0.1:8000/api/v1/plan-budget/' + id, {params: {page: page, paginate: true, per_page: 1}})
+        .get('http://127.0.0.1:8000/api/v1/plan-budget/' + id, {params: {page: page, paginate: true, per_page: 5}})
         .then((response) => {
             data.value = response.data.data;
             data.value.reverse();
@@ -322,6 +322,8 @@ const deleteData = async (id) => {
 const updateData = async (item) => {
     console.log(updateDate)
 
+
+
     try {
         if (updateDate.value !== null) {
             afterDate.dateStart = updateDate.value[0].toISOString().substring(0, 19).replace("T", " ");
@@ -329,6 +331,9 @@ const updateData = async (item) => {
             console.log(111, afterDate)
             if (!selectBudget.id) {
                 selectBudget.id = item.budgets.id;
+            }
+            if (!item.title) {
+                item.title = item.budgets.bank.name + " " + afterDate.dateStart.slice(0, 11) + " - " + afterDate.dateFinish.slice(0, 11);
             }
             axios
                 .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
@@ -354,7 +359,9 @@ const updateData = async (item) => {
             afterDate.dateStart = item.period_start;
             afterDate.dateFinish = item.period_finish;
             console.log(222, afterDate)
-
+            if (!item.title) {
+                item.title = item.budgets.bank.name + " " + afterDate.dateStart.slice(0, 11) + " - " + afterDate.dateFinish.slice(0, 11);
+            }
 
             if (!selectBudget.id) {
                 selectBudget.id = item.budgets.id;
