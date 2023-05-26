@@ -80,6 +80,14 @@ const option = ref({
     yAxis: {
         type: 'value'
     },
+    toolbox: {
+        show: true,
+        feature: {
+            dataView: { show: true, readOnly: false },
+            magicType: { show: true, type: ['line', 'bar'] },
+            saveAsImage: { show: true }
+        }
+    },
     series: [
         {
             data: [],
@@ -252,6 +260,14 @@ const getPeriod = (item) => {
                         type: 'category',
                         data: periodDate.value
                     },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            dataView: { show: true, readOnly: false },
+                            magicType: { show: true, type: ['line', 'bar'] },
+                            saveAsImage: { show: true }
+                        }
+                    },
                     tooltip: {
                         trigger: "item",
                     },
@@ -370,6 +386,14 @@ const getAllPeriod = (item) => {
                     },
                     tooltip: {
                         trigger: "item",
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            dataView: { show: true, readOnly: false },
+                            magicType: { show: true, type: ['line', 'bar'] },
+                            saveAsImage: { show: true }
+                        }
                     },
                     yAxis: {
                         type: 'value'

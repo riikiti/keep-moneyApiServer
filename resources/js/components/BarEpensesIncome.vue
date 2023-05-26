@@ -6,20 +6,13 @@
             </h2>
             <ul class="bar-select__navbar">
                 <li v-for="period in periods" :key="period.id" @click="getPeriodExpenses(period)">{{ period.name }}</li>
-                <categories-selector :option="period"
-                                     @getSelect="getAllPeriod"
-                >
-                    <template v-slot:title>
-                        периуд
-                    </template>
-                </categories-selector>
             </ul>
         </div>
         <div v-if="period.length===0" class="bar__empty">
             <h3 class="title title--3">
-                Затрат пока нет
+                Записей пока нет
             </h3>
-            <p>добавьте расходы для отображения графика расходов.</p>
+            <p>добавьте расходы или доходы для отображения графика.</p>
         </div>
         <div v-if="!data">
             <preloader></preloader>
@@ -87,7 +80,6 @@ const option = ref( {
         feature: {
             dataView: { show: true, readOnly: false },
             magicType: { show: true, type: ['line', 'bar'] },
-            restore: { show: true },
             saveAsImage: { show: true }
         }
     },
@@ -108,9 +100,6 @@ const option = ref( {
         {
             name: 'Доходы',
             type: 'bar',
-            data: [
-                2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3
-            ],
             itemStyle: {
                 color: '#00a900'
             },
@@ -119,9 +108,6 @@ const option = ref( {
         {
             name: 'Расходы',
             type: 'bar',
-            data: [
-                2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3
-            ],
             itemStyle: {
                 color: '#a90000'
             },
@@ -298,7 +284,7 @@ const getPeriodExpenses = (item) => {
             console.log(error);
         });
 }
-getPeriodExpenses(firstEnter)
+
 
 
 const getPeriodIncome = (item) => {
@@ -424,8 +410,7 @@ const getPeriodIncome = (item) => {
             console.log(error);
         });
 }
-getPeriodIncome(firstEnter)
-
+getPeriodExpenses(firstEnter)
 const fetchCategories = async () => {
     axios
         .get('http://127.0.0.1:8000/api/v1/expenses')
@@ -451,96 +436,6 @@ const fetchCategories = async () => {
 fetchCategories()
 
 
-const getAllPeriod = (item) => {
-    newData.value = [];
-    let dateStart = item.name + "-01";
-    const date = new Date(dateStart);
-    const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-    const lastDayStr = lastDay.toString().padStart(2, "0");
-    const lastDayOfMonth = dateStart.slice(0, 8) + lastDayStr;
-    console.log(dateStart, "-", lastDayOfMonth); // "2023-05-31"
-    const datesArray = [];
-    for (let d = date; d <= new Date(lastDayOfMonth); d.setDate(d.getDate() + 1)) {
-        datesArray.push(new Date(d).toISOString().slice(8, 10));
-    }
-    finishDate.value = monthAgo;
-    periodDate.value = datesArray;
-    axios
-        .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {
-            params: {
-                start: dateStart,
-                finish: lastDayOfMonth
-            }
-        })
-        .then((response) => {
-            // console.log(response.data.data)
-            all.value = 0;
-            data.value = response.data.data;
-            const res = {};
-            data.value.forEach(item => {
-                console.log(333333333, item.checks.title)
-                if (res[item.date.slice(0, 10)]) {
-                    res[item.date.slice(0, 10)] += item.checks.total_price;
-                } else {
-                    res[item.date.slice(0, 10)] = item.checks.total_price;
-                }
-                all.value += item.checks.total_price;
-            });
-
-            console.log("res=", res)
-            const keys = Object.keys(res);
-            //console.log(keys)
-            console.log(data.value, newData.value)
-            keys.forEach((key, index) => {
-                console.log(`${key}: ${res[key]}`);
-                newData.value.push({value: res[key], name: key})
-            })
-
-            const result = [];
-            let count = 0;
-            newData.value.sort((a, b) => new Date(a.name) - new Date(b.name));
-            newData.value.push({value: 0, name: 0})
-            console.log(newData.value)
-            periodDate.value.forEach((data) => {
-                //console.log(Number(data), newData.value[count].name.slice(8, 10))
-                if (newData.value[count].name === 0) {
-                    return false
-                }
-                if (Number(data) === Number(newData.value[count].name.slice(8, 10))) {
-                    result.push({value: newData.value[count].value, name: newData.value[count].name})
-                    count++;
-                } else {
-                    result.push({value: null, name: null})
-                }
-            })
-            console.log(result)
-            setTimeout(() => {
-                bar.value.setOption({
-                    xAxis: {
-                        type: 'category',
-                        data: periodDate.value
-                    },
-                    tooltip: {
-                        trigger: "item",
-                    },
-                    yAxis: {
-                        type: 'value'
-                    },
-                    series: [
-                        {
-                            data: result,
-                            type: 'bar'
-                        }
-                    ]
-                })
-            }, 400);
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
-
-
 const pushToBar=()=>{
     setTimeout(() => {
     bar.value.setOption({
@@ -555,7 +450,6 @@ const pushToBar=()=>{
             feature: {
                 dataView: { show: true, readOnly: false },
                 magicType: { show: true, type: ['line', 'bar'] },
-                restore: { show: true },
                 saveAsImage: { show: true }
             }
         },
