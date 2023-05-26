@@ -22,8 +22,12 @@
                 </bar-plan-category>
             </div>
             <div class="profile__content-item__two-case">
-                <h2 class="title title--3">Ваши карты</h2>
-                <swiper></swiper>
+
+                <bar-expenses-income>
+                    <template v-slot:title>
+                        График
+                    </template>
+                </bar-expenses-income>
             </div>
         </div>
         <live-tape></live-tape>
@@ -36,7 +40,7 @@ import ProfileAside from "../components/PortfolioAside.vue";
 import LiveTape from "../components/LiveTapePlan.vue";
 import ChartsExpenses from "../components/ChartExpenses.vue";
 import BarPlanCategory from "../components/BarPlanCategory.vue";
-import Swiper from "../components/SwiperCards.vue";
+import BarExpensesIncome from "../components/BarEpensesIncome.vue";
 import {ref} from "vue";
 
 const menu = ref(ref(localStorage.getItem("is_expanded") === "true"));
