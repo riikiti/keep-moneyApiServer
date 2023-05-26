@@ -5,7 +5,7 @@
                 <slot name="title"></slot>
             </h2>
             <categories-selector :option="period"
-                                 @getSelect="getPeriod"
+                                 @getSelect="getPeriodExpenses"
                                  :id="3"
             >
                 <template v-slot:title>
@@ -124,6 +124,7 @@ const getPeriodExpenses = (item) => {
             });
             newDataExpenses.name = 'Расходы';
             newDataExpenses.value = res['expenses'];
+            getPeriodIncome(item)
         })
         .catch((error) => {
             console.log(error);
@@ -166,6 +167,11 @@ const getPeriodIncome = (item) => {
 
             newDataIncome.name = 'Доходы';
             newDataIncome.value = res['income'];
+            allData = [{name: newDataIncome.name, value: newDataIncome.value}, {
+                name: newDataExpenses.name,
+                value: newDataExpenses.value
+            }];
+            pushData(allData)
         })
         .catch((error) => {
             console.log(error);
