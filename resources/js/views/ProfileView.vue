@@ -8,11 +8,11 @@
         <ProfileAside @openMenu="openMenu()"></ProfileAside>
         <div class="profile__content">
             <div class="profile__content-item">
-                <charts-expenses>
+                <charts-expenses-income>
                     <template v-slot:title>
-                        Расходы
+                        Общий график
                     </template>
-                </charts-expenses>
+                </charts-expenses-income>
             </div>
             <div class="profile__content-item">
                 <bar-plan-category>
@@ -38,7 +38,7 @@
 <script setup>
 import ProfileAside from "../components/PortfolioAside.vue";
 import LiveTape from "../components/LiveTapePlan.vue";
-import ChartsExpenses from "../components/ChartExpenses.vue";
+import ChartsExpensesIncome from "../components/ChartExpensesIncome.vue";
 import BarPlanCategory from "../components/BarPlanCategory.vue";
 import BarExpensesIncome from "../components/BarEpensesIncome.vue";
 import {ref} from "vue";
