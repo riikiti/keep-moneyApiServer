@@ -6,65 +6,67 @@
                 <Modal :status="modalForCreate" @modalClose="modalCreate()">
                     <template v-if="!formSubmitted" v-slot:modalContent>
                         <div v-if="categoriesBudget.length>0">
-                        <form class="form" @submit.prevent="modalOpen()">
-                            <h2 class="title title--2">Создание записи</h2>
-                            <div class="form__block">
-                                <label class="title title--3">Название</label>
-                                <input type="text" v-model="createData.title"/>
-                            </div>
-                            <div class="form__block">
-                                <label class="title title--3">Список покупок</label>
-                                <ul class="form__block-lists">
-                                    <li v-for="item in items" :key="item.id">
-                                        <p>Название:</p> <input type="text" v-model="item.name">
-                                        <p>Цена:</p><input type="number" v-model="item.price" @blur='totalPriceSum()'>
-                                        <p>р.</p>
-                                        <p>Кол-во:</p> <input type="number" v-model="item.count"
-                                                              @blur='totalPriceSum()'>
-                                        <p>шт.</p>
-                                        <div class="form__block-lists__delete" @click="removeItem(item.id)">
-                                            <img src="../assets/img/svg/exit.svg" alt="exit">
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="form__block-lists__add" @click="addItem()"> + добавить новую запись</div>
-                                <div class="form__block-price">
-                                    <label class="title title--3">Итоговая цена: </label>
-                                    <p>{{ totalPrice }} р.</p>
+                            <form class="form" @submit.prevent="modalOpen()">
+                                <h2 class="title title--2">Создание записи</h2>
+                                <div class="form__block">
+                                    <label class="title title--3">Название</label>
+                                    <input type="text" v-model="createData.title"/>
                                 </div>
-                            </div>
-                            <div class="form__block">
-                                <label class="title title--3">Категория</label>
-                                <categories-selector :option="categories"
-                                                     @getSelect="getSelect"
-                                >
-                                    <template v-slot:title>
-                                        Выберите категорию
-                                    </template>
-                                </categories-selector>
-                            </div>
-                            <div class="form__block">
-                                <label class="title title--3">Категория</label>
-                                <budget-selector :option="categoriesBudget"
-                                                 @getSelect="getSelectBudget"
-                                ></budget-selector>
-                            </div>
-                            <div class="form__block">
-                                <label class="title title--3">Дата</label>
-                                <VueDatePicker
-                                    v-model="createData.date"
-                                    timezone="UTC"
-                                    locale="ru"
-                                    vertical
-                                    :startDate="new Date()"
-                                    format=" dd/MM/yyyy HH:mm"
-                                    required
-                                />
-                            </div>
-                            <button class="form__btn" @click="posthData(createData)">
-                                Создать
-                            </button>
-                        </form>
+                                <div class="form__block">
+                                    <label class="title title--3">Список покупок</label>
+                                    <ul class="form__block-lists">
+                                        <li v-for="item in items" :key="item.id">
+                                            <p>Название:</p> <input type="text" v-model="item.name">
+                                            <p>Цена:</p><input type="number" v-model="item.price"
+                                                               @blur='totalPriceSum()'>
+                                            <p>р.</p>
+                                            <p>Кол-во:</p> <input type="number" v-model="item.count"
+                                                                  @blur='totalPriceSum()'>
+                                            <p>шт.</p>
+                                            <div class="form__block-lists__delete" @click="removeItem(item.id)">
+                                                <img src="../assets/img/svg/exit.svg" alt="exit">
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="form__block-lists__add" @click="addItem()"> + добавить новую запись
+                                    </div>
+                                    <div class="form__block-price">
+                                        <label class="title title--3">Итоговая цена: </label>
+                                        <p>{{ totalPrice }} р.</p>
+                                    </div>
+                                </div>
+                                <div class="form__block">
+                                    <label class="title title--3">Категория</label>
+                                    <categories-selector :option="categories"
+                                                         @getSelect="getSelect"
+                                    >
+                                        <template v-slot:title>
+                                            Выберите категорию
+                                        </template>
+                                    </categories-selector>
+                                </div>
+                                <div class="form__block">
+                                    <label class="title title--3">Категория</label>
+                                    <budget-selector :option="categoriesBudget"
+                                                     @getSelect="getSelectBudget"
+                                    ></budget-selector>
+                                </div>
+                                <div class="form__block">
+                                    <label class="title title--3">Дата</label>
+                                    <VueDatePicker
+                                        v-model="createData.date"
+                                        timezone="UTC"
+                                        locale="ru"
+                                        vertical
+                                        :startDate="new Date()"
+                                        format=" dd/MM/yyyy HH:mm"
+                                        required
+                                    />
+                                </div>
+                                <button class="form__btn" @click="posthData(createData)">
+                                    Создать
+                                </button>
+                            </form>
                         </div>
                         <div v-else>
                             <div class="form__submitted">
@@ -263,6 +265,7 @@ const getItems = ref([]);
 const getItemsNew = ref([]);
 const formSubmitted = ref(false);
 const formSubmittedUpdated = ref(false);
+const closeCircle = ref(true);
 let count = 1
 
 let oldPrice = [];
@@ -270,9 +273,12 @@ let oldId = [];
 
 
 const memberOldValue = (price, id) => {
-    console.log(price, id)
-    oldPrice.push(Number(price));
-    oldId.push(Number(id));
+    if (closeCircle.value) {
+        console.log(price, id)
+        oldPrice.push(Number(price));
+        oldId.push(Number(id));
+    }
+    closeCircle.value=false
 }
 
 
@@ -301,14 +307,16 @@ const deleteItem = (id) => {
 
 
 const getItemsUpdate = (id) => {
-    getItems.value.forEach((el) => {
-        console.log(el)
-        if (el.id === id) {
-            console.log(el.items)
-            getItemsNew.value = el.items;
-        }
-    })
-
+    if (closeCircle.value) {
+        getItems.value.forEach((el) => {
+            console.log(el)
+            if (el.id === id) {
+                console.log(el.items)
+                getItemsNew.value = el.items;
+            }
+        })
+        closeCircle.value=false
+    }
 }
 
 const totalPriceSum = () => {
@@ -321,11 +329,14 @@ const totalPriceSum = () => {
 
 
 const totalPriceSumUpdate = () => {
-    totalPriceUpdate.value = 0
-    getItemsNew.value.forEach((el) => {
-        console.log(el.price)
-        totalPriceUpdate.value += Number(el.price) * Number(el.count);
-    })
+    if (closeCircle.value) {
+        totalPriceUpdate.value = 0
+        getItemsNew.value.forEach((el) => {
+            console.log(el.price)
+            totalPriceUpdate.value += Number(el.price) * Number(el.count);
+        })
+        closeCircle.value=false
+    }
 }
 
 
@@ -367,15 +378,17 @@ const modalOpen = (index) => {
     console.log(modal.value);
     formSubmitted.value = false;
     formSubmittedUpdated.value = false;
-    selectCategories.id=null;
-    selectBudget.id=null;
+    selectCategories.id = null;
+    selectBudget.id = null;
+    closeCircle.value=true
 };
 const modalCreate = () => {
-    selectCategories.id=null;
-    selectBudget.id=null;
+    selectCategories.id = null;
+    selectBudget.id = null;
     modalForCreate.value = !modalForCreate.value;
     console.log(modalForCreate.value);
     formSubmitted.value = false;
+    closeCircle.value=true
 };
 const fetchData = async (page) => {
     if (!page) {
@@ -482,9 +495,9 @@ const posthData = async (create) => {
         .then((response) => {
             console.log(333333, response.data);
             formSubmitted.value = true;
-            createData.value=[];
-            items.value=[];
-            totalPrice.value=0;
+            createData.value = [];
+            items.value = [];
+            totalPrice.value = 0;
         })
         .catch((error) => {
             console.log(error);
