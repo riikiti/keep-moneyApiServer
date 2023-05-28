@@ -126,10 +126,10 @@
                                             <li v-for="el in getItemsNew" :key="item.id">
                                                 <p>Название:</p> <input type="text" v-model="el.name">
                                                 <p>Цена:</p><input type="number" v-model="el.price"
-                                                                   @blur='totalPriceSumUpdate()'>
+                                                                   @blur='totalPriceSumUpdateItem()'>
                                                 <p>р.</p>
                                                 <p>Кол-во:</p> <input type="number" v-model="el.count"
-                                                                      @blur='totalPriceSumUpdate()'>
+                                                                      @blur='totalPriceSumUpdateItem()'>
                                                 <p>шт.</p>
                                                 <div class="form__block-lists__delete"
                                                      @click="removeItemUpdate(el.id);deleteItem(el.id)">
@@ -339,6 +339,16 @@ const totalPriceSumUpdate = () => {
     }
 }
 
+const totalPriceSumUpdateItem = () => {
+
+        totalPriceUpdate.value = 0
+        getItemsNew.value.forEach((el) => {
+            console.log(el.price)
+            totalPriceUpdate.value += Number(el.price) * Number(el.count);
+        })
+        closeCircle.value=false
+}
+
 
 const removeItem = (index) => {
     items.value.forEach((el, i) => {
@@ -546,7 +556,7 @@ const deleteData = async (id, item) => {
 };
 const updateData = async (item_id, item) => {
     try {
-        item.checks.date = item.checks.date.toISOString().substring(0, 19).replace("T", " ");
+        item.date = item.date.toISOString().substring(0, 19).replace("T", " ");
         console.log(item.date)
     } catch {
     }
@@ -556,7 +566,8 @@ const updateData = async (item_id, item) => {
         selectCategories.id = item.category.id
         console.log(66666666)
     }
-
+    closeCircle.value=true
+    totalPriceSumUpdate()
 
     if (!selectBudget.id) {
         selectBudget.id = item.budget.id
