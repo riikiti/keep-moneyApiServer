@@ -2,6 +2,13 @@
     position: relative;
     width: 100%;
     height: max-content;
+
+    .vue-echarts {
+        div{
+            width: initial!important;
+        }
+    }
+
     &-select{
         width: 100%;
         display: flex;

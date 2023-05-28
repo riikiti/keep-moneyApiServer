@@ -3,7 +3,9 @@
     width: 100%;
     height: max-content;
     .vue-echarts {
-
+        div{
+            width: initial!important;
+        }
     }
     h4{
         position: absolute;
