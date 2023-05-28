@@ -569,6 +569,17 @@ const updateData = async (item_id, item) => {
     closeCircle.value=true
     totalPriceSumUpdate()
 
+    categories.value.forEach((el)=>{
+        if (el.id===selectCategories.id){
+            selectCategories.name=el.name;
+        }
+    })
+
+    if (!item.checks.title) {
+        item.checks.title = selectCategories.name + " " + item.date.slice(0, 11);
+    }
+
+
     if (!selectBudget.id) {
         selectBudget.id = item.budget.id
         axios
