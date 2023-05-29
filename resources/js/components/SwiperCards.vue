@@ -42,7 +42,7 @@
                         <label class="title title--3">Количсетво денег на карте</label>
                         <input type="number" v-model="createData.budget" required/>
                     </div>
-                    <button class="form__btn" @click="posthData(createData)">
+                    <button class="form__btn" @click="posthData(createData);$emit('addBudget')">
                         Создать
                     </button>
                 </form>

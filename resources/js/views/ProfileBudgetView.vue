@@ -5,11 +5,12 @@
             <h1 class="title title--2">Бюджет</h1>
         </div>
         <ProfileAside @openMenu="openMenu()"></ProfileAside>
-        <div class="profile__content"  v-if="refresh">
+        <div class="profile__content">
             <div class="profile__content-item__two-case">
                 <h2 class="title title--3">Бюджет</h2>
-                <swiper></swiper>
+                <swiper @addBudget="addPlan()"></swiper>
             </div>
+            <template v-if="refresh">
             <div class="profile__content-item">
                 <charts-budget>
                     <template v-slot:title>
@@ -22,10 +23,12 @@
                     Планы по бюджету
                 </template>
             </bar-plan></div>
+            </template>
+            <div v-else>
+                <preloader></preloader>
+            </div>
         </div>
-        <div v-else>
-            <preloader></preloader>
-        </div>
+
         <live-tape @addPlan="addPlan()"></live-tape>
     </div>
 </template>
@@ -36,6 +39,7 @@ import ProfileAside from "../components/PortfolioAside.vue";
 import LiveTape from "../components/LiveTapePlanBudget.vue";
 import ChartsBudget from "../components/ChartBudget.vue";
 import BarPlan from "../components/BarPlan.vue";
+import Preloader from "../components/Preloader.vue";
 import Swiper from "../components/SwiperCards.vue";
 import {ref} from "vue";
 

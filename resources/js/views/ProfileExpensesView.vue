@@ -5,7 +5,8 @@
             <h1 class="title title--2">Расходы</h1>
         </div>
         <ProfileAside @openMenu="openMenu()"></ProfileAside>
-        <div class="profile__content" v-if="refresh">
+        <div class="profile__content">
+            <template  v-if="refresh">
             <div class="profile__content-item__two-case">
                 <bar-expenses>
                     <template v-slot:title>
@@ -27,10 +28,12 @@
                     </template>
                 </charts-expenses>
             </div>
+            </template>
+            <div v-else>
+                <preloader></preloader>
+            </div>
         </div>
-        <div v-else>
-            <preloader></preloader>
-        </div>
+
         <live-tape @addExpenses="addExpenses()"></live-tape>
     </div>
 </template>
@@ -41,6 +44,7 @@ import ProfileAside from "../components/PortfolioAside.vue";
 import LiveTape from "../components/LiveTapeExpenses.vue";
 import ChartsExpensesWithSelect from "../components/ChartExpensesWithSelect.vue";
 import ChartsExpenses from "../components/ChartExpenses.vue";
+import Preloader from "../components/Preloader.vue";
 import BarExpenses from "../components/BarEpenses.vue";
 import {ref} from "vue";
 
