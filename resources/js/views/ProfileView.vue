@@ -6,7 +6,7 @@
                 doloribus error esse eveniet facere, magni quos totam?</p>
         </div>
         <ProfileAside @openMenu="openMenu()"></ProfileAside>
-        <div class="profile__content">
+        <div class="profile__content" v-if="refresh">
             <div class="profile__content-item">
                 <charts-expenses-income>
                     <template v-slot:title>
@@ -30,7 +30,7 @@
                 </bar-expenses-income>
             </div>
         </div>
-        <live-tape></live-tape>
+        <live-tape @addPlan="addPlan()"></live-tape>
     </div>
 </template>
 
@@ -44,11 +44,17 @@ import BarExpensesIncome from "../components/BarEpensesIncome.vue";
 import {ref} from "vue";
 
 const menu = ref(ref(localStorage.getItem("is_expanded") === "true"));
+const refresh = ref(true);
 const openMenu = () => {
     menu.value = !menu.value
     localStorage.setItem("is_expanded", menu.value)
     console.log(menu.value)
 }
-
+const addPlan = () => {
+    refresh.value = false
+    setTimeout(() => {
+        refresh.value = true;
+    }, 400);
+}
 
 </script>

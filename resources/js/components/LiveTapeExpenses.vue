@@ -63,7 +63,7 @@
                                         required
                                     />
                                 </div>
-                                <button class="form__btn" @click="posthData(createData)">
+                                <button class="form__btn" @click="posthData(createData);$emit('addExpenses')">
                                     Создать
                                 </button>
                             </form>
@@ -175,7 +175,7 @@
                                             required
                                         />
                                     </div>
-                                    <button class="form__btn" @click.prevent="updateData(item.id, item)">
+                                    <button class="form__btn" @click.prevent="updateData(item.id, item); $emit('addExpenses')">
                                         Изменить
                                     </button>
                                 </form>
@@ -199,7 +199,7 @@
                             <button @click="modalOpen(index)" :data-item="item.id">
                                 <img src="../assets/img/svg/pen.svg" alt="update"/>
                             </button>
-                            <button @click="deleteData(item.id,item)">
+                            <button @click="deleteData(item.id,item); $emit('addExpenses')">
                                 <img src="../assets/img/svg/trash.svg" alt="delete"/>
                             </button>
                         </div>
@@ -372,14 +372,16 @@ const removeItemUpdate = (index) => {
 
 const getSelect = (item) => {
     console.log(item.id)
-    selectCategories.id = item.id
+    selectCategories.value.id = item.id
     selectCategories.name = item.name
+    console.log(selectCategories.id)
 }
 
 const getSelectBudget = (item) => {
     console.log(item.id)
-    selectBudget.id = item.id
+    selectBudget.value.id = item.id
     selectBudget.budget = item.budget
+    console.log(selectBudget.id)
 }
 
 const modalOpen = (index) => {
@@ -422,6 +424,8 @@ const fetchData = async (page) => {
         });
 };
 const posthData = async (create) => {
+
+    console.log("log1",selectCategories.value.id,selectBudget.value.id)
     try {
         create.date = create.date.toISOString().substring(0, 19).replace("T", " ");
         console.log(create)
@@ -460,12 +464,14 @@ const posthData = async (create) => {
                         console.log(error);
                     });
             })
+
+            console.log('log',id,checkId.value,selectCategories.id,selectBudget.id,create.date)
             axios
                 .post("http://127.0.0.1:8000/api/v1/expenses", {
                     user_id: id,
                     check_id: checkId.value,
-                    categories_id: selectCategories.id,
-                    budget_id: selectBudget.id,
+                    categories_id: selectCategories.value.id,
+                    budget_id: selectBudget.value.id,
                     date: create.date,
                 })
                 .then((response) => {

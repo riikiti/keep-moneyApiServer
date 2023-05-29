@@ -5,7 +5,7 @@
             <h1 class="title title--2">Бюджет</h1>
         </div>
         <ProfileAside @openMenu="openMenu()"></ProfileAside>
-        <div class="profile__content">
+        <div class="profile__content"  v-if="refresh">
             <div class="profile__content-item__two-case">
                 <h2 class="title title--3">Бюджет</h2>
                 <swiper></swiper>
@@ -23,7 +23,10 @@
                 </template>
             </bar-plan></div>
         </div>
-        <live-tape></live-tape>
+        <div v-else>
+            <preloader></preloader>
+        </div>
+        <live-tape @addPlan="addPlan()"></live-tape>
     </div>
 </template>
 
@@ -37,9 +40,17 @@ import Swiper from "../components/SwiperCards.vue";
 import {ref} from "vue";
 
 const menu = ref(ref(localStorage.getItem("is_expanded") === "true"));
+const refresh = ref(true);
 const openMenu = () => {
     menu.value = !menu.value
     localStorage.setItem("is_expanded", menu.value)
     console.log(menu.value)
+}
+
+const addPlan = () => {
+    refresh.value = false
+    setTimeout(() => {
+        refresh.value = true;
+    }, 400);
 }
 </script>

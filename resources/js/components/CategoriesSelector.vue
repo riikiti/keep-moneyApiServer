@@ -10,8 +10,7 @@
         <div class="modal__select-list">
             <ul>
                 <li v-for="category in option" :key="category.id" :value="category.id"
-                    @click="$emit('getSelect',category);select(category)"
-                    @mouseout='showCategories()'>
+                    @click="$emit('getSelect',category);select(category)">
                     {{ category.name }}
                 </li>
             </ul>

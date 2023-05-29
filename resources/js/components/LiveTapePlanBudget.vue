@@ -38,7 +38,7 @@
                                         required
                                     />
                                 </div>
-                                <button class="form__btn" @click="posthData(createData)">
+                                <button class="form__btn" @click="posthData(createData);$emit('addPlan')">
                                     Создать
                                 </button>
                             </form>
@@ -121,7 +121,7 @@
                                         </div>
 
 
-                                        <button class="form__btn" @click.prevent="updateData(item)">
+                                        <button class="form__btn" @click.prevent="updateData(item);$emit('addPlan')">
                                             Изменить
                                         </button>
                                     </form>
@@ -151,7 +151,7 @@
                                 <button @click="modalOpen(index)" :data-item="item.id">
                                     <img src="../assets/img/svg/pen.svg" alt="update"/>
                                 </button>
-                                <button @click="deleteData(item.id)">
+                                <button @click="deleteData(item.id); $emit('addPlan')">
                                     <img src="../assets/img/svg/trash.svg" alt="delete"/>
                                 </button>
                             </div>

@@ -5,7 +5,7 @@
             <h1 class="title title--2">Доходы</h1>
         </div>
         <ProfileAside @openMenu="openMenu()"></ProfileAside>
-        <div class="profile__content">
+        <div class="profile__content" v-if="refresh">
             <div class="profile__content-item__two-case">
                 <bar-income>
                     <template v-slot:title>
@@ -28,7 +28,10 @@
                 </charts-income>
             </div>
         </div>
-        <live-tape></live-tape>
+        <div v-else>
+            <preloader></preloader>
+        </div>
+        <live-tape @addIncome="addIncome()"></live-tape>
     </div>
 </template>
 
@@ -39,13 +42,23 @@ import LiveTape from "../components/LiveTapeIncome.vue";
 import ChartsIncome from "../components/ChartIncome.vue";
 import ChartsIncomeWithSelect from "../components/ChartIncomeWithSelect.vue";
 import BarIncome from "../components/BarIncome.vue";
+import Preloader from "../components/Preloader.vue";
 import {ref} from "vue";
 
 const menu = ref(ref(localStorage.getItem("is_expanded") === "true"));
+const refresh = ref(true);
 const openMenu = () => {
     menu.value = !menu.value
     localStorage.setItem("is_expanded", menu.value)
     console.log(menu.value)
 }
+
+const addIncome=()=>{
+    refresh.value=false
+    setTimeout(() => {
+        refresh.value=true;
+    }, 400);
+}
+
 </script>
 
