@@ -15,6 +15,7 @@
                                 <div class="form__block">
                                     <label class="title title--3">Цена</label>
                                     <input type="number" v-model="createData.price" required/>
+                                    <span v-show="v$.price.$error">Слишком маленький логин</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Категория</label>
@@ -25,12 +26,14 @@
                                             Выберите категорию
                                         </template>
                                     </categories-selector>
+                                    <span v-show="!getSelectBudget">>не выбрана категория</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Категория</label>
                                     <budget-selector :option="categoriesBudget"
                                                      @getSelect="getSelectBudget"
                                     ></budget-selector>
+                                    <span v-show="!getSelectBudget">не выбрана карта</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Дата</label>
@@ -42,6 +45,7 @@
                                         format=" dd/MM/yyyy HH:mm"
                                         required
                                     />
+                                    <span v-show="v$.date.$error">Слишком маленький логин</span>
                                 </div>
                                 <button class="form__btn" @click="posthData(createData);$emit('addIncome')">
                                     Создать
@@ -191,8 +195,10 @@ import CategoriesSelector from "../components/CategoriesSelector.vue";
 import BudgetSelector from "../components/BudgetSelector.vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import axios from "axios";
+import {email, minLength, required, sameAs} from "@vuelidate/validators";
+import {useVuelidate} from "@vuelidate/core";
 
 
 const data = ref(null);
@@ -211,6 +217,22 @@ const formSubmitted = ref(false);
 const formSubmittedUpdated = ref(false);
 let oldPrice = [];
 let oldId = 0;
+
+
+
+const rules = computed(() => {
+    return {
+        price: {required, minLength: minLength(2)},
+        date:{required}
+    };
+});
+
+
+
+
+
+const v$ = useVuelidate(rules, createData.value);
+
 
 
 const getSelect = (item) => {
@@ -267,45 +289,51 @@ const fetchData = async (page) => {
         });
 };
 const posthData = async (create) => {
-    try {
-        create.date = create.date.toISOString().substring(0, 19).replace("T", " ");
-        console.log(create)
-    } catch {
-    }
-    if (!create.title) {
-        create.title = selectCategories.name.toString() + " " + create.date.slice(0, 11);
-    }
-    console.log(selectBudget.id)
+    const result = await v$.value.$validate();
+    const result1 = await vc$.value.$validate();
+    const result2 = await vb$.value.$validate();
+    console.log("log",result1,result2)
+    if (result && result1 &&result2) {
+        try {
+            create.date = create.date.toISOString().substring(0, 19).replace("T", " ");
+            console.log(create)
+        } catch {
+        }
+        if (!create.title) {
+            create.title = selectCategories.name.toString() + " " + create.date.slice(0, 11);
+        }
+        console.log(selectBudget.id)
 
-    axios
-        .post("http://127.0.0.1:8000/api/v1/income", {
-            title: create.title,
-            price: create.price,
-            categories_id: selectCategories.id,
-            date: create.date,
-            user_id: id,
-            budget_id: selectBudget.id
-        })
-        .then((response) => {
-            console.log(response.data);
-            formSubmitted.value = true;
-            //modalCreate();
-            fetchData();
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    axios
-        .put("http://127.0.0.1:8000/api/v1/increase-budget/" + selectBudget.id, {
-            update_budget: create.price,
-        })
-        .then((response) => {
-            console.log(response);
-            createData.value=[]
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        axios
+            .post("http://127.0.0.1:8000/api/v1/income", {
+                title: create.title,
+                price: create.price,
+                categories_id: selectCategories.id,
+                date: create.date,
+                user_id: id,
+                budget_id: selectBudget.id
+            })
+            .then((response) => {
+                console.log(response.data);
+                formSubmitted.value = true;
+                //modalCreate();
+                fetchData();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        axios
+            .put("http://127.0.0.1:8000/api/v1/increase-budget/" + selectBudget.id, {
+                update_budget: create.price,
+            })
+            .then((response) => {
+                console.log(response);
+                createData.value = []
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 };
 
 const deleteData = async (id) => {
