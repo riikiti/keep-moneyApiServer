@@ -14,6 +14,7 @@
                             <div class="form__block">
                                 <label class="title title--3">Максимальная планируемая цена</label>
                                 <input type="number" v-model="createData.price" required/>
+                                <span v-show="v$.price.$error">укажите количество денег</span>
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Категория</label>
@@ -24,6 +25,7 @@
                                         Выберите категорию
                                     </template>
                                 </categories-selector>
+                                <span v-show="v1$.id.$error">не выбрана категория</span>
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Дата</label>
@@ -36,6 +38,7 @@
                                     format=" dd/MM/yyyy HH:mm"
                                     required
                                 />
+                                <span v-show="v$.date.$error">не выбрана дата</span>
                             </div>
                             <button class="form__btn" @click="posthData(createData);$emit('addPlan')">
                                 Создать
@@ -168,8 +171,10 @@ import Preloader from "../components/Preloader.vue";
 import CategoriesSelector from "../components/CategoriesSelector.vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import axios from "axios";
+import {minLength, required} from "@vuelidate/validators";
+import {useVuelidate} from "@vuelidate/core";
 
 
 const data = ref(null);
@@ -186,25 +191,28 @@ const updateDate = ref(null);
 const afterDate = ref(null);
 const formSubmitted = ref(false);
 const formSubmittedUpdated = ref(false);
-const percent = ref(null)
-
-const getPercent = (item) => {
-    percent.value = 0
-    if (Number(item.budgets.budget) < Number(item.budget_on_start)) {
-        percent.value = ((100 + ((Number(item.budgets.budget) / Number(item.budget_on_start)) * -100)) * -1).toFixed(2)
-    } else {
-        percent.value = ((Number(item.budgets.budget) / Number(item.value)) * 100).toFixed(2)
-    }
-    if (Number(item.budgets.budget) === Number(item.budget_on_start)) {
-        percent.value = 0
-    }
-}
 
 
+const rules = computed(() => {
+    return {
+        price: {required, minLength: minLength(2)},
+        date: {required}
+    };
+});
+
+const rules1 = computed(() => {
+    return {
+        id: {required}
+    };
+});
+
+
+const v$ = useVuelidate(rules, createData.value);
+const v1$ = useVuelidate(rules1, selectCategories.value);
 
 const getSelect = (item) => {
     console.log(item.id)
-    selectCategories.id = item.id
+    selectCategories.value.id = item.id
     selectCategories.name = item.name
 }
 
@@ -214,7 +222,7 @@ const modalOpen = (index) => {
     console.log(modal.value);
     formSubmitted.value = false;
     formSubmittedUpdated.value = false;
-    selectCategories.id=null;
+    selectCategories.value.id = null;
 };
 
 const modalCreate = () => {
@@ -222,7 +230,7 @@ const modalCreate = () => {
     console.log(modalForCreate.value);
     formSubmitted.value = false;
     formSubmittedUpdated.value = false;
-    selectCategories.id=null;
+    selectCategories.value.id = null;
 };
 
 const fetchData = async (page) => {
@@ -244,37 +252,43 @@ const fetchData = async (page) => {
         });
 };
 const posthData = async (create) => {
-    try {
-        create.dateStart = create.date[0].toISOString().substring(0, 19).replace("T", " ");
-        create.dateFinish = create.date[1].toISOString().substring(0, 19).replace("T", " ");
-        console.log(create.dateStart)
-        console.log(create.dateFinish)
-    } catch {
-    }
 
-    if (!create.title) {
-        create.title = selectCategories.name.toString() + " " + create.dateStart.slice(0, 11) + " - " + create.dateFinish.slice(0, 11);
-    }
+    const result = await v$.value.$validate();
+    const result1 = await v1$.value.$validate();
+    if (result && result1) {
 
-    axios
-        .post("http://127.0.0.1:8000/api/v1/plan", {
-            title: create.title,
-            max_price: create.price,
-            categories_id: selectCategories.id,
-            period_start: create.dateStart,
-            period_finish: create.dateFinish,
-            user_id: id
-        })
-        .then((response) => {
-            console.log(response.data);
-            formSubmitted.value = true;
-            createData.value=[]
-            //modalCreate();
-            fetchData();
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        try {
+            create.dateStart = create.date[0].toISOString().substring(0, 19).replace("T", " ");
+            create.dateFinish = create.date[1].toISOString().substring(0, 19).replace("T", " ");
+            console.log(create.dateStart)
+            console.log(create.dateFinish)
+        } catch {
+        }
+
+        if (!create.title) {
+            create.title = selectCategories.name.toString() + " " + create.dateStart.slice(0, 11) + " - " + create.dateFinish.slice(0, 11);
+        }
+
+        axios
+            .post("http://127.0.0.1:8000/api/v1/plan", {
+                title: create.title,
+                max_price: create.price,
+                categories_id: selectCategories.value.id,
+                period_start: create.dateStart,
+                period_finish: create.dateFinish,
+                user_id: id
+            })
+            .then((response) => {
+                console.log(response.data);
+                formSubmitted.value = true;
+                createData.value = []
+                //modalCreate();
+                fetchData();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 };
 
 const deleteData = async (id) => {
@@ -302,9 +316,9 @@ const updateData = async (item) => {
 
 
             if (!selectCategories.id) {
-                selectCategories.id = item.category.id
+                selectCategories.value.id = item.category.id
                 selectCategories.name = item.category.name
-                console.log(111111111111, selectCategories.id)
+                console.log(111111111111, selectCategories.value.id)
             }
 
             if (item.title === "") {
@@ -315,7 +329,7 @@ const updateData = async (item) => {
                 .put("http://127.0.0.1:8000/api/v1/plan/" + item.id, {
                     title: item.title,
                     max_price: item.max_price,
-                    categories_id: selectCategories.id,
+                    categories_id: selectCategories.value.id,
                     period_start: afterDate.dateStart,
                     period_finish: afterDate.dateFinish,
                     user_id: id
@@ -337,9 +351,9 @@ const updateData = async (item) => {
 
 
             if (!selectCategories.id) {
-                selectCategories.id = item.category.id
+                selectCategories.value.id = item.category.id
                 selectCategories.name = item.category.name
-                console.log(111111111111, selectCategories.id)
+                console.log(111111111111, selectCategories.value.id)
             }
             if (item.title === "") {
                 item.title = selectCategories.name.toString() + " " + afterDate.dateStart.slice(0, 11) + " - " + afterDate.dateFinish.slice(0, 11);
@@ -349,7 +363,7 @@ const updateData = async (item) => {
                 .put("http://127.0.0.1:8000/api/v1/plan/" + item.id, {
                     title: item.title,
                     max_price: item.max_price,
-                    categories_id: selectCategories.id,
+                    categories_id: selectCategories.value.id,
                     period_start: afterDate.dateStart,
                     period_finish: afterDate.dateFinish,
                     user_id: id

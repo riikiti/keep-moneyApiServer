@@ -44,12 +44,14 @@
                                             Выберите категорию
                                         </template>
                                     </categories-selector>
+                                    <span v-show="v1$.id.$error">не выбрана категория</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Категория</label>
                                     <budget-selector :option="categoriesBudget"
                                                      @getSelect="getSelectBudget"
                                     ></budget-selector>
+                                    <span v-show="v1$.id.$error">не выбрана карта</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Дата</label>
@@ -62,6 +64,7 @@
                                         format=" dd/MM/yyyy HH:mm"
                                         required
                                     />
+                                    <span v-show="v$.date.$error">не выбрана дата</span>
                                 </div>
                                 <button class="form__btn" @click="posthData(createData);$emit('addExpenses')">
                                     Создать
@@ -175,7 +178,8 @@
                                             required
                                         />
                                     </div>
-                                    <button class="form__btn" @click.prevent="updateData(item.id, item); $emit('addExpenses')">
+                                    <button class="form__btn"
+                                            @click.prevent="updateData(item.id, item); $emit('addExpenses')">
                                         Изменить
                                     </button>
                                 </form>
@@ -238,9 +242,11 @@ import Preloader from "../components/Preloader.vue";
 import CategoriesSelector from "../components/CategoriesSelector.vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import axios from "axios";
 import BudgetSelector from "../components/BudgetSelector.vue";
+import {minLength, required} from "@vuelidate/validators";
+import {useVuelidate} from "@vuelidate/core";
 
 
 const data = ref(null);
@@ -272,13 +278,30 @@ let oldPrice = [];
 let oldId = [];
 
 
+const rules = computed(() => {
+    return {
+        date: {required}
+    };
+});
+
+const rules1 = computed(() => {
+    return {
+        id: {required}
+    };
+});
+
+
+const v$ = useVuelidate(rules, createData.value);
+const v1$ = useVuelidate(rules1, selectCategories.value);
+const v2$ = useVuelidate(rules1, selectBudget.value);
+
 const memberOldValue = (price, id) => {
     if (closeCircle.value) {
         console.log(price, id)
         oldPrice.push(Number(price));
         oldId.push(Number(id));
     }
-    closeCircle.value=false
+    closeCircle.value = false
 }
 
 
@@ -315,7 +338,7 @@ const getItemsUpdate = (id) => {
                 getItemsNew.value = el.items;
             }
         })
-        closeCircle.value=false
+        closeCircle.value = false
     }
 }
 
@@ -335,18 +358,18 @@ const totalPriceSumUpdate = () => {
             console.log(el.price)
             totalPriceUpdate.value += Number(el.price) * Number(el.count);
         })
-        closeCircle.value=false
+        closeCircle.value = false
     }
 }
 
 const totalPriceSumUpdateItem = () => {
 
-        totalPriceUpdate.value = 0
-        getItemsNew.value.forEach((el) => {
-            console.log(el.price)
-            totalPriceUpdate.value += Number(el.price) * Number(el.count);
-        })
-        closeCircle.value=false
+    totalPriceUpdate.value = 0
+    getItemsNew.value.forEach((el) => {
+        console.log(el.price)
+        totalPriceUpdate.value += Number(el.price) * Number(el.count);
+    })
+    closeCircle.value = false
 }
 
 
@@ -391,16 +414,16 @@ const modalOpen = (index) => {
     formSubmitted.value = false;
     formSubmittedUpdated.value = false;
     selectCategories.id = null;
-    selectBudget.id = null;
-    closeCircle.value=true
+    selectBudget.value.id = null;
+    closeCircle.value = true
 };
 const modalCreate = () => {
     selectCategories.id = null;
-    selectBudget.id = null;
+    selectBudget.value.id = null;
     modalForCreate.value = !modalForCreate.value;
     console.log(modalForCreate.value);
     formSubmitted.value = false;
-    closeCircle.value=true
+    closeCircle.value = true
 };
 const fetchData = async (page) => {
     if (!page) {
@@ -425,101 +448,106 @@ const fetchData = async (page) => {
 };
 const posthData = async (create) => {
 
-    console.log("log1",selectCategories.value.id,selectBudget.value.id)
-    try {
-        create.date = create.date.toISOString().substring(0, 19).replace("T", " ");
-        console.log(create)
-    } catch {
-    }
-    if (!create.title) {
-        create.title = selectCategories.name.toString() + " " + create.date.slice(0, 11);
-    }
-    totalPriceSum()
-    console.log(create.title, totalPrice, create.date)
-    axios
-        .post("http://127.0.0.1:8000/api/v1/check", {
-            title: create.title,
-            total_price: totalPrice.value,
+    const result = await v$.value.$validate();
+    const result1 = await v1$.value.$validate();
+    const result2 = await v2$.value.$validate();
+    if (result && result1 && result2) {
+        console.log("log1", selectCategories.value.id, selectBudget.value.id)
+        try {
+            create.date = create.date.toISOString().substring(0, 19).replace("T", " ");
+            console.log(create)
+        } catch {
+        }
+        if (!create.title) {
+            create.title = selectCategories.name.toString() + " " + create.date.slice(0, 11);
+        }
+        totalPriceSum()
+        console.log(create.title, totalPrice, create.date)
+        axios
+            .post("http://127.0.0.1:8000/api/v1/check", {
+                title: create.title,
+                total_price: totalPrice.value,
 
-        })
-        .then((response) => {
-            // console.log(response.data);
-            checkId.value = response.data.id;
-            console.log(checkId.value)
-            formSubmitted.value = true;
-            console.log(items.value);
-            items.value.forEach((el) => {
-                console.log(el.name, el.price, el.count, checkId.value);
+            })
+            .then((response) => {
+                // console.log(response.data);
+                checkId.value = response.data.id;
+                console.log(checkId.value)
+                formSubmitted.value = true;
+                console.log(items.value);
+                items.value.forEach((el) => {
+                    console.log(el.name, el.price, el.count, checkId.value);
+                    axios
+                        .post("http://127.0.0.1:8000/api/v1/item", {
+                            name: el.name,
+                            price: el.price,
+                            count: el.count,
+                            check_id: checkId.value
+                        })
+                        .then((response) => {
+                            console.log(response.data);
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                })
+
+                console.log('log', id, checkId.value, selectCategories.id, selectBudget.value.id, create.date)
                 axios
-                    .post("http://127.0.0.1:8000/api/v1/item", {
-                        name: el.name,
-                        price: el.price,
-                        count: el.count,
-                        check_id: checkId.value
+                    .post("http://127.0.0.1:8000/api/v1/expenses", {
+                        user_id: id,
+                        check_id: checkId.value,
+                        categories_id: selectCategories.value.id,
+                        budget_id: selectBudget.value.id,
+                        date: create.date,
                     })
                     .then((response) => {
                         console.log(response.data);
+                        formSubmitted.value = true;
+                        //modalCreate()
+                        fetchData()
                     })
                     .catch((error) => {
                         console.log(error);
                     });
+
             })
+            .catch((error) => {
+                console.log(error);
+            });
 
-            console.log('log',id,checkId.value,selectCategories.id,selectBudget.id,create.date)
-            axios
-                .post("http://127.0.0.1:8000/api/v1/expenses", {
-                    user_id: id,
-                    check_id: checkId.value,
-                    categories_id: selectCategories.value.id,
-                    budget_id: selectBudget.value.id,
-                    date: create.date,
-                })
-                .then((response) => {
-                    console.log(response.data);
-                    formSubmitted.value = true;
-                    //modalCreate()
-                    fetchData()
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-
+        //update budget
+        categoriesBudget.value.forEach((el) => {
+            if (el.id === selectBudget.value.id) {
+                updateBudget.value = el;
+            }
         })
-        .catch((error) => {
-            console.log(error);
-        });
+        console.log(totalPrice.value)
+        updateBudget.value.budget -= Number(totalPrice.value);
+        console.log(updateBudget.value, updateBudget.value.budget)
+        axios
+            .put("http://127.0.0.1:8000/api/v1/budget/" + selectBudget.value.id, {
+                bank_id: updateBudget.value.bank.id,
+                type: updateBudget.value.type,
+                numbers: updateBudget.value.numbers,
+                budget: parseFloat(updateBudget.value.budget),
+                last_date: updateBudget.value.last_date,
+                user_id: id
 
-    //update budget
-    categoriesBudget.value.forEach((el) => {
-        if (el.id === selectBudget.id) {
-            updateBudget.value = el;
-        }
-    })
-    console.log(totalPrice.value)
-    updateBudget.value.budget -= Number(totalPrice.value);
-    console.log(updateBudget.value, updateBudget.value.budget)
-    axios
-        .put("http://127.0.0.1:8000/api/v1/budget/" + selectBudget.id, {
-            bank_id: updateBudget.value.bank.id,
-            type: updateBudget.value.type,
-            numbers: updateBudget.value.numbers,
-            budget: parseFloat(updateBudget.value.budget),
-            last_date: updateBudget.value.last_date,
-            user_id: id
-
-        })
-        .then((response) => {
-            console.log(333333, response.data);
-            formSubmitted.value = true;
-            createData.value = [];
-            items.value = [];
-            totalPrice.value = 0;
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+            })
+            .then((response) => {
+                console.log(333333, response.data);
+                formSubmitted.value = true;
+                createData.value = [];
+                items.value = [];
+                totalPrice.value = 0;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
 
 
+    }
 };
 const deleteData = async (id, item) => {
     axios
@@ -572,12 +600,12 @@ const updateData = async (item_id, item) => {
         selectCategories.id = item.category.id
         console.log(66666666)
     }
-    closeCircle.value=true
+    closeCircle.value = true
     totalPriceSumUpdate()
 
-    categories.value.forEach((el)=>{
-        if (el.id===selectCategories.id){
-            selectCategories.name=el.name;
+    categories.value.forEach((el) => {
+        if (el.id === selectCategories.id) {
+            selectCategories.name = el.name;
         }
     })
 
@@ -587,7 +615,7 @@ const updateData = async (item_id, item) => {
 
 
     if (!selectBudget.id) {
-        selectBudget.id = item.budget.id
+        selectBudget.value.id = item.budget.id
         axios
             .put("http://127.0.0.1:8000/api/v1/check/" + item.checks.id, {
                 title: item.checks.title,
@@ -636,14 +664,14 @@ const updateData = async (item_id, item) => {
                     }
                 })
                 console.log("item price", item.checks.total_price, "old price", oldPrice)
-                console.log(5555555, selectCategories.id, selectBudget.id)
+                console.log(5555555, selectCategories.id, selectBudget.value.id)
 
                 axios
                     .put("http://127.0.0.1:8000/api/v1/expenses/" + item.id, {
                         user_id: id,
                         check_id: item.checks.id,
                         categories_id: selectCategories.id,
-                        budget_id: selectBudget.id,
+                        budget_id: selectBudget.value.id,
                         date: item.date,
                     })
                     .then((response) => {
@@ -656,7 +684,7 @@ const updateData = async (item_id, item) => {
                     });
 
                 axios
-                    .put("http://127.0.0.1:8000/api/v1/increase-budget/" + selectBudget.id, {
+                    .put("http://127.0.0.1:8000/api/v1/increase-budget/" + selectBudget.value.id, {
                         update_budget: oldPrice[0],
                     })
                     .then((response) => {
@@ -667,7 +695,7 @@ const updateData = async (item_id, item) => {
                         console.log(error);
                     });
                 axios
-                    .put("http://127.0.0.1:8000/api/v1/reduse-budget/" + selectBudget.id, {
+                    .put("http://127.0.0.1:8000/api/v1/reduse-budget/" + selectBudget.value.id, {
                         update_budget: totalPriceUpdate.value,
                     })
                     .then((response) => {
@@ -733,7 +761,7 @@ const updateData = async (item_id, item) => {
                             });
                     }
                 })
-                console.log(5555555, selectCategories.id, selectBudget.id)
+                console.log(5555555, selectCategories.id, selectBudget.value.id)
 
                 console.log("item price", item.checks.total_price, "old price", oldPrice)
 
@@ -742,7 +770,7 @@ const updateData = async (item_id, item) => {
                         user_id: id,
                         check_id: item.checks.id,
                         categories_id: selectCategories.id,
-                        budget_id: selectBudget.id,
+                        budget_id: selectBudget.value.id,
                         date: item.date,
                     })
                     .then((response) => {
@@ -767,7 +795,7 @@ const updateData = async (item_id, item) => {
                         console.log(error);
                     });
                 axios
-                    .put("http://127.0.0.1:8000/api/v1/reduse-budget/" + selectBudget.id, {
+                    .put("http://127.0.0.1:8000/api/v1/reduse-budget/" + selectBudget.value.id, {
                         update_budget: totalPriceUpdate.value,
                     })
                     .then((response) => {

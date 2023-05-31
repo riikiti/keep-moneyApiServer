@@ -15,6 +15,7 @@
                                 <div class="form__block">
                                     <label class="title title--3">Планируемое значение по карте</label>
                                     <input type="number" v-model="createData.price" required/>
+                                    <span v-show="v$.price.$error">укажите количество денег</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Выбор карты</label>
@@ -25,6 +26,7 @@
                                             Выберите карту
                                         </template>
                                     </categories-selector>
+                                    <span v-show="v1$.id.$error">не выбрана карта</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">На какой периуд</label>
@@ -37,6 +39,7 @@
                                         format=" dd/MM/yyyy HH:mm"
                                         required
                                     />
+                                    <span v-show="v$.date.$error">не выбрана дата</span>
                                 </div>
                                 <button class="form__btn" @click="posthData(createData);$emit('addPlan')">
                                     Создать
@@ -191,8 +194,10 @@ import Preloader from "../components/Preloader.vue";
 import CategoriesSelector from "../components/BudgetSelector.vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import axios from "axios";
+import {minLength, required} from "@vuelidate/validators";
+import {useVuelidate} from "@vuelidate/core";
 
 
 const data = ref(null);
@@ -211,10 +216,26 @@ const afterDate = ref(null);
 const formSubmitted = ref(false);
 const formSubmittedUpdated = ref(false);
 
+const rules = computed(() => {
+    return {
+        price: {required, minLength: minLength(2)},
+        date: {required}
+    };
+});
+
+const rules1 = computed(() => {
+    return {
+        id: {required}
+    };
+});
+
+
+const v$ = useVuelidate(rules, createData.value);
+const v1$ = useVuelidate(rules1, selectBudget.value);
 
 const getSelect = (item) => {
     console.log(item.id)
-    selectBudget.id = item.id
+    selectBudget.value.id = item.id
     selectBudget.budget = item.budget
 }
 
@@ -241,7 +262,7 @@ const modalOpen = (index) => {
     console.log(modal.value);
     formSubmitted.value = false;
     formSubmittedUpdated.value = false;
-    selectBudget.id=null;
+    selectBudget.value.id = null;
 };
 
 const modalCreate = () => {
@@ -249,7 +270,7 @@ const modalCreate = () => {
     console.log(modalForCreate.value);
     formSubmitted.value = false;
     formSubmittedUpdated.value = false;
-    selectBudget.id=null;
+    selectBudget.value.id = null;
 };
 
 const fetchData = async (page) => {
@@ -271,40 +292,46 @@ const fetchData = async (page) => {
         });
 };
 const posthData = async (create) => {
-    console.log(create.date)
-    try {
-        create.dateStart = create.date[0].toISOString().substring(0, 19).replace("T", " ");
-        create.dateFinish = create.date[1].toISOString().substring(0, 19).replace("T", " ");
-        console.log(create.dateStart)
-        console.log(create.dateFinish)
-    } catch {
-    }
-    console.log(selectBudget)
-    if (!create.title) {
-        create.title = selectBudget.budget.toString() + " " + create.dateStart.slice(0, 11) + " - " + create.dateFinish.slice(0, 11);
-    }
+
+    const result = await v$.value.$validate();
+    const result1 = await v1$.value.$validate();
+    if (result && result1) {
+
+        console.log(create.date)
+        try {
+            create.dateStart = create.date[0].toISOString().substring(0, 19).replace("T", " ");
+            create.dateFinish = create.date[1].toISOString().substring(0, 19).replace("T", " ");
+            console.log(create.dateStart)
+            console.log(create.dateFinish)
+        } catch {
+        }
+        console.log(selectBudget)
+        if (!create.title) {
+            create.title = selectBudget.budget.toString() + " " + create.dateStart.slice(0, 11) + " - " + create.dateFinish.slice(0, 11);
+        }
 
 
-    axios
-        .post("http://127.0.0.1:8000/api/v1/plan-budget", {
-            title: create.title,
-            value: create.price,
-            budget_id: selectBudget.id,
-            period_start: create.dateStart,
-            period_finish: create.dateFinish,
-            budget_on_start: selectBudget.budget,
-            user_id: id
-        })
-        .then((response) => {
-            console.log(response.data);
-            formSubmitted.value = true;
-            createData.value=[];
-            //modalCreate();
-            fetchData();
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+        axios
+            .post("http://127.0.0.1:8000/api/v1/plan-budget", {
+                title: create.title,
+                value: create.price,
+                budget_id: selectBudget.value.id,
+                period_start: create.dateStart,
+                period_finish: create.dateFinish,
+                budget_on_start: selectBudget.budget,
+                user_id: id
+            })
+            .then((response) => {
+                console.log(response.data);
+                formSubmitted.value = true;
+                createData.value = [];
+                //modalCreate();
+                fetchData();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
 };
 
 const deleteData = async (id) => {
@@ -323,14 +350,13 @@ const updateData = async (item) => {
     console.log(updateDate)
 
 
-
     try {
         if (updateDate.value !== null) {
             afterDate.dateStart = updateDate.value[0].toISOString().substring(0, 19).replace("T", " ");
             afterDate.dateFinish = updateDate.value[1].toISOString().substring(0, 19).replace("T", " ");
             console.log(111, afterDate)
             if (!selectBudget.id) {
-                selectBudget.id = item.budgets.id;
+                selectBudget.value.id = item.budgets.id;
             }
             if (!item.title) {
                 item.title = item.budgets.bank.name + " " + afterDate.dateStart.slice(0, 11) + " - " + afterDate.dateFinish.slice(0, 11);
@@ -339,7 +365,7 @@ const updateData = async (item) => {
                 .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
                     title: item.title,
                     value: item.value,
-                    budget_id: selectBudget.id,
+                    budget_id: selectBudget.value.id,
                     period_start: afterDate.dateStart,
                     period_finish: afterDate.dateFinish,
                     user_id: id,
@@ -364,7 +390,7 @@ const updateData = async (item) => {
             }
 
             if (!selectBudget.id) {
-                selectBudget.id = item.budgets.id;
+                selectBudget.value.id = item.budgets.id;
             }
             console.log(afterDate.value)
             console.log(111111111111, selectBudget)
@@ -372,7 +398,7 @@ const updateData = async (item) => {
                 .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
                     title: item.title,
                     value: item.value,
-                    budget_id: selectBudget.id,
+                    budget_id: selectBudget.value.id,
                     period_start: afterDate.dateStart,
                     period_finish: afterDate.dateFinish,
                     user_id: id,

@@ -15,11 +15,10 @@
                                 <div class="form__block">
                                     <label class="title title--3">Цена</label>
                                     <input type="number" v-model="createData.price" required/>
-                                    <span v-show="v$.price.$error">Слишком маленький логин</span>
+                                    <span v-show="v$.price.$error">укажите количество денег</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Категория</label>
-                                    {{selectCategories}}
                                     <categories-selector :option="categories"
                                                          @getSelect="getSelect"
                                     >
@@ -27,15 +26,14 @@
                                             Выберите категорию
                                         </template>
                                     </categories-selector>
-                                    <span v-show="v1$.id.$error">>не выбрана категория</span>
+                                    <span v-show="v1$.id.$error">не выбрана категория</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Категория</label>
-                                    {{selectBudget}}
                                     <budget-selector :option="categoriesBudget"
                                                      @getSelect="getSelectBudget"
                                     ></budget-selector>
-                                    <span v-show="v2$.id.$error">>не выбрана категория</span>
+                                    <span v-show="v2$.id.$error">не выбрана карта</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Дата</label>
@@ -47,7 +45,7 @@
                                         format=" dd/MM/yyyy HH:mm"
                                         required
                                     />
-                                    <span v-show="v$.date.$error">Слишком маленький логин</span>
+                                    <span v-show="v$.date.$error">не выбрана дата</span>
                                 </div>
                                 <button class="form__btn" @click="posthData(createData);$emit('addIncome')">
                                     Создать
