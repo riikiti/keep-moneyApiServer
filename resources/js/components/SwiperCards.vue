@@ -11,6 +11,7 @@
                         <bank-selector :option="banks"
                                        @getSelect="getSelect"
                         ></bank-selector>
+                        <span v-show="v1$.id.$error">не выбран банк</span>
                     </div>
 
                     <div class="form__block">
@@ -29,20 +30,24 @@
                                 <label>MasterCard</label>
                             </div>
                         </div>
+                        <span v-show="v$.type.$error">не выбран тип карты</span>
                     </div>
                     <div class="form__block">
                         <label class="title title--3">Последние 4 цифры</label>
                         <input type="number" v-model="createData.numbers" required/>
+                        <span v-show="v$.numbers.$error">не введены последние 4 цифры карты</span>
                     </div>
                     <div class="form__block">
                         <label class="title title--3">Дата окончания карты</label>
                         <input type="text" v-model="createData.last_date" required/>
+                        <span v-show="v$.last_date.$error">не введен срок эксплуатации карты</span>
                     </div>
                     <div class="form__block">
                         <label class="title title--3">Количсетво денег на карте</label>
                         <input type="number" v-model="createData.budget" required/>
+                        <span v-show="v$.budget.$error">не введено количсество денег на карте</span>
                     </div>
-                    <button class="form__btn" @click="posthData(createData);$emit('addBudget')">
+                    <button class="form__btn" @click="posthData(createData)">
                         Создать
                     </button>
                 </form>
@@ -197,9 +202,11 @@ import {Navigation, Pagination, Scrollbar, A11y} from "swiper";
 import "swiper/css";
 import 'swiper/css/pagination';
 import axios from "axios";
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import Modal from "../components/Modal.vue";
 import BankSelector from "../components/CategoriesSelector.vue";
+import {minLength, required} from "@vuelidate/validators";
+import {useVuelidate} from "@vuelidate/core";
 
 
 const modules = [Pagination, Navigation, Scrollbar, A11y];
@@ -215,20 +222,43 @@ const dataForUpdate = ref({});
 const createData = ref([]);
 const selectCategories = ref({});
 const banks = ref(null)
-const minus=ref(0);
-const plus=ref(0)
+const minus = ref(0);
+const plus = ref(0)
 const formSubmitted = ref(false);
 const formSubmittedUpdated = ref(false);
 
 
+const emit = defineEmits("addBudget");
+
+
+const rules = computed(() => {
+    return {
+        type: {required},
+        numbers: {required, minLength: minLength(4)},
+        last_date:{required, minLength: minLength(4)},
+        budget:{required,  maxLength: 4}
+    };
+});
+
+const rules1 = computed(() => {
+    return {
+        id: {required}
+    };
+});
+
+
+const v$ = useVuelidate(rules, createData.value);
+const v1$ = useVuelidate(rules1, selectCategories.value);
+
+
 const getSelect = (item) => {
     console.log(item.id)
-    selectCategories.id = item.id
+    selectCategories.value.id = item.id
     selectCategories.name = item.name
 }
 
 
-const increase=(item)=>{
+const increase = (item) => {
     console.log(plus)
     axios
         .put("http://127.0.0.1:8000/api/v1/increase-budget/" + item.id, {
@@ -236,7 +266,7 @@ const increase=(item)=>{
         })
         .then((response) => {
             console.log(response);
-            plus.value=0;
+            plus.value = 0;
             fetchData();
         })
         .catch((error) => {
@@ -244,14 +274,14 @@ const increase=(item)=>{
         });
 }
 
-const reduse = (item)=>{
+const reduse = (item) => {
     axios
         .put("http://127.0.0.1:8000/api/v1/reduse-budget/" + item.id, {
             update_budget: minus.value,
         })
         .then((response) => {
             console.log(response.data);
-            minus.value=0
+            minus.value = 0
             fetchData();
         })
         .catch((error) => {
@@ -274,31 +304,36 @@ const fetchData = async () => {
 
 
 const posthData = async (createData) => {
-    let id = localStorage.getItem('id');
-    axios
-        .post("http://127.0.0.1:8000/api/v1/budget", {
-            type: createData.type,
-            budget: createData.budget,
-            bank_id: selectCategories.id,
-            numbers: createData.numbers,
-            last_date: Number(createData.last_date),
-            user_id: id
-        })
-        .then((response) => {
-            formSubmitted.value = true;
-            selectCategories.id=null;
-            console.log(selectCategories.id)
-            console.log(response.data);
-            fetchData();
+    const result = await v$.value.$validate();
+    const result1 = await v1$.value.$validate();
+    if (result && result1) {
+        let id = localStorage.getItem('id');
+        axios
+            .post("http://127.0.0.1:8000/api/v1/budget", {
+                type: createData.type,
+                budget: createData.budget,
+                bank_id:   selectCategories.value.id ,
+                numbers: createData.numbers,
+                last_date: Number(createData.last_date),
+                user_id: id
+            })
+            .then((response) => {
+                formSubmitted.value = true;
+                selectCategories.value.id = null;
+                console.log(  selectCategories.value.id )
+                console.log(response.data);
+                emit('addBudget')
+                fetchData();
 
-            //modalCreate();
+                //modalCreate();
 
-        })
-        .catch((error) => {
-            console.log(error);
-            selectCategories.id=null;
-            fetchData()
-        });
+            })
+            .catch((error) => {
+                console.log(error);
+                selectCategories.value.id = null;
+                fetchData()
+            });
+    }
 };
 
 
@@ -332,7 +367,7 @@ const modalCreate = () => {
     formSubmitted.value = false;
     console.log(modalForCreate.value);
     fetchData()
-    selectCategories.id=null;
+    selectCategories.value.id = null;
 };
 
 
@@ -353,7 +388,7 @@ const modalUpdate = (index) => {
     modalForUpdate.value = !modalForUpdate.value;
     formSubmittedUpdated.value = false;
     console.log(modalForUpdate.value);
-    selectCategories.id=null;
+    selectCategories.value.id = null;
 };
 
 
@@ -366,12 +401,12 @@ const updateData = async (item) => {
     dataForUpdate.last_date = item.last_date;
     formSubmittedUpdated.value = true;
     console.log(2222, dataForUpdate.value.plus);
-    if (!selectCategories.id) {
-        selectCategories.id = item.bank.id
+    if (!  selectCategories.value.id ) {
+        selectCategories.value.id = item.bank.id
     }
     axios
         .put("http://127.0.0.1:8000/api/v1/budget/" + item.id, {
-            bank_id: selectCategories.id,
+            bank_id:   selectCategories.value.id ,
             type: dataForUpdate.type,
             numbers: dataForUpdate.numbers,
             budget: parseFloat(dataForUpdate.budget),
@@ -383,6 +418,7 @@ const updateData = async (item) => {
             console.log(response.data);
             formSubmittedUpdated.value = true;
             fetchData();
+            emit('addBudget')
             //modalItem.value=null;
         })
         .catch((error) => {
@@ -396,6 +432,7 @@ const deleteData = async (id) => {
         .then((response) => {
             console.log(response.data);
             fetchData();
+            emit('addBudget');
         })
         .catch((error) => {
             console.log(error);

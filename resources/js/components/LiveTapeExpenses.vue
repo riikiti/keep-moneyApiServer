@@ -66,7 +66,7 @@
                                     />
                                     <span v-show="v$.date.$error">не выбрана дата</span>
                                 </div>
-                                <button class="form__btn" @click="posthData(createData);$emit('addExpenses')"
+                                <button class="form__btn" @click="posthData(createData);"
                                         :disabled="isButtonDisabled">
                                     Создать
                                 </button>
@@ -180,7 +180,7 @@
                                         />
                                     </div>
                                     <button class="form__btn"
-                                            @click.prevent="updateData(item.id, item); $emit('addExpenses')">
+                                            @click.prevent="updateData(item.id, item); ">
                                         Изменить
                                     </button>
                                 </form>
@@ -204,7 +204,7 @@
                             <button @click="modalOpen(index)" :data-item="item.id">
                                 <img src="../assets/img/svg/pen.svg" alt="update"/>
                             </button>
-                            <button @click="deleteData(item.id,item); $emit('addExpenses')">
+                            <button @click="deleteData(item.id,item)">
                                 <img src="../assets/img/svg/trash.svg" alt="delete"/>
                             </button>
                         </div>
@@ -278,6 +278,8 @@ let count = 1
 let oldPrice = [];
 let oldId = [];
 
+
+const emit = defineEmits("addExpenses");
 
 const rules = computed(() => {
     return {
@@ -509,6 +511,7 @@ const posthData = async (create) => {
                     .then((response) => {
                         console.log(response.data);
                         formSubmitted.value = true;
+                        emit('addExpenses')
                         //modalCreate()
                         fetchData()
                     })
@@ -560,6 +563,7 @@ const deleteData = async (id, item) => {
         .then((response) => {
             console.log(response.data);
             fetchData();
+            emit('addExpenses')
         })
         .catch((error) => {
             console.log(error);
@@ -682,6 +686,7 @@ const updateData = async (item_id, item) => {
                     .then((response) => {
                         console.log(response.data);
                         formSubmittedUpdated.value = true;
+                        emit('addExpenses')
                         fetchData()
                     })
                     .catch((error) => {
@@ -781,6 +786,7 @@ const updateData = async (item_id, item) => {
                     .then((response) => {
                         console.log(response.data);
                         formSubmittedUpdated.value = true;
+                        emit('addExpenses')
                         fetchData()
                     })
                     .catch((error) => {

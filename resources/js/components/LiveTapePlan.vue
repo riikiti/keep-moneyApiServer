@@ -40,7 +40,7 @@
                                 />
                                 <span v-show="v$.date.$error">не выбрана дата</span>
                             </div>
-                            <button class="form__btn" @click="posthData(createData);$emit('addPlan')">
+                            <button class="form__btn" @click="posthData(createData);">
                                 Создать
                             </button>
                         </form>
@@ -107,7 +107,7 @@
                                                 format="dd/MM/yyyy HH:mm"
                                             />
                                         </div>
-                                        <button class="form__btn" @click.prevent="updateData(item);$emit('addPlan')">
+                                        <button class="form__btn" @click.prevent="updateData(item)">
                                             Изменить
                                         </button>
                                     </form>
@@ -131,7 +131,7 @@
                                 <button @click="modalOpen(index)" :data-item="item.id">
                                     <img src="../assets/img/svg/pen.svg" alt="update"/>
                                 </button>
-                                <button @click="deleteData(item.id);$emit('addPlan')">
+                                <button @click="deleteData(item.id)">
                                     <img src="../assets/img/svg/trash.svg" alt="delete"/>
                                 </button>
                             </div>
@@ -192,6 +192,8 @@ const afterDate = ref(null);
 const formSubmitted = ref(false);
 const formSubmittedUpdated = ref(false);
 
+
+const emit = defineEmits("addPlan");
 
 const rules = computed(() => {
     return {
@@ -281,7 +283,8 @@ const posthData = async (create) => {
             .then((response) => {
                 console.log(response.data);
                 formSubmitted.value = true;
-                createData.value = []
+                createData.value = [];
+                emit('addPlan');
                 //modalCreate();
                 fetchData();
             })
@@ -297,6 +300,7 @@ const deleteData = async (id) => {
         .then((response) => {
             console.log(response.data);
             fetchData();
+            emit('addPlan');
         })
         .catch((error) => {
             console.log(error);
@@ -338,6 +342,7 @@ const updateData = async (item) => {
                     console.log(response.data);
                     formSubmittedUpdated.value = true;
                     fetchData();
+                    emit('addPlan');
                 })
                 .catch((error) => {
                     console.log(error);
@@ -373,6 +378,7 @@ const updateData = async (item) => {
                     console.log(response.data);
                     formSubmittedUpdated.value = true;
                     fetchData();
+                    emit('addPlan');
                 })
                 .catch((error) => {
                     console.log(error);

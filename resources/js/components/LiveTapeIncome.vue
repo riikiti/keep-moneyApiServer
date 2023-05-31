@@ -47,7 +47,7 @@
                                     />
                                     <span v-show="v$.date.$error">не выбрана дата</span>
                                 </div>
-                                <button class="form__btn" @click="posthData(createData);$emit('addIncome')">
+                                <button class="form__btn" @click="posthData(createData)">
                                     Создать
                                 </button>
                             </form>
@@ -132,7 +132,7 @@
                                         />
                                     </div>
                                     <button class="form__btn"
-                                            @click.prevent="updateData(item.id, item);$emit('addIncome')">
+                                            @click.prevent="updateData(item.id, item)">
                                         Изменить
                                     </button>
                                 </form>
@@ -156,7 +156,7 @@
                             <button @click="modalOpen(index)" :data-item="item.id">
                                 <img src="../assets/img/svg/pen.svg" alt="update"/>
                             </button>
-                            <button @click="deleteData(item.id); $emit('addIncome')">
+                            <button @click="deleteData(item.id)">
                                 <img src="../assets/img/svg/trash.svg" alt="delete"/>
                             </button>
                         </div>
@@ -219,6 +219,8 @@ const formSubmittedUpdated = ref(false);
 let oldPrice = [];
 let oldId = 0;
 
+
+const emit = defineEmits("addIncome");
 
 const rules = computed(() => {
     return {
@@ -320,6 +322,7 @@ const posthData = async (create) => {
             .then((response) => {
                 console.log(response.data);
                 formSubmitted.value = true;
+               emit('addIncome')
                 //modalCreate();
                 fetchData();
             })
@@ -346,6 +349,7 @@ const deleteData = async (id) => {
         .then((response) => {
             console.log(response.data);
             fetchData();
+            emit('addIncome')
         })
         .catch((error) => {
             console.log(error);
@@ -384,6 +388,7 @@ const updateData = async (item_id, item) => {
                 console.log(response.data);
                 formSubmittedUpdated.value = true;
                 fetchData();
+                emit('addIncome')
             })
             .catch((error) => {
                 console.log(error);
