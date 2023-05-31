@@ -66,7 +66,8 @@
                                     />
                                     <span v-show="v$.date.$error">не выбрана дата</span>
                                 </div>
-                                <button class="form__btn" @click="posthData(createData);$emit('addExpenses')">
+                                <button class="form__btn" @click="posthData(createData);$emit('addExpenses')"
+                                        :disabled="isButtonDisabled">
                                     Создать
                                 </button>
                             </form>
@@ -290,6 +291,10 @@ const rules1 = computed(() => {
     };
 });
 
+
+const isButtonDisabled = computed(() => {
+        return items.value.length === 0
+})
 
 const v$ = useVuelidate(rules, createData.value);
 const v1$ = useVuelidate(rules1, selectCategories.value);
