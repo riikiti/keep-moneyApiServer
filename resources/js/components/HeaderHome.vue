@@ -7,11 +7,12 @@
                         <h2 class="title title--2">Авторизация</h2>
                         <div class="form__block">
                             <label class="title title--3">Почта</label>
-                            <input type="text" required v-model="AuthEmail" placeholder="Введите почту"/>
+                            <input type="email" required v-model="AuthEmail" placeholder="Введите почту"/>
                         </div>
                         <div class="form__block">
                             <label class="title title--3">Пароль</label>
                             <input type="password" required v-model="AuthPass" placeholder="Введите пароль"/>
+                            <span v-show="error">не правильно набрана почта или пароль</span>
                         </div>
                         <button class="form__btn" @click.prevent="login()">Авторизоваться</button>
                         <p class="form__tree">
@@ -88,6 +89,7 @@ import axios from "axios";
 import router from '../router/index'
 
 const reg = ref(false);
+const error=ref(false);
 
 const registration = () => {
     reg.value = !reg.value;
@@ -166,6 +168,7 @@ const login = () => {
             router.push({name: 'profile'});
         }).catch(err => {
             console.log(err.response)
+            error.value=true
         })
     });
 
