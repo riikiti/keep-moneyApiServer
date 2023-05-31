@@ -19,6 +19,7 @@
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Категория</label>
+                                    {{selectCategories}}
                                     <categories-selector :option="categories"
                                                          @getSelect="getSelect"
                                     >
@@ -26,14 +27,15 @@
                                             Выберите категорию
                                         </template>
                                     </categories-selector>
-                                    <span v-show="!getSelectBudget">>не выбрана категория</span>
+                                    <span v-show="v1$.id.$error">>не выбрана категория</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Категория</label>
+                                    {{selectBudget}}
                                     <budget-selector :option="categoriesBudget"
                                                      @getSelect="getSelectBudget"
                                     ></budget-selector>
-                                    <span v-show="!getSelectBudget">не выбрана карта</span>
+                                    <span v-show="v2$.id.$error">>не выбрана категория</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Дата</label>
@@ -131,7 +133,8 @@
                                             format="dd/MM/yyyy HH:mm"
                                         />
                                     </div>
-                                    <button class="form__btn" @click.prevent="updateData(item.id, item);$emit('addIncome')">
+                                    <button class="form__btn"
+                                            @click.prevent="updateData(item.id, item);$emit('addIncome')">
                                         Изменить
                                     </button>
                                 </form>
@@ -219,25 +222,28 @@ let oldPrice = [];
 let oldId = 0;
 
 
-
 const rules = computed(() => {
     return {
         price: {required, minLength: minLength(2)},
-        date:{required}
+        date: {required}
+    };
+});
+
+const rules1 = computed(() => {
+    return {
+       id:{required}
     };
 });
 
 
-
-
-
 const v$ = useVuelidate(rules, createData.value);
-
+const v1$ = useVuelidate(rules1, selectCategories.value);
+const v2$ = useVuelidate(rules1, selectBudget.value);
 
 
 const getSelect = (item) => {
     console.log(item.id)
-    selectCategories.id = item.id
+    selectCategories.value.id = item.id
     selectCategories.name = item.name
 }
 
@@ -246,22 +252,22 @@ const modalOpen = (index) => {
     modal.value = !modal.value;
     console.log(modal.value);
     formSubmittedUpdated.value = false;
-    selectCategories.id=null;
-    selectBudget.id=null;
+    selectCategories.value.id = null;
+     selectBudget.value.id  = null;
 };
 
 const modalCreate = () => {
     modalForCreate.value = !modalForCreate.value;
     console.log(modalForCreate.value);
     formSubmitted.value = false;
-    selectCategories.id=null;
-    selectBudget.id=null;
+    selectCategories.value.id = null;
+     selectBudget.value.id  = null;
 };
 
 
 const getSelectBudget = (item) => {
     console.log(item.id)
-    selectBudget.id = item.id
+     selectBudget.value.id  = item.id
     selectBudget.budget = item.budget
     console.log(selectBudget.id)
 }
@@ -290,10 +296,10 @@ const fetchData = async (page) => {
 };
 const posthData = async (create) => {
     const result = await v$.value.$validate();
-    const result1 = await vc$.value.$validate();
-    const result2 = await vb$.value.$validate();
-    console.log("log",result1,result2)
-    if (result && result1 &&result2) {
+    const result1 = await v1$.value.$validate();
+    const result2 = await v2$.value.$validate();
+
+    if (result && result1 && result2){
         try {
             create.date = create.date.toISOString().substring(0, 19).replace("T", " ");
             console.log(create)
@@ -308,10 +314,10 @@ const posthData = async (create) => {
             .post("http://127.0.0.1:8000/api/v1/income", {
                 title: create.title,
                 price: create.price,
-                categories_id: selectCategories.id,
+                categories_id: selectCategories.value.id,
                 date: create.date,
                 user_id: id,
-                budget_id: selectBudget.id
+                budget_id:  selectBudget.value.id
             })
             .then((response) => {
                 console.log(response.data);
@@ -323,7 +329,7 @@ const posthData = async (create) => {
                 console.log(error);
             });
         axios
-            .put("http://127.0.0.1:8000/api/v1/increase-budget/" + selectBudget.id, {
+            .put("http://127.0.0.1:8000/api/v1/increase-budget/" +  selectBudget.value.id , {
                 update_budget: create.price,
             })
             .then((response) => {
@@ -355,7 +361,7 @@ const updateData = async (item_id, item) => {
     } catch {
     }
     if (!selectCategories.id) {
-        selectCategories.id = item.category.id
+        selectCategories.value.id = item.category.id
         selectCategories.name = item.category.name
     }
 
@@ -364,17 +370,17 @@ const updateData = async (item_id, item) => {
     }
     console.log("item price", item.price, "old price", oldPrice)
     if (!selectBudget.id) {
-        selectBudget.id = item.budget.id
+         selectBudget.value.id  = item.budget.id
         selectBudget.name = item.budget.name
         console.log(selectCategories.id, item.category.id)
         axios
             .put("http://127.0.0.1:8000/api/v1/income/" + item.id, {
                 title: item.title,
                 price: item.price,
-                categories_id: selectCategories.id,
+                categories_id: selectCategories.value.id,
                 date: item.date,
                 user_id: id,
-                budget_id: selectBudget.id
+                budget_id:  selectBudget.value.id
             })
             .then((response) => {
                 console.log(response.data);
@@ -386,7 +392,7 @@ const updateData = async (item_id, item) => {
             });
 
         axios
-            .put("http://127.0.0.1:8000/api/v1/reduse-budget/" + selectBudget.id, {
+            .put("http://127.0.0.1:8000/api/v1/reduse-budget/" +  selectBudget.value.id , {
                 update_budget: oldPrice[0],
             })
             .then((response) => {
@@ -396,7 +402,7 @@ const updateData = async (item_id, item) => {
                 console.log(error);
             });
         axios
-            .put("http://127.0.0.1:8000/api/v1/increase-budget/" + selectBudget.id, {
+            .put("http://127.0.0.1:8000/api/v1/increase-budget/" +  selectBudget.value.id , {
                 update_budget: item.price,
             })
             .then((response) => {
@@ -413,10 +419,10 @@ const updateData = async (item_id, item) => {
             .put("http://127.0.0.1:8000/api/v1/income/" + item.id, {
                 title: item.title,
                 price: item.price,
-                categories_id: selectCategories.id,
+                categories_id: selectCategories.value.id,
                 date: item.date,
                 user_id: id,
-                budget_id: selectBudget.id
+                budget_id:  selectBudget.value.id
             })
             .then((response) => {
                 console.log(response.data);
@@ -438,7 +444,7 @@ const updateData = async (item_id, item) => {
                 console.log(error);
             });
         axios
-            .put("http://127.0.0.1:8000/api/v1/increase-budget/" + selectBudget.id, {
+            .put("http://127.0.0.1:8000/api/v1/increase-budget/" +  selectBudget.value.id , {
                 update_budget: item.price,
             })
             .then((response) => {
