@@ -1,0 +1,32 @@
+.advantages {
+    margin-top: 30px;
+    justify-content: center;
+    min-width: 1160px;
+    .advantages__block {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 150px;
+        &-img {
+            img {
+                object-fit: cover;
+                width: 400px;
+            }
+        }
+        &-content {
+            display: flex;
+            flex-direction: column;
+            width: 500px;
+
+            &__title {
+                margin-bottom: 20px;
+            }
+            p{
+                width: 400px;
+                margin: 10px 0;
+            }
+
+        }
+    }
+}
