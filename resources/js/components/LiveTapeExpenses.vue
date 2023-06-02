@@ -47,7 +47,8 @@
                                     <span v-show="v1$.id.$error">не выбрана категория</span>
                                 </div>
                                 <div class="form__block">
-                                    <label class="title title--3">Категория</label>
+                                    <label class="title title--3">Карта</label>
+                                    {{selectBudget}}
                                     <budget-selector :option="categoriesBudget"
                                                      @getSelect="getSelectBudget"
                                     ></budget-selector>
@@ -421,12 +422,12 @@ const modalOpen = (index) => {
     formSubmitted.value = false;
     formSubmittedUpdated.value = false;
     selectCategories.id = null;
-    selectBudget.value.id = null;
+    selectBudget.id = null;
     closeCircle.value = true
 };
 const modalCreate = () => {
     selectCategories.id = null;
-    selectBudget.value.id = null;
+    selectBudget.id = null;
     modalForCreate.value = !modalForCreate.value;
     console.log(modalForCreate.value);
     formSubmitted.value = false;
@@ -499,7 +500,7 @@ const posthData = async (create) => {
                         });
                 })
 
-                console.log('log', id, checkId.value, selectCategories.id, selectBudget.value.id, create.date)
+                console.log('log', id, checkId.value,  selectCategories.value.id, selectBudget.value.id, create.date)
                 axios
                     .post("http://127.0.0.1:8000/api/v1/expenses", {
                         user_id: id,
@@ -623,7 +624,7 @@ const updateData = async (item_id, item) => {
     }
 
 
-    if (!selectBudget.id) {
+    if (!selectBudget.value.id) {
         selectBudget.value.id = item.budget.id
         axios
             .put("http://127.0.0.1:8000/api/v1/check/" + item.checks.id, {
