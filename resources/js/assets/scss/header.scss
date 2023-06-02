@@ -1,24 +1,72 @@
-.header{
+.header {
     width: 100%;
     height: 80px;
-    background-color: $header;
+    background-color: transparent;
     display: flex;
     justify-content: center;
-    img{
-        width: 150px;
+    position: relative;
+    z-index: 4;
 
+    img {
+        width: 150px;
     }
-    &__content{
+
+    &__content {
         min-width: 1160px;
         padding: 0 40px;
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
-    @include vp-1279(){
+
+    @include vp-1279() {
         padding: 0 40px;
     }
-    @include vp-768(){
+    @include vp-768() {
         padding: 0 15px;
+    }
+}
+
+.subheader {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    height: 50vh;
+
+    &__wrap {
+        max-width: 1160px;
+        height: max-content;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 50px;
+    }
+
+    &__content {
+        padding: 0 40px;
+        z-index: 3;
+        width: 700px;
+    }
+
+    &__preview {
+        z-index: 3;
+
+        img {
+            object-fit: cover;
+            width: 700px;
+        }
+    }
+
+    &__background {
+        width: 100%;
+        position: absolute;
+        z-index: 2;
+        top: -85px;
+
+        img {
+            object-fit: cover;
+            width: 100%;
+        }
     }
 }

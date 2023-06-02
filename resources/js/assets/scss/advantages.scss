@@ -1,13 +1,16 @@
 .advantages {
-    margin-top: 30px;
+    margin-top: 50px;
     justify-content: center;
-    min-width: 1160px;
+    max-width: 1160px;
+    position: relative;
+    z-index: 3;
+    width: 100%;
     .advantages__block {
         display: flex;
         flex-direction: row;
         align-items: center;
-        justify-content: center;
-        gap: 150px;
+        justify-content: space-between;
+        width: 100%;
         &-img {
             img {
                 object-fit: cover;
