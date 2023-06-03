@@ -5,7 +5,8 @@
             <img src="../../assets/img/homeImages/laptop1.png" alt="laptop">
         </div>
         <div class="home-swiper__swipe">
-            <swiper :slides-per-view="1" :modules="modules" :pagination="{ clickable: true }" :grab-cursor="true"
+            <swiper :slides-per-view="1" :modules="modules" :pagination="{ clickable: true }" :autoplay="{delay: 3000}"
+                    :grab-cursor="true"
                     class="swiper">
                 <swiper-slide>
                     <img src="../../assets/img/homeImages/1.png" alt="man">

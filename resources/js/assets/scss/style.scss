@@ -7,8 +7,7 @@
 
 //anywhere use
 @import 'modal';
-@import 'authorization';
-@import 'header';
+@import 'form';
 
 //page
 @import 'home';
@@ -24,5 +23,9 @@
 @import 'accordion';
 
 //home
+@import 'header';
 @import 'advantages';
 @import 'homeSwiper';
+@import 'reviews';
+@import 'mobile';
+@import 'footer';

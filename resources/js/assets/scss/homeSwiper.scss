@@ -1,12 +1,13 @@
 .home-swiper {
     max-width: 100%;
     overflow: hidden !important;
-    height: 800px;
+    height: 550px;
     width: 100%;
     position: relative;
     z-index: 3;
     display: flex;
     justify-content: center;
+
 
     &__laptop {
         position: absolute;
