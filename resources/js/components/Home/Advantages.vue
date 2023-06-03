@@ -6,24 +6,17 @@
             </div>
             <div class="advantages__block-content">
                 <h2 class="title title--2 advantages__block-content__title">
-                    Lorem ipsum dolor sit amet
+                   Начать просто!
                 </h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae culpa cumque dolorem laborum
-                    officiis recusandae rerum soluta ut! Dolores eos et officia quia voluptates! Atque expedita neque
-                    quas sit ullam.</p>
+                <p>Миллионы людей в России не обладают финансовой грамотностью, а ведь иммено она помогает преумножить капитал и грамотно вести свой бюджет.</p>
             </div>
         </div>
         <div class="advantages__block">
             <div class="advantages__block-content">
                 <h2 class="title title--2 advantages__block-content__title">
-                    Lorem ipsum dolor sit amet
+                   Для этого всего лишь нужно...
                 </h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae culpa cumque dolorem laborum
-                    officiis recusandae rerum soluta ut! Dolores eos et officia quia voluptates! Atque expedita neque
-                    quas sit ullam.</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae culpa cumque dolorem laborum
-                    officiis recusandae rerum soluta ut! Dolores eos et officia quia voluptates! Atque expedita neque
-                    quas sit ullam.</p>
+                <p>Грамотно следить за своими доходами и расходами, ставить планы и анализировать бюджет.</p>
             </div>
             <div class="advantages__block-img">
                 <img src="../../assets/img/homeImages/9.png" alt="man">
@@ -35,24 +28,18 @@
             </div>
             <div class="advantages__block-content">
                 <h2 class="title title--2 advantages__block-content__title">
-                    Lorem ipsum dolor sit amet
+                  Это не сложно!
                 </h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae culpa cumque dolorem laborum
-                    officiis recusandae rerum soluta ut! Dolores eos et officia quia voluptates! Atque expedita neque
-                    quas sit ullam.</p>
+                <p>KeepMoney поможет вам грамотно и быстро вести всю личную бухгалтерию.</p>
             </div>
         </div>
         <div class="advantages__block">
             <div class="advantages__block-content">
                 <h2 class="title title--2 advantages__block-content__title">
-                    Lorem ipsum dolor sit amet
+                   Планируй и достигай
                 </h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae culpa cumque dolorem laborum
-                    officiis recusandae rerum soluta ut! Dolores eos et officia quia voluptates! Atque expedita neque
-                    quas sit ullam.</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae culpa cumque dolorem laborum
-                    officiis recusandae rerum soluta ut! Dolores eos et officia quia voluptates! Atque expedita neque
-                    quas sit ullam.</p>
+                <p>Ставь цели на определенные категории или бюджеты.</p>
+                <p>Начни прямо сейчас всего лишь зарегестрировашись в нашем сервисе.</p>
             </div>
             <div class="advantages__block-img">
                 <img src="../../assets/img/homeImages/5.png" alt="man">

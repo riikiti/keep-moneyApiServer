@@ -1,7 +1,6 @@
 .home-swiper {
     max-width: 100%;
     overflow: hidden !important;
-    margin-top: 30px;
     height: 800px;
     width: 100%;
     position: relative;
@@ -13,10 +12,12 @@
         position: absolute;
         z-index: 4;
         pointer-events: none;
-        img{
+
+        img {
             width: 800px;
         }
     }
+
     &__swipe {
         max-width: 1180px;
         position: relative;
@@ -27,63 +28,115 @@
             .swiper-pagination {
                 width: 100%;
                 height: 100% !important;
-                position: absolute!important;
+                position: absolute !important;
                 z-index: 7;
+
                 .swiper-pagination-bullet {
                     width: 50px;
                     height: 50px;
-                    &:nth-of-type(1){
-                        position: absolute!important;
-                        left: 0!important;
-                        top: 50px!important;
+                    background: linear-gradient(180deg, #2A4A64 0%, #B3C1CC 100%);
+
+                    &:nth-of-type(1) {
+                        position: absolute !important;
+                        left: 0 !important;
+                        top: 50px !important;
+
+                        &:after {
+                            content: "1";
+                            top: 6px;
+                            left: 17px;
+                            position: absolute;
+                            color: $white;
+                            font-weight: 700;
+                            font-size: 36px
+                        }
                     }
-                    &:nth-of-type(2){
-                        position: absolute!important;
-                        right: 0!important;
-                        top: 50px!important;
+
+                    &:nth-of-type(2) {
+                        position: absolute !important;
+                        right: 0 !important;
+                        top: 50px !important;
+
+                        &:after {
+                            content: "2";
+                            top: 6px;
+                            left: 17px;
+                            position: absolute;
+                            color: $white;
+                            font-weight: 700;
+                            font-size: 36px
+                        }
                     }
-                    &:nth-of-type(3){
-                        position: absolute!important;
-                        left: 0!important;
-                        bottom: 50px!important;
+
+                    &:nth-of-type(3) {
+                        position: absolute !important;
+                        left: 0 !important;
+                        bottom: 70px !important;
+
+                        &:after {
+                            content: "3";
+                            top: 6px;
+                            left: 17px;
+                            position: absolute;
+                            color: $white;
+                            font-weight: 700;
+                            font-size: 36px
+                        }
                     }
-                    &:nth-of-type(4){
-                        position: absolute!important;
-                        right: 0!important;
-                        bottom: 50px!important;
+
+                    &:nth-of-type(4) {
+                        position: absolute !important;
+                        right: 0 !important;
+                        bottom: 70px !important;
+
+                        &:after {
+                            content: "4";
+                            top: 6px;
+                            left: 17px;
+                            position: absolute;
+                            color: $white;
+                            font-weight: 700;
+                            font-size: 36px
+
+                        }
                     }
                 }
             }
         }
 
-        &__pagination-text{
+        &__pagination-text {
             position: absolute;
             z-index: 1;
-            p{
+
+            p {
                 margin-top: 10px;
             }
-            &:nth-of-type(2){
-                position: absolute!important;
-                left: 100px!important;
-                top: 85px!important;
+
+            &:nth-of-type(2) {
+                position: absolute !important;
+                left: 75px !important;
+                top: 55px !important;
                 width: 150px;
             }
-            &:nth-of-type(3){
-                position: absolute!important;
-                right:100px!important;
-                top: 85px!important;
+
+            &:nth-of-type(3) {
+                position: absolute !important;
+                right: 75px !important;
+                top: 55px !important;
                 width: 150px;
             }
-            &:nth-of-type(4){
-                position: absolute!important;
-                left: 100px!important;
-                bottom: 0px!important;
-                width: 150px;
+
+            &:nth-of-type(4) {
+                position: absolute !important;
+                left: 75px !important;
+                bottom: 25px !important;
+                width: 250px;
             }
-            &:nth-of-type(5){
-                position: absolute!important;
-                right: 95px!important;
-                bottom: 0px!important;
+
+            &:nth-of-type(5) {
+                position: absolute !important;
+                right: 75px !important;
+                bottom: 0px !important;
                 width: 150px;
             }
         }

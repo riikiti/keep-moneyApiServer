@@ -1,5 +1,5 @@
 <template>
-    <h1 class="title title--2">Lorem ipsum dolor sit amet</h1>
+    <h1 class="title title--2">Наши преимущества</h1>
     <div class="home-swiper">
         <div class="home-swiper__laptop">
             <img src="../../assets/img/homeImages/laptop1.png" alt="laptop">
@@ -25,15 +25,15 @@
             <div class="home-swiper__swipe__pagination-text">
 
                 <h3 class="title title--3">Систематизация</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit!</p>
+                <p>все транзакции находятся в одном приложение</p>
             </div>
 
             <div class="home-swiper__swipe__pagination-text"><h3 class="title title--3">Планирование</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit!</p></div>
-            <div class="home-swiper__swipe__pagination-text"><h3 class="title title--3">Удобный интерфейс</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit!</p></div>
-            <div class="home-swiper__swipe__pagination-text"><h3 class="title title--3">Выбор пользоватлей </h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit!</p>
+                <p>Ставь цели и добивайся их!</p></div>
+            <div class="home-swiper__swipe__pagination-text"><h3 class="title title--3">Интерфейс</h3>
+                <p>интуитивно понятный и удобный интерфейс </p></div>
+            <div class="home-swiper__swipe__pagination-text"><h3 class="title title--3">Функционал</h3>
+                <p>поможет сделать все нужные операции</p>
             </div>
         </div>
     </div>
