@@ -267,6 +267,7 @@ const increase = (item) => {
         .then((response) => {
             console.log(response);
             plus.value = 0;
+            emit('addBudget')
             fetchData();
         })
         .catch((error) => {
@@ -282,6 +283,7 @@ const reduse = (item) => {
         .then((response) => {
             console.log(response.data);
             minus.value = 0
+            emit('addBudget')
             fetchData();
         })
         .catch((error) => {

@@ -20,3 +20,21 @@ INSERT INTO `banks` (`id`, `name`, `color`, `text_color`, `created_at`, `updated
 (3, 'alfa', '#ef3124', 'white', NULL, NULL),
 (4, 'tinkoff', '#fedd2c', 'black', NULL, NULL);
 ```
+
+# Categories
+```
+INSERT INTO `categories` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'Продукты', NULL, NULL),
+(2, 'Одежда', NULL, NULL),
+(3, 'Спорт', NULL, NULL),
+(4, 'Кафе', NULL, NULL),
+(5, 'Семья', NULL, NULL),
+(6, 'Подарки', NULL, NULL),
+(7, 'Образование', NULL, NULL),
+(8, 'Дом', NULL, NULL),
+(9, 'Досуг', NULL, NULL),
+(10, 'Здоровье', NULL, NULL),
+(11, 'Транспорт', NULL, NULL),
+(12, 'Другое', NULL, NULL);
+```
+

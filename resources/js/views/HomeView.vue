@@ -18,7 +18,7 @@ import HomeSwiper from "../components/Home/Swiper.vue";
 import SubHeader from "../components/Home/SubHeader.vue";
 import Reviews from "../components/Home/Reviews.vue";
 import HomeMobile from "../components/Home/Mobile.vue";
-import HomeFooter from "../components/Home/footer.vue";
+import HomeFooter from "../components/Home/Footer.vue";
 
 </script>
 
