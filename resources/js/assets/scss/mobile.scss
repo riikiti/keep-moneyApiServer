@@ -18,6 +18,10 @@
         padding: 0 30px;
         gap: 20px;
     }
+    @include vp-768() {
+        padding: 20px 15px 0 15px;
+        flex-direction: column;
+    }
 
     &__content {
         h2 {

@@ -10,6 +10,9 @@
         width: 100%;
         padding: 0 30px;
     }
+    @include vp-768() {
+        padding: 0 15px;
+    }
 
     .advantages__block {
         display: flex;
@@ -20,6 +23,16 @@
         @include vp-1279() {
            gap: 20px;
         }
+        @include vp-768(){
+            flex-direction: column-reverse;
+            margin-bottom: 20px;
+        }
+        &:nth-of-type(even){
+            @include vp-768(){
+                flex-direction: column;
+            }
+        }
+
         &-img {
             img {
                 object-fit: cover;

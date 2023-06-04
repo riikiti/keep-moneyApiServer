@@ -23,6 +23,9 @@
             width: 100%;
             padding: 0 30px;
         }
+        @include vp-768() {
+            padding: 0 ;
+        }
     }
 
     @include vp-1279() {
@@ -43,6 +46,7 @@
         height: max-content;
     }
 
+
     &__wrap {
         max-width: 1160px;
         height: max-content;
@@ -55,12 +59,21 @@
             width: 100%;
             padding: 0 30px;
         }
+        @include vp-768(){
+            flex-direction: column;
+            padding: 0 15px;
+        }
     }
 
     &__content {
         padding: 0 40px;
         z-index: 3;
         width: 700px;
+        @include vp-1279() {
+
+            width: 100%;
+            padding: 0;
+        }
     }
 
     &__preview {
@@ -71,7 +84,7 @@
             width: 700px;
             @include vp-1279() {
                 width: 100%;
-                padding: 0 30px;
+                padding: 0 ;
             }
 
         }

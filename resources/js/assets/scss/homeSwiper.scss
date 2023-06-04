@@ -7,6 +7,9 @@
     z-index: 5;
     display: flex;
     justify-content: center;
+    @include vp-768() {
+    height: 800px;
+    }
 
 
     &__laptop {
@@ -30,16 +33,25 @@
             width: 100%;
             padding: 0 30px;
         }
+        @include vp-768() {
+            padding: 0 15px;
+        }
         position: relative;
         top: 55px;
         height: max-content;
 
         .swiper {
+            @include vp-768() {
+                height: 800px!important;
+            }
             .swiper-pagination {
                 width: 100%;
                 height: 100% !important;
                 position: absolute !important;
                 z-index: 7;
+                @include vp-768() {
+                    height: 780px!important;
+                }
 
                 .swiper-pagination-bullet {
                     width: 50px;
@@ -50,7 +62,10 @@
                         position: absolute !important;
                         left: 0 !important;
                         top: 50px !important;
-
+                        @include vp-768() {
+                            left: 0 !important;
+                            top: 0 !important;
+                        }
                         &:after {
                             content: "1";
                             top: 6px;
@@ -66,6 +81,11 @@
                         position: absolute !important;
                         right: 0 !important;
                         top: 50px !important;
+
+                        @include vp-768() {
+                            left: 0  !important;
+                            top: 150px !important;
+                        }
 
                         &:after {
                             content: "2";
@@ -83,6 +103,11 @@
                         left: 0 !important;
                         bottom: 70px !important;
 
+                        @include vp-768() {
+                            left: 0 !important;
+                            bottom: 200px !important;
+                        }
+
                         &:after {
                             content: "3";
                             top: 6px;
@@ -98,7 +123,10 @@
                         position: absolute !important;
                         right: 0 !important;
                         bottom: 70px !important;
-
+                        @include vp-768() {
+                            left: 0 !important;
+                            bottom: 70px !important;
+                        }
                         &:after {
                             content: "4";
                             top: 6px;
@@ -130,6 +158,10 @@
                 @include vp-1279() {
                     left: 105px !important;
                 }
+                @include vp-768() {
+                    left: 90px !important;
+                    top: 0px !important;
+                }
             }
 
             &:nth-of-type(3) {
@@ -139,6 +171,10 @@
                 width: 150px;
                 @include vp-1279() {
                     right: 105px !important;
+                }
+                @include vp-768() {
+                    left:90px !important;
+                    top: 150px !important;
                 }
             }
 
@@ -150,6 +186,10 @@
                 @include vp-1279() {
                     left: 105px !important;
                 }
+                @include vp-768() {
+                    left: 90px !important;
+                    bottom: 175px !important;
+                }
             }
 
             &:nth-of-type(5) {
@@ -159,6 +199,11 @@
                 width: 150px;
                 @include vp-1279() {
                     right: 105px !important;
+                }
+                @include vp-768() {
+                    left: 90px !important;
+                    bottom: 55px !important;
+                    width: 250px;
                 }
             }
         }
@@ -177,6 +222,11 @@
             @include vp-1279() {
                 width: 500px;
                 height: 500px;
+            }
+            @include vp-768(){
+                width: 200px;
+                height: 500px;
+
             }
         }
     }
