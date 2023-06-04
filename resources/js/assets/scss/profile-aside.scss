@@ -12,7 +12,12 @@ aside {
     flex-direction: column;
     justify-content: space-between;
     overflow: hidden;
-
+    @include vp-1279() {
+        position: fixed;
+        width: 100%;
+        z-index: 120;
+        height: 100vh;
+    }
 
     li {
         white-space: nowrap;
@@ -35,11 +40,18 @@ aside {
             opacity: 1;
         }
 
+        @include vp-1279() {
+            text-align: center;
+        }
+
         &.router-link-exact-active {
             white-space: nowrap;
             width: 100%;
             background-color: $light-gray;
             border-radius: 2px;
+            @include vp-1279() {
+                text-align: center;
+            }
 
             img {
                 width: 25px;
@@ -51,14 +63,24 @@ aside {
     &-logo {
         transition: 0.2s ease-in-out;
         margin-left: 30px;
+        @include vp-1279() {
+            margin: 0;
+        }
+
         img {
             height: 80px;
         }
+
     }
 
     &-menu {
         transition: 0.2s ease-in-out;
         margin: 15px 0;
+        @include vp-1279() {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
 
         img {
             transition: 0.2s ease-in-out;

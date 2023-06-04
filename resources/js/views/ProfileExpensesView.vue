@@ -2,6 +2,8 @@
 
     <div class="profile" :class="{ 'profile-active': menu}">
         <div class="profile__header">
+            <button class="profile__mobile-btn" @click="openMenu()"><img src="../assets/img/svg/arrowBlack.svg" alt=""><img
+                src="../assets/img/svg/arrowBlack.svg" alt=""></button>
             <h1 class="title title--2">Расходы</h1>
         </div>
         <ProfileAside @openMenu="openMenu()"></ProfileAside>

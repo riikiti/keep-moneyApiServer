@@ -2,6 +2,7 @@
 
     <div class="profile" :class="{ 'profile-active': menu}">
     <div class="profile__header">
+        <button class="profile__mobile-btn" @click="openMenu()">открыть</button>
       <h1 class="title title--2">Настройки</h1>
     </div>
       <ProfileAside @openMenu="openMenu()"></ProfileAside>
