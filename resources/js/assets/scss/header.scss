@@ -12,11 +12,17 @@
     }
 
     &__content {
-        min-width: 1160px;
-        padding: 0 40px;
+        max-width: 1160px;
+        width: 100%;
+        padding: 0 5px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        @include vp-1279() {
+            max-width: initial;
+            width: 100%;
+            padding: 0 30px;
+        }
     }
 
     @include vp-1279() {
@@ -33,6 +39,9 @@
     justify-content: center;
     position: relative;
     height: 50vh;
+    @include vp-1279() {
+        height: max-content;
+    }
 
     &__wrap {
         max-width: 1160px;
@@ -41,6 +50,11 @@
         justify-content: space-between;
         align-items: center;
         margin-top: 50px;
+        @include vp-1279() {
+            max-width: initial;
+            width: 100%;
+            padding: 0 30px;
+        }
     }
 
     &__content {
@@ -55,6 +69,11 @@
         img {
             object-fit: cover;
             width: 700px;
+            @include vp-1279() {
+                width: 100%;
+                padding: 0 30px;
+            }
+
         }
     }
 

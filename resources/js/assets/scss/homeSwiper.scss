@@ -16,11 +16,20 @@
 
         img {
             width: 800px;
+            @include vp-1279() {
+                display: none;
+                width: 500px;
+            }
         }
     }
 
     &__swipe {
         max-width: 1180px;
+        @include vp-1279() {
+            max-width: initial;
+            width: 100%;
+            padding: 0 30px;
+        }
         position: relative;
         top: 55px;
         height: max-content;
@@ -118,6 +127,9 @@
                 left: 75px !important;
                 top: 55px !important;
                 width: 150px;
+                @include vp-1279() {
+                    left: 105px !important;
+                }
             }
 
             &:nth-of-type(3) {
@@ -125,6 +137,9 @@
                 right: 75px !important;
                 top: 55px !important;
                 width: 150px;
+                @include vp-1279() {
+                    right: 105px !important;
+                }
             }
 
             &:nth-of-type(4) {
@@ -132,6 +147,9 @@
                 left: 75px !important;
                 bottom: 25px !important;
                 width: 250px;
+                @include vp-1279() {
+                    left: 105px !important;
+                }
             }
 
             &:nth-of-type(5) {
@@ -139,6 +157,9 @@
                 right: 75px !important;
                 bottom: 0px !important;
                 width: 150px;
+                @include vp-1279() {
+                    right: 105px !important;
+                }
             }
         }
     }
@@ -150,9 +171,13 @@
         overflow: hidden;
 
         img {
-            object-fit: cover;
+            object-fit: contain;
             overflow: hidden;
             height: 400px;
+            @include vp-1279() {
+                width: 500px;
+                height: 500px;
+            }
         }
     }
 

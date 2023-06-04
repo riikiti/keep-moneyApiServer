@@ -12,6 +12,13 @@
     position: relative;
     z-index: 5;
 
+    @include vp-1279() {
+        max-width: initial;
+        width: 100%;
+        padding: 0 30px;
+        gap: 20px;
+    }
+
     &__content {
         h2 {
             margin-bottom: 20px;
@@ -28,6 +35,10 @@
         overflow: hidden;
         img {
             width: 300px;
+            @include vp-1279() {
+                width: 100%;
+            }
+
         }
     }
 }
