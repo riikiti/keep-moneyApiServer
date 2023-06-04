@@ -48,7 +48,6 @@
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Карта</label>
-                                    {{selectBudget}}
                                     <budget-selector :option="categoriesBudget"
                                                      @getSelect="getSelectBudget"
                                     ></budget-selector>

@@ -29,6 +29,10 @@
         justify-content: space-between;
         opacity: 1;
 
+        @include vp-1279(){
+            opacity: 1;
+            display: flex;
+        }
         button {
             padding: 0 10px;
 
