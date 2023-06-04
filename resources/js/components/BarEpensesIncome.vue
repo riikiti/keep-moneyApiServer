@@ -72,9 +72,7 @@ const option = ref( {
     tooltip: {
         trigger: 'axis'
     },
-    legend: {
-        data: ['Rainfall', 'Evaporation']
-    },
+
     toolbox: {
         show: true,
         feature: {
@@ -441,9 +439,6 @@ const pushToBar=()=>{
     bar.value.setOption({
         tooltip: {
             trigger: 'axis'
-        },
-        legend: {
-            data: ['Rainfall', 'Evaporation']
         },
         toolbox: {
             show: true,
