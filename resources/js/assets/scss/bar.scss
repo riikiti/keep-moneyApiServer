@@ -1,22 +1,25 @@
-.bar{
+.bar {
     position: relative;
     width: 100%;
     height: max-content;
 
     .vue-echarts {
-        div{
-            width: initial!important;
+        div {
+            width: initial !important;
         }
     }
 
-    &-select{
+    &-select {
         width: 100%;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        @include vp-768() {
+            flex-direction: column;
+        }
 
-        &__navbar{
+        &__navbar {
             display: flex;
             flex-direction: row;
             font-size: 18px;
@@ -27,31 +30,48 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 30px;
-            li{
+
+            li {
                 cursor: pointer;
+            }
+
+            @include vp-768() {
+                flex-direction: column;
             }
         }
 
-        .modal__select{
+        .modal__select {
             max-width: 200px;
             width: 100%;
-            &-selected{
+            @include vp-768() {
+                max-width: initial;
+
+            }
+
+            &-selected {
                 height: 20px;
                 border: none;
                 justify-content: initial;
-                span{
+                @include vp-768() {
+                    padding: 0;
+                    display: flex;
+                    justify-content: center;
+                }
+
+                span {
                     margin-right: 10px;
                 }
             }
         }
     }
 
-    &__empty{
+    &__empty {
         width: 100%;
         position: absolute;
         top: 50%;
         margin: 0 auto;
-        p{
+
+        p {
             text-align: center;
         }
     }

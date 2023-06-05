@@ -42,8 +42,8 @@
         padding: 55px 55px;
         max-height: 95vh;
         min-height: max-content;
-        overflow-y: scroll;
-
+        // overflow-y: scroll;
+        overflow-y: auto;
 
 
         @include vp-768() {
@@ -71,6 +71,7 @@
     &__select {
         width: 100%;
         cursor: pointer;
+
         &-selected {
             img {
                 width: 20px;
@@ -131,6 +132,9 @@
                     line-height: 32px;
                     color: $label-color !important;
 
+                        text-align: center;
+
+
                     &:nth-of-type(even) {
                         background-color: $light-white;
                     }
@@ -155,3 +159,4 @@
     left: -7px !important;
 
 }
+

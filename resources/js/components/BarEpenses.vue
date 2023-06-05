@@ -65,7 +65,7 @@ console.log(weekAgo.getDate() - 7, weekAgo.getMonth() + 1)
 yearAgo.setFullYear(yearAgo.getFullYear() - 1);
 weekAgo.setDate(weekAgo.getDate() - 7);
 monthAgo.setMonth(monthAgo.getMonth() - 1);
-monthAgo = monthAgo.getFullYear().toString() + "-" + (monthAgo.getMonth() + 1).toString() + "-" + monthAgo.getDate().toString();
+monthAgo = monthAgo.getFullYear().toString() + "-" + (monthAgo.getMonth() + 2).toString() + "-" + 1;
 weekAgo = weekAgo.getFullYear().toString() + "-" + (weekAgo.getMonth() + 1).toString() + "-" + weekAgo.getDate().toString();
 yearAgo = yearAgo.getFullYear().toString() + "-" + (yearAgo.getMonth() + 1).toString() + "-" + yearAgo.getDate().toString();
 today = today.getFullYear().toString() + "-" + (today.getMonth() + 1).toString() + "-" + today.getDate().toString();
@@ -155,6 +155,7 @@ const getPeriod = (item) => {
         case 2:
             finishDate.value = monthAgo;
             periodDate.value = getDaysInMonth(new Date().getFullYear(), new Date().getMonth());
+            console.log(finishDate.value)
             break;
         case 3:
             finishDate.value = yearAgo;
@@ -169,7 +170,7 @@ const getPeriod = (item) => {
             }
         })
         .then((response) => {
-            // console.log(response.data.data)
+             console.log(response.data.data)
             all.value = 0;
             data.value = response.data.data;
             console.log(response.data)
