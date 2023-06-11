@@ -71,7 +71,7 @@ const fetchData = async () => {
     let periodValue = [];
     let plans = [];
     axios
-        .get('http://127.0.0.1:8000/api/v1/plan/' + id)
+        .get('http://37.140.195.93/api/v1/plan/' + id)
         .then((response) => {
             console.log(response.data.data)
             data.value = response.data.data;
@@ -86,7 +86,7 @@ const fetchData = async () => {
             console.log("plans", plans)
             plans.forEach((plan) => {
                 axios
-                    .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {
+                    .get('http://37.140.195.93/api/v1/expenses/' + id, {
                         params: {
                             start: plan.start,
                             finish: plan.finish,

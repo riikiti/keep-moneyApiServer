@@ -325,7 +325,7 @@ const addItemUpdate = () => {
 
 const deleteItem = (id) => {
     axios
-        .delete(`http://127.0.0.1:8000/api/v1/item/${id}`)
+        .delete(`http://37.140.195.93/api/v1/item/${id}`)
         .then((response) => {
             console.log(response.data);
 
@@ -437,7 +437,7 @@ const fetchData = async (page) => {
         page = 1;
     }
     axios
-        .get('http://127.0.0.1:8000/api/v1/expenses/' + id, {params: {page: page, paginate: true, per_page: 5}})
+        .get('http://37.140.195.93/api/v1/expenses/' + id, {params: {page: page, paginate: true, per_page: 5}})
         .then((response) => {
             data.value = response.data.data;
             data.value.reverse();
@@ -471,7 +471,7 @@ const posthData = async (create) => {
         totalPriceSum()
         console.log(create.title, totalPrice, create.date)
         axios
-            .post("http://127.0.0.1:8000/api/v1/check", {
+            .post("http://37.140.195.93/api/v1/check", {
                 title: create.title,
                 total_price: totalPrice.value,
 
@@ -485,7 +485,7 @@ const posthData = async (create) => {
                 items.value.forEach((el) => {
                     console.log(el.name, el.price, el.count, checkId.value);
                     axios
-                        .post("http://127.0.0.1:8000/api/v1/item", {
+                        .post("http://37.140.195.93/api/v1/item", {
                             name: el.name,
                             price: el.price,
                             count: el.count,
@@ -501,7 +501,7 @@ const posthData = async (create) => {
 
                 console.log('log', id, checkId.value,  selectCategories.value.id, selectBudget.value.id, create.date)
                 axios
-                    .post("http://127.0.0.1:8000/api/v1/expenses", {
+                    .post("http://37.140.195.93/api/v1/expenses", {
                         user_id: id,
                         check_id: checkId.value,
                         categories_id: selectCategories.value.id,
@@ -534,7 +534,7 @@ const posthData = async (create) => {
         updateBudget.value.budget -= Number(totalPrice.value);
         console.log(updateBudget.value, updateBudget.value.budget)
         axios
-            .put("http://127.0.0.1:8000/api/v1/budget/" + selectBudget.value.id, {
+            .put("http://37.140.195.93/api/v1/budget/" + selectBudget.value.id, {
                 bank_id: updateBudget.value.bank.id,
                 type: updateBudget.value.type,
                 numbers: updateBudget.value.numbers,
@@ -559,7 +559,7 @@ const posthData = async (create) => {
 };
 const deleteData = async (id, item) => {
     axios
-        .delete(`http://127.0.0.1:8000/api/v1/expenses/${id}`)
+        .delete(`http://37.140.195.93/api/v1/expenses/${id}`)
         .then((response) => {
             console.log(response.data);
             fetchData();
@@ -570,7 +570,7 @@ const deleteData = async (id, item) => {
         });
 
     axios
-        .delete(`http://127.0.0.1:8000/api/v1/check/${item.checks.id}`)
+        .delete(`http://37.140.195.93/api/v1/check/${item.checks.id}`)
         .then((response) => {
             console.log(response.data);
         })
@@ -582,7 +582,7 @@ const deleteData = async (id, item) => {
     try {
         item.value.checks.items.forEach((el) => {
             axios
-                .delete(`http://127.0.0.1:8000/api/v1/item/${el.id}`)
+                .delete(`http://37.140.195.93/api/v1/item/${el.id}`)
                 .then((response) => {
                     console.log(response.data);
 
@@ -626,7 +626,7 @@ const updateData = async (item_id, item) => {
     if (!selectBudget.value.id) {
         selectBudget.value.id = item.budget.id
         axios
-            .put("http://127.0.0.1:8000/api/v1/check/" + item.checks.id, {
+            .put("http://37.140.195.93/api/v1/check/" + item.checks.id, {
                 title: item.checks.title,
                 total_price: totalPriceUpdate.value,
 
@@ -642,7 +642,7 @@ const updateData = async (item_id, item) => {
                     if (el.newItem === true) {
                         console.log(11111111111111, el, checkId.value)
                         axios
-                            .post("http://127.0.0.1:8000/api/v1/item", {
+                            .post("http://37.140.195.93/api/v1/item", {
                                 name: el.name,
                                 price: Number(el.price),
                                 count: Number(el.count),
@@ -657,7 +657,7 @@ const updateData = async (item_id, item) => {
                     } else {
 
                         axios
-                            .put("http://127.0.0.1:8000/api/v1/item/" + el.id, {
+                            .put("http://37.140.195.93/api/v1/item/" + el.id, {
                                 name: el.name,
                                 price: Number(el.price),
                                 count: Number(el.count),
@@ -676,7 +676,7 @@ const updateData = async (item_id, item) => {
                 console.log(5555555, selectCategories.id, selectBudget.value.id)
 
                 axios
-                    .put("http://127.0.0.1:8000/api/v1/expenses/" + item.id, {
+                    .put("http://37.140.195.93/api/v1/expenses/" + item.id, {
                         user_id: id,
                         check_id: item.checks.id,
                         categories_id: selectCategories.id,
@@ -694,7 +694,7 @@ const updateData = async (item_id, item) => {
                     });
 
                 axios
-                    .put("http://127.0.0.1:8000/api/v1/increase-budget/" + selectBudget.value.id, {
+                    .put("http://37.140.195.93/api/v1/increase-budget/" + selectBudget.value.id, {
                         update_budget: oldPrice[0],
                     })
                     .then((response) => {
@@ -705,7 +705,7 @@ const updateData = async (item_id, item) => {
                         console.log(error);
                     });
                 axios
-                    .put("http://127.0.0.1:8000/api/v1/reduse-budget/" + selectBudget.value.id, {
+                    .put("http://37.140.195.93/api/v1/reduse-budget/" + selectBudget.value.id, {
                         update_budget: totalPriceUpdate.value,
                     })
                     .then((response) => {
@@ -725,7 +725,7 @@ const updateData = async (item_id, item) => {
     } else {
 
         axios
-            .put("http://127.0.0.1:8000/api/v1/check/" + item.checks.id, {
+            .put("http://37.140.195.93/api/v1/check/" + item.checks.id, {
                 title: item.checks.title,
                 total_price: totalPriceUpdate.value,
 
@@ -741,7 +741,7 @@ const updateData = async (item_id, item) => {
                     if (el.newItem === true) {
                         console.log(11111111111111, el, checkId.value)
                         axios
-                            .post("http://127.0.0.1:8000/api/v1/item", {
+                            .post("http://37.140.195.93/api/v1/item", {
                                 name: el.name,
                                 price: Number(el.price),
                                 count: Number(el.count),
@@ -756,7 +756,7 @@ const updateData = async (item_id, item) => {
                     } else {
 
                         axios
-                            .put("http://127.0.0.1:8000/api/v1/item/" + el.id, {
+                            .put("http://37.140.195.93/api/v1/item/" + el.id, {
                                 name: el.name,
                                 price: Number(el.price),
                                 count: Number(el.count),
@@ -776,7 +776,7 @@ const updateData = async (item_id, item) => {
                 console.log("item price", item.checks.total_price, "old price", oldPrice)
 
                 axios
-                    .put("http://127.0.0.1:8000/api/v1/expenses/" + item.id, {
+                    .put("http://37.140.195.93/api/v1/expenses/" + item.id, {
                         user_id: id,
                         check_id: item.checks.id,
                         categories_id: selectCategories.id,
@@ -794,7 +794,7 @@ const updateData = async (item_id, item) => {
                     });
 
                 axios
-                    .put("http://127.0.0.1:8000/api/v1/increase-budget/ " + oldId[0], {
+                    .put("http://37.140.195.93/api/v1/increase-budget/ " + oldId[0], {
                         update_budget: oldPrice[0],
                     })
                     .then((response) => {
@@ -806,7 +806,7 @@ const updateData = async (item_id, item) => {
                         console.log(error);
                     });
                 axios
-                    .put("http://127.0.0.1:8000/api/v1/reduse-budget/" + selectBudget.value.id, {
+                    .put("http://37.140.195.93/api/v1/reduse-budget/" + selectBudget.value.id, {
                         update_budget: totalPriceUpdate.value,
                     })
                     .then((response) => {
@@ -833,7 +833,7 @@ const updateData = async (item_id, item) => {
 fetchData();
 const fetchCategories = async () => {
     axios
-        .get('http://127.0.0.1:8000/api/v1/categories')
+        .get('http://37.140.195.93/api/v1/categories')
         .then((response) => {
             categories.value = response.data.data;
             console.log(categories.value)
@@ -848,7 +848,7 @@ fetchCategories()
 
 const fetchCategoriesBudget = async () => {
     axios
-        .get('http://127.0.0.1:8000/api/v1/budget/' + id)
+        .get('http://37.140.195.93/api/v1/budget/' + id)
         .then((response) => {
             categoriesBudget.value = response.data.data;
             console.log(categoriesBudget.value)

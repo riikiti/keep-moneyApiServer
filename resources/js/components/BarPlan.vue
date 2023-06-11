@@ -93,7 +93,7 @@ const fetchData = async () => {
     let periodsTitle = [];
     let periodValue = [];
     axios
-        .get('http://127.0.0.1:8000/api/v1/plan-budget/' + id)
+        .get('http://37.140.195.93/api/v1/plan-budget/' + id)
         .then((response) => {
             // console.log(response.data.data)
             data.value = response.data.data;

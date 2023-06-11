@@ -162,7 +162,7 @@ const getPeriod = (item) => {
             break;
     }
     axios
-        .get('http://127.0.0.1:8000/api/v1/income/' + id, {
+        .get('http://37.140.195.93/api/v1/income/' + id, {
             params: {
                 start: finishDate.value,
             }
@@ -291,7 +291,7 @@ getPeriod(firstEnter)
 
 const fetchCategories = async () => {
     axios
-        .get('http://127.0.0.1:8000/api/v1/income')
+        .get('http://37.140.195.93/api/v1/income')
         .then((response) => {
             period.value = response.data.data;
             let uniqueMonths = [];
@@ -330,7 +330,7 @@ const getAllPeriod = (item) => {
     finishDate.value = monthAgo;
     periodDate.value = datesArray;
     axios
-        .get('http://127.0.0.1:8000/api/v1/income/' + id, {
+        .get('http://37.140.195.93/api/v1/income/' + id, {
             params: {
                 start: dateStart,
                 finish: lastDayOfMonth

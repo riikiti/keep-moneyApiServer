@@ -261,7 +261,7 @@ const getSelect = (item) => {
 const increase = (item) => {
     console.log(plus)
     axios
-        .put("http://127.0.0.1:8000/api/v1/increase-budget/" + item.id, {
+        .put("http://37.140.195.93/api/v1/increase-budget/" + item.id, {
             update_budget: plus.value,
         })
         .then((response) => {
@@ -277,7 +277,7 @@ const increase = (item) => {
 
 const reduse = (item) => {
     axios
-        .put("http://127.0.0.1:8000/api/v1/reduse-budget/" + item.id, {
+        .put("http://37.140.195.93/api/v1/reduse-budget/" + item.id, {
             update_budget: minus.value,
         })
         .then((response) => {
@@ -293,7 +293,7 @@ const reduse = (item) => {
 
 const fetchData = async () => {
     axios
-        .get('http://127.0.0.1:8000/api/v1/budget/' + id)
+        .get('http://37.140.195.93/api/v1/budget/' + id)
         .then((response) => {
             // console.log(response.data.data)
             data.value = response.data.data;
@@ -311,7 +311,7 @@ const posthData = async (createData) => {
     if (result && result1) {
         let id = localStorage.getItem('id');
         axios
-            .post("http://127.0.0.1:8000/api/v1/budget", {
+            .post("http://37.140.195.93/api/v1/budget", {
                 type: createData.type,
                 budget: createData.budget,
                 bank_id:   selectCategories.value.id ,
@@ -407,7 +407,7 @@ const updateData = async (item) => {
         selectCategories.value.id = item.bank.id
     }
     axios
-        .put("http://127.0.0.1:8000/api/v1/budget/" + item.id, {
+        .put("http://37.140.195.93/api/v1/budget/" + item.id, {
             bank_id:   selectCategories.value.id ,
             type: dataForUpdate.type,
             numbers: dataForUpdate.numbers,
@@ -430,7 +430,7 @@ const updateData = async (item) => {
 
 const deleteData = async (id) => {
     axios
-        .delete(`http://127.0.0.1:8000/api/v1/budget/${id}`)
+        .delete(`http://37.140.195.93/api/v1/budget/${id}`)
         .then((response) => {
             console.log(response.data);
             fetchData();
@@ -443,7 +443,7 @@ const deleteData = async (id) => {
 
 const fetchCategories = async () => {
     axios
-        .get('http://127.0.0.1:8000/api/v1/bank')
+        .get('http://37.140.195.93/api/v1/bank')
         .then((response) => {
             console.log(response.data)
             banks.value = response.data.data;

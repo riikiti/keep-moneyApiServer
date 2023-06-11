@@ -280,7 +280,7 @@ const fetchData = async (page) => {
         page = 1;
     }
     axios
-        .get('http://127.0.0.1:8000/api/v1/plan-budget/' + id, {params: {page: page, paginate: true, per_page: 5}})
+        .get('http://37.140.195.93/api/v1/plan-budget/' + id, {params: {page: page, paginate: true, per_page: 5}})
         .then((response) => {
             data.value = response.data.data;
             data.value.reverse();
@@ -314,7 +314,7 @@ const posthData = async (create) => {
 
 
         axios
-            .post("http://127.0.0.1:8000/api/v1/plan-budget", {
+            .post("http://37.140.195.93/api/v1/plan-budget", {
                 title: create.title,
                 value: create.price,
                 budget_id: selectBudget.value.id,
@@ -339,7 +339,7 @@ const posthData = async (create) => {
 
 const deleteData = async (id) => {
     axios
-        .delete(`http://127.0.0.1:8000/api/v1/plan-budget/${id}`)
+        .delete(`http://37.140.195.93/api/v1/plan-budget/${id}`)
         .then((response) => {
             console.log(response.data);
             fetchData();
@@ -366,7 +366,7 @@ const updateData = async (item) => {
                 item.title = item.budgets.bank.name + " " + afterDate.dateStart.slice(0, 11) + " - " + afterDate.dateFinish.slice(0, 11);
             }
             axios
-                .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
+                .put("http://37.140.195.93/api/v1/plan-budget/" + item.id, {
                     title: item.title,
                     value: item.value,
                     budget_id: selectBudget.value.id,
@@ -400,7 +400,7 @@ const updateData = async (item) => {
             console.log(afterDate.value)
             console.log(111111111111, selectBudget)
             axios
-                .put("http://127.0.0.1:8000/api/v1/plan-budget/" + item.id, {
+                .put("http://37.140.195.93/api/v1/plan-budget/" + item.id, {
                     title: item.title,
                     value: item.value,
                     budget_id: selectBudget.value.id,
@@ -432,7 +432,7 @@ fetchData();
 
 const fetchCategories = async () => {
     axios
-        .get('http://127.0.0.1:8000/api/v1/budget/' + id)
+        .get('http://37.140.195.93/api/v1/budget/' + id)
         .then((response) => {
             categories.value = response.data.data;
             console.log(categories.value)

@@ -118,7 +118,7 @@ const getPeriod = (item) => {
     }
     newData.value = [];
     axios
-        .get('http://127.0.0.1:8000/api/v1/income/' + id, {
+        .get('http://37.140.195.93/api/v1/income/' + id, {
             params: {
                 category: selectCategories.id,
                 start:finishDate.value,
@@ -189,7 +189,7 @@ const getSelect = (item) => {
     selectCategories.name = item.name
     newData.value = [];
     axios
-        .get('http://127.0.0.1:8000/api/v1/income/' + id, {
+        .get('http://37.140.195.93/api/v1/income/' + id, {
             params: {
                 category: selectCategories.id,
                 start:finishDate.value,
@@ -257,7 +257,7 @@ const getSelect = (item) => {
 
 const fetchData = async () => {
     axios
-        .get('http://127.0.0.1:8000/api/v1/income/' + id)
+        .get('http://37.140.195.93/api/v1/income/' + id)
         .then((response) => {
             // console.log(response.data.data)
             all.value = 0;
@@ -286,7 +286,7 @@ const fetchData = async () => {
 
 const fetchCategories = async () => {
     axios
-        .get('http://127.0.0.1:8000/api/v1/income-categories')
+        .get('http://37.140.195.93/api/v1/income-categories')
         .then((response) => {
             categories.value = response.data.data;
             categories.value.push({id:0,name:'все'});

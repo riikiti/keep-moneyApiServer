@@ -135,7 +135,7 @@ const submitForm = async () => {
                 localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN']);
                 router.push({name: 'profile'});
 
-                axios.get('http://127.0.0.1:8000/api/v1/users/' + JSON.parse(response.config.data).email).then(response => {
+                axios.get('http://37.140.195.93/api/v1/users/' + JSON.parse(response.config.data).email).then(response => {
                     //console.log(response.data.id);
                     localStorage.setItem('id', response.data.id);
                 })
@@ -160,7 +160,7 @@ const login = () => {
             //console.log(response.config.headers['X-XSRF-TOKEN']);
 
             console.log(JSON.parse(response.config.data).email);
-            axios.get('http://127.0.0.1:8000/api/v1/users/' + JSON.parse(response.config.data).email).then(response => {
+            axios.get('http://37.140.195.93/api/v1/users/' + JSON.parse(response.config.data).email).then(response => {
                 //console.log(response.data.id);
                 localStorage.setItem('id', response.data.id);
             })
