@@ -6,7 +6,7 @@
             </h2>
             <categories-selector :option="period"
                                  @getSelect="getPeriod"
-                                 :id="3"
+                                 :id="1"
             >
                 <template v-slot:title>
                     периуд
@@ -53,7 +53,7 @@ monthAgo = monthAgo.getFullYear().toString() + "-" + (monthAgo.getMonth() + 1).t
 weekAgo = weekAgo.getFullYear().toString() + "-" + (weekAgo.getMonth() + 1).toString() + "-" + weekAgo.getDate().toString();
 yearAgo = yearAgo.getFullYear().toString() + "-" + (yearAgo.getMonth() + 1).toString() + "-" + yearAgo.getDate().toString();
 console.log(weekAgo, monthAgo, yearAgo)
-let lastDayCurrYear = new Date( new Date().getFullYear(), 11, 31 )
+let lastDayCurrYear = new Date(new Date().getFullYear(), 11, 31)
 let date = new Date();
 let lastDayDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 const option = ref({
@@ -94,15 +94,15 @@ const getPeriod = (item) => {
     switch (item.id) {
         case 1:
             finishDate.value = weekAgo;
-            startDate.vaue= null;
+            startDate.vaue = null;
             break;
         case 2:
             finishDate.value = monthAgo;
-            startDate.vaue=lastDayDate;
+            startDate.vaue = lastDayDate;
             break;
         case 3:
             finishDate.value = yearAgo;
-            startDate.vaue=lastDayCurrYear;
+            startDate.vaue = lastDayCurrYear;
             break;
     }
     console.log(44444444, finishDate.value)
@@ -176,8 +176,15 @@ const getPeriod = (item) => {
 
 
 const fetchData = async () => {
+    finishDate.value = weekAgo;
+    startDate.vaue = null;
     axios
-        .get('https://keepmoney.site/api/v1/income/' + id)
+        .get('https://keepmoney.site/api/v1/income/' + id, {
+            params: {
+                start: finishDate.value,
+                finish: startDate.vaue
+            }
+        })
         .then((response) => {
             // console.log(response.data.data)
             data.value = response.data.data;

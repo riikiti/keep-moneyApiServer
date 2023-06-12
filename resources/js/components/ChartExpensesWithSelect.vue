@@ -14,7 +14,7 @@
             </categories-selector>
             <categories-selector :option="period"
                                  @getSelect="getPeriod"
-                                 :id="3"
+                                 :id="1"
             >
                 <template v-slot:title>
                     периуд
@@ -272,8 +272,15 @@ const getSelect = (item) => {
 }
 
 const fetchData = async () => {
+    finishDate.value = weekAgo;
+    startDate.vaue = null;
     axios
-        .get('https://keepmoney.site/api/v1/expenses/' + id)
+        .get('https://keepmoney.site/api/v1/expenses/' + id, {
+            params: {
+                start: finishDate.value,
+                finish: startDate.vaue
+            }
+        })
         .then((response) => {
             // console.log(response.data.data)
             all.value = 0;
