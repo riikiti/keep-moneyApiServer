@@ -339,7 +339,7 @@ const updateData = async (item) => {
             afterDate.dateStart = updateDate.value[0].toISOString().substring(0, 19).replace("T", " ");
             afterDate.dateFinish = updateDate.value[1].toISOString().substring(0, 19).replace("T", " ");
             console.log(111, afterDate)
-            if (!selectBudget.id) {
+            if (!selectBudget.value.id) {
                 selectBudget.value.id = item.budgets.id;
             }
             if (!item.title) {
@@ -374,7 +374,7 @@ const updateData = async (item) => {
                 item.title = item.budgets.bank.name + " " + afterDate.dateStart.slice(0, 11) + " - " + afterDate.dateFinish.slice(0, 11);
             }
 
-            if (!selectBudget.id) {
+            if (!selectBudget.value.id) {
                 selectBudget.value.id = item.budgets.id;
             }
             console.log(afterDate.value)

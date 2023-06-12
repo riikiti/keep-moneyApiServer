@@ -29,7 +29,7 @@
                                     <span v-show="v1$.id.$error">не выбрана категория</span>
                                 </div>
                                 <div class="form__block">
-                                    <label class="title title--3">Категория</label>
+                                    <label class="title title--3">Выберите карту</label>
                                     <budget-selector :option="categoriesBudget"
                                                      @getSelect="getSelectBudget"
                                     ></budget-selector>
@@ -269,7 +269,7 @@ const getSelectBudget = (item) => {
     console.log(item.id)
      selectBudget.value.id  = item.id
     selectBudget.budget = item.budget
-    console.log(selectBudget.id)
+    console.log(selectBudget.value.id)
 }
 
 const memberOldValue = (price, id) => {
@@ -308,7 +308,7 @@ const posthData = async (create) => {
         if (!create.title) {
             create.title = selectCategories.name.toString() + " " + create.date.slice(0, 11);
         }
-        console.log(selectBudget.id)
+        console.log(selectBudget.value.id)
 
         axios
             .post("https://keepmoney.site/api/v1/income", {
@@ -362,7 +362,7 @@ const updateData = async (item_id, item) => {
         console.log(item.date)
     } catch {
     }
-    if (!selectCategories.id) {
+    if (!selectCategories.value.id) {
         selectCategories.value.id = item.category.id
         selectCategories.name = item.category.name
     }
@@ -371,10 +371,10 @@ const updateData = async (item_id, item) => {
         item.title = selectCategories.name + " " + item.date.slice(0, 11);
     }
     console.log("item price", item.price, "old price", oldPrice)
-    if (!selectBudget.id) {
+    if (!selectBudget.value.id) {
          selectBudget.value.id  = item.budget.id
         selectBudget.name = item.budget.name
-        console.log(selectCategories.id, item.category.id)
+        console.log(selectCategories.value.id, item.category.id)
         axios
             .put("https://keepmoney.site/api/v1/income/" + item.id, {
                 title: item.title,
@@ -417,7 +417,7 @@ const updateData = async (item_id, item) => {
 
 
     } else {
-        console.log(selectCategories.id, item.category.id)
+        console.log(selectCategories.value.id, item.category.id)
         axios
             .put("https://keepmoney.site/api/v1/income/" + item.id, {
                 title: item.title,

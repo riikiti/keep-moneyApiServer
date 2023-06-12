@@ -311,7 +311,7 @@ const deleteData = async (id) => {
 const updateData = async (item) => {
     console.log(12345, updateDate.value)
     console.log(555, item.category.id)
-    console.log(!selectCategories.id)
+    console.log(!selectCategories.value.id)
     try {
         if (updateDate.value !== null) {
             afterDate.dateStart = updateDate.value[0].toISOString().substring(0, 19).replace("T", " ");
@@ -319,7 +319,7 @@ const updateData = async (item) => {
             console.log(111, afterDate.dateStart)
 
 
-            if (!selectCategories.id) {
+            if (!selectCategories.value.id) {
                 selectCategories.value.id = item.category.id
                 selectCategories.name = item.category.name
                 console.log(111111111111, selectCategories.value.id)
@@ -355,7 +355,7 @@ const updateData = async (item) => {
             console.log(222, afterDate.dateStart)
 
 
-            if (!selectCategories.id) {
+            if (!selectCategories.value.id) {
                 selectCategories.value.id = item.category.id
                 selectCategories.name = item.category.name
                 console.log(111111111111, selectCategories.value.id)
