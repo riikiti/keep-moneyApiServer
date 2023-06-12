@@ -10,35 +10,32 @@
         <div class="reviews__content">
             <div class="reviews__content-item">
                 <div class="reviews__content-header">
-                    <h3 class="title title--3">Ivan Hakefz</h3>
+                    <h3 class="title title--3">Трубаков Евгений</h3>
                     <img src="../../assets/img/homeImages/stars.png" alt="stars">
                 </div>
                 <div class="reviews__content-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam amet autem, culpa
-                        debitis, dignissimos dolorum enim ex fugiat iste modi molestias necessitatibus nobis officiis
-                        recusandae suscipit ut voluptates, voluptatibus!</p>
+                    <p>Это потрясающий сервис, который действительно помогает людям грамотнее вести свои личные финансы!</p>
+                    <p>Не знаю кто написал этот сервис, но он явно "одаренный"</p>
                 </div>
             </div>
             <div class="reviews__content-item">
                 <div class="reviews__content-header">
-                    <h3 class="title title--3">Ivan Hakefz</h3>
+                    <h3 class="title title--3">Коростелёв Дмитрий</h3>
                     <img src="../../assets/img/homeImages/stars.png" alt="stars">
                 </div>
                 <div class="reviews__content-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam amet autem, culpa
-                        debitis, dignissimos dolorum enim ex fugiat iste modi molestias necessitatibus nobis officiis
-                        recusandae suscipit ut voluptates, voluptatibus!</p>
+                    <p>Сервис сильно выделяется на фоне аналогов, был приятно удивлен функционалом и дизайном проекта. Все удобно и интуитивно понятно </p>
+                    <p>Пользуюсь сервисом, ставлю 5 звезд</p>
                 </div>
             </div>
             <div class="reviews__content-item">
                 <div class="reviews__content-header">
-                    <h3 class="title title--3">Ivan Hakefz</h3>
+                    <h3 class="title title--3">Трубаков Андрей</h3>
                     <img src="../../assets/img/homeImages/stars.png" alt="stars">
                 </div>
                 <div class="reviews__content-body">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aliquam amet autem, culpa
-                        debitis, dignissimos dolorum enim ex fugiat iste modi molestias necessitatibus nobis officiis
-                        recusandae suscipit ut voluptates, voluptatibus!</p>
+                    <p>Сервис, лично мне, понравился своей простотой. В нем удобно систематизированы все данные нужные для видения личного бюджета</p>
+                    <p>Пользуюсь достаточно давно, все устраивает</p>
                 </div>
             </div>
         </div>

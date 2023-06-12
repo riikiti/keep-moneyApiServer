@@ -9,10 +9,10 @@
                 <img src="../../assets/img/keep-moneyLogoBlack.png" alt="logo">
             </div>
             <div class="footer__links">
-                <a href="https://github.com/riikiti/keep-moneyApiServer">
+                <a href="https://github.com/riikiti/keep-moneyApiServer" target="_blank">
                     <img src="../../assets/img/homeImages/GitHub-logo.png" alt="logo">
                 </a>
-                <a href="https://vk.com/id157696922" class="footer__links-vk">
+                <a href="https://vk.com/id157696922" class="footer__links-vk" target="_blank">
                     <img src="../../assets/img/homeImages/vk.png" alt="logo">
                 </a>
             </div>

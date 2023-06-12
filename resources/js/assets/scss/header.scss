@@ -41,7 +41,7 @@
     display: flex;
     justify-content: center;
     position: relative;
-    height: 50vh;
+    height: 450px;
     @include vp-1279() {
         height: max-content;
     }
