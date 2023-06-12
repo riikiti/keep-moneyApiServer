@@ -9,6 +9,14 @@
         }
     }
 
+    p {
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 12px;
+        text-align: center;
+        color: #6f767e;
+    }
+
     &-select {
         width: 100%;
         display: flex;

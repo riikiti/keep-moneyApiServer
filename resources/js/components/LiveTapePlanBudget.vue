@@ -142,13 +142,8 @@
                                 </template>
                             </Modal>
                         </teleport>
-                        {{ getPercent(item) }}
                         <div class="item__content">
-                            <h3 class="title title--4">{{ item.budgets.bank.name }} - {{ item.budgets.numbers }} <span
-                                class="item__persent"
-                                :class="getPercentColor() ? 'item__persent-minus' : 'item__persent-plus'">{{
-                                    percent
-                                }} %</span></h3>
+                            <h3 class="title title--4">{{ item.budgets.bank.name }} - {{ item.budgets.numbers }} </h3>
 
                             <div class="item-action">
                                 <button @click="modalOpen(index)" :data-item="item.id">
@@ -241,22 +236,7 @@ const getSelect = (item) => {
     selectBudget.budget = item.budget
 }
 
-const getPercent = (item) => {
-    percent.value = 0
-    if (Number(item.budgets.budget) < Number(item.budget_on_start)) {
-        percent.value = ((100 + ((Number(item.budgets.budget) / Number(item.budget_on_start)) * -100)) * -1).toFixed(2)
-    } else {
-        percent.value = ((Number(item.budgets.budget) / Number(item.value)) * 100).toFixed(2)
-    }
-    if (Number(item.budgets.budget) === Number(item.budget_on_start)) {
-        percent.value = 0
-    }
-}
 
-
-const getPercentColor = () => {
-    return percent.value < 0;
-}
 
 const modalOpen = (index) => {
     modalIndex.value = index;

@@ -24,6 +24,10 @@
         flex-direction: row;
         align-items: center;
         white-space: nowrap;
+        @include vp-768(){
+            flex-direction: column;
+            gap: 20px;
+        }
         .modal__select{
             margin: 0 auto;
            max-width: 200px;

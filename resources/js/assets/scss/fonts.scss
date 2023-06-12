@@ -28,10 +28,11 @@
         font-weight: 700;
         font-size: 24px;
         line-height: 28px;
-        @include vp-768() {
-            font-size: 24px;
-            line-height: 32px;
+        @include vp-1279() {
+            font-size: 18px;
+            line-height: 22px;
         }
+
     }
 
     &--4 {

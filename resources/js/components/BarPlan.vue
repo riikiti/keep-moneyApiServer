@@ -5,6 +5,12 @@
                 <slot name="title"></slot>
             </h2>
         </div>
+        <div v-if="data===null" class="bar__empty">
+            <h3 class="title title--3">
+               Графика планов пока нет
+            </h3>
+            <p>добавьте план для отображения графика.</p>
+        </div>
         <div v-if="!data">
             <preloader></preloader>
         </div>
@@ -156,7 +162,7 @@ const fetchData = async () => {
                             data: periodValue
                         }
                     ]
-                }, 400);
+                }, 2000);
 
             })
         })

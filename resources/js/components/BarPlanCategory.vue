@@ -5,10 +5,17 @@
                 <slot name="title"></slot>
             </h2>
         </div>
+        <div v-if="data===null" class="bar__empty">
+            <h3 class="title title--3">
+                Графика планов пока нет
+            </h3>
+            <p>добавьте план для отображения графика.</p>
+        </div>
         <div v-if="!data">
             <preloader></preloader>
         </div>
         <vue-echarts v-else :option="option" ref="bar"/>
+        <p>если не отображается план, проверьте есть ли расходы по данной категории</p>
     </div>
 </template>
 
@@ -85,6 +92,7 @@ const fetchData = async () => {
             })
             console.log("plans", plans)
             plans.forEach((plan) => {
+                console.log("eto plan",plan.category)
                 axios
                     .get('https://keepmoney.site/api/v1/expenses/' + id, {
                         params: {
@@ -96,7 +104,7 @@ const fetchData = async () => {
                     .then((response) => {
                         console.log(response.data.data)
                         data.value = response.data.data;
-                        const res = {};
+                        let res = {};
                         let name = "";
                         console.log(plan.max_price)
                         data.value.forEach(item => {
@@ -117,6 +125,8 @@ const fetchData = async () => {
                             periodsTitle.push(key)
                             periodValue.push((res[key]).toFixed(2));
                         });
+                        res = null;
+                        name = ""
                         setTimeout(() => {
                             bar.value.setOption({
                                 tooltip: {
@@ -158,7 +168,7 @@ const fetchData = async () => {
                                         data: periodValue
                                     }
                                 ]
-                            }, 400);
+                            }, 2000);
 
                         })
                     })
