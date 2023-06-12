@@ -55,7 +55,7 @@ const period = [{name: "неделя", id: 1},
 
 
 const finishDate = ref(null);
-
+const startDate = ref(null);
 console.log(weekAgo.getDate() - 7,weekAgo.getMonth()+1)
 
 yearAgo.setFullYear(yearAgo.getFullYear() - 1);
@@ -65,8 +65,9 @@ monthAgo = monthAgo.getFullYear().toString() + "-" + (monthAgo.getMonth()+1).toS
 weekAgo = weekAgo.getFullYear().toString() + "-" + (weekAgo.getMonth()+1).toString() + "-" + weekAgo.getDate().toString();
 yearAgo = yearAgo.getFullYear().toString() + "-" + (yearAgo.getMonth()+1).toString() + "-" + yearAgo.getDate().toString();
 console.log(weekAgo, monthAgo, yearAgo)
-
-
+let lastDayCurrYear = new Date( new Date().getFullYear(), 11, 31 )
+let date = new Date();
+let lastDayDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 const option = ref({
     tooltip: {
         trigger: "item",
@@ -102,12 +103,15 @@ const getPeriod = (item) => {
     switch (item.id) {
         case 1:
             finishDate.value = weekAgo;
+            startDate.vaue= null;
             break;
         case 2:
             finishDate.value = monthAgo;
+            startDate.vaue=lastDayDate;
             break;
         case 3:
             finishDate.value = yearAgo;
+            startDate.vaue=lastDayCurrYear;
             break;
     }
     console.log(44444444,finishDate.value)
@@ -123,6 +127,7 @@ const getPeriod = (item) => {
             params: {
                 category: selectCategories.id,
                 start:finishDate.value,
+                finish: startDate.vaue
             }
         })
         .then((response) => {
@@ -202,6 +207,7 @@ const getSelect = (item) => {
             params: {
                 category: selectCategories.id,
                 start:finish.value,
+                finish: startDate.vaue
             }
         })
         .then((response) => {

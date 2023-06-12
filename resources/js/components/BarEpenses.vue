@@ -51,13 +51,13 @@ const periodDate = ref(['Пон', 'Вт', 'Сре', 'Чет', 'Пят', 'Суб'
 const firstEnter = ref(null)
 
 const periods = [{name: "неделя", id: 1},
-    {name: "этот месяц", id: 2},
+    {name: "текущий месяц", id: 2},
     {name: "год", id: 3},]
 const period = ref([])
 
 
 const finishDate = ref(null);
-
+const startDate = ref(null);
 
 firstEnter.id = 1;
 console.log(weekAgo.getDate() - 7, weekAgo.getMonth() + 1)
@@ -70,6 +70,9 @@ weekAgo = weekAgo.getFullYear().toString() + "-" + (weekAgo.getMonth() + 1).toSt
 yearAgo = yearAgo.getFullYear().toString() + "-" + (yearAgo.getMonth() + 1).toString() + "-" + yearAgo.getDate().toString();
 today = today.getFullYear().toString() + "-" + (today.getMonth() + 1).toString() + "-" + today.getDate().toString();
 console.log(weekAgo, monthAgo, yearAgo)
+let lastDayCurrYear = new Date(new Date().getFullYear(), 11, 31)
+let date = new Date();
+let lastDayDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 const dates = ref(null);
 
 
@@ -84,15 +87,18 @@ const option = ref({
     toolbox: {
         show: true,
         feature: {
-            dataView: { show: true, readOnly: false },
-            magicType: { show: true, type: ['line', 'bar'] },
-            saveAsImage: { show: true }
+
+            magicType: {show: true, type: ['line', 'bar']},
+            saveAsImage: {show: true}
         }
     },
     series: [
         {
             data: [],
-            type: 'bar'
+            type: 'bar',
+            itemStyle: {
+                color: '#a90000'
+            },
         }
     ]
 });
@@ -151,26 +157,33 @@ const getPeriod = (item) => {
             })
             console.log(perDate.value)
             periodDate.value = perDate.value
+            startDate.vaue = null;
             break;
         case 2:
             finishDate.value = monthAgo;
             periodDate.value = getDaysInMonth(new Date().getFullYear(), new Date().getMonth());
             console.log(finishDate.value)
+            startDate.vaue = lastDayDate;
             break;
         case 3:
             finishDate.value = yearAgo;
             periodDate.value = getAllMonthsInYear(new Date().getFullYear());
             console.log(periodDate.value)
+            startDate.vaue = lastDayCurrYear;
             break;
     }
+
+
     axios
         .get('https://keepmoney.site/api/v1/expenses/' + id, {
             params: {
                 start: finishDate.value,
+                finish: startDate.vaue
+
             }
         })
         .then((response) => {
-             console.log(response.data.data)
+            console.log(response.data.data)
             all.value = 0;
             data.value = response.data.data;
             console.log(response.data)
@@ -269,9 +282,9 @@ const getPeriod = (item) => {
                     toolbox: {
                         show: true,
                         feature: {
-                            dataView: { show: true, readOnly: false },
-                            magicType: { show: true, type: ['line', 'bar'] },
-                            saveAsImage: { show: true }
+
+                            magicType: {show: true, type: ['line', 'bar']},
+                            saveAsImage: {show: true}
                         }
                     },
                     tooltip: {
@@ -283,7 +296,10 @@ const getPeriod = (item) => {
                     series: [
                         {
                             data: result,
-                            type: 'bar'
+                            type: 'bar',
+                            itemStyle: {
+                                color: '#a90000'
+                            },
                         }
                     ]
                 })
@@ -393,9 +409,9 @@ const getAllPeriod = (item) => {
                     toolbox: {
                         show: true,
                         feature: {
-                            dataView: { show: true, readOnly: false },
-                            magicType: { show: true, type: ['line', 'bar'] },
-                            saveAsImage: { show: true }
+
+                            magicType: {show: true, type: ['line', 'bar']},
+                            saveAsImage: {show: true}
                         }
                     },
                     tooltip: {
@@ -407,7 +423,11 @@ const getAllPeriod = (item) => {
                     series: [
                         {
                             data: result,
-                            type: 'bar'
+                            type: 'bar',
+
+                            itemStyle: {
+                                color: '#a90000'
+                            },
                         }
                     ]
                 })

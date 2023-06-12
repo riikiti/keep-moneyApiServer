@@ -8,8 +8,11 @@
     height: 100vh;
     overflow: hidden;
     transition: 0.2s ease-in-out;
-    @include vp-1279() {
+    @include vp-1599() {
         overflow-y: initial;
+    }
+    @include vp-1279() {
+
         grid-template-areas: "aside header header header"
         "aside livetape livetape livetape"
          "aside content content content";
@@ -34,8 +37,9 @@
             transition: 0.2s ease-in-out;
             margin-left: -10px;
         }
-        @include vp-1279(){
-            .profile__aside{
+
+        @include vp-1279() {
+            .profile__aside {
                 display: none;
             }
             grid-template-columns:  3fr 3fr 2fr;
@@ -217,7 +221,7 @@
                 margin-top: -3px;
                 text-align: center;
             }
-            @include vp-768(){
+            @include vp-768() {
                 margin-top: 5px;
             }
         }
@@ -231,7 +235,7 @@
     &__aside {
         grid-area: aside;
         background-color: $light-black;
-        @include vp-1279(){
+        @include vp-1279() {
             display: block;
         }
     }
@@ -253,16 +257,18 @@
 
     }
 
-    &__mobile-btn{
+    &__mobile-btn {
         display: none;
         position: absolute;
-       left: 0;
+        left: 0;
         top: 10px;
-        img{
+
+        img {
             width: 20px;
             transform: rotate(180deg);
         }
-        @include vp-1279(){
+
+        @include vp-1279() {
             display: block;
         }
     }

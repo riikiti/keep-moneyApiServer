@@ -24,6 +24,12 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
 });
 
+
+
+
+
+
+
 Route::apiResources([
     'budget' => BudgetController::class,
     'categories' => CategoriesController::class,
@@ -41,8 +47,3 @@ Route::apiResources([
 
 Route::put('/reduse-budget/{id}', [ReduseBudgetController::class, 'update']);
 Route::put('/increase-budget/{id}', [IncreaseBudgetController::class, 'update']);
-
-
-
-
-

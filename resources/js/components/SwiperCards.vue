@@ -192,7 +192,17 @@
         </swiper-slide>
     </swiper>
     <div v-else>loading...</div>
+<div class="empty-img">
+    <img src="../assets/img/DebitCards/Alfabank.png" alt="">
+    <img src="../assets/img/DebitCards/Vtb.png" alt="">
+    <img src="../assets/img/DebitCards/Sber.png" alt="">
+    <img src="../assets/img/DebitCards/Tinkofа.png" alt="">
 
+
+    <img src="../assets/img/DebitCards/Mir.png" alt="">
+    <img src="../assets/img/DebitCards/MC.png" alt="">
+    <img src="../assets/img/DebitCards/Visa.png" alt="">
+</div>
 
 </template>
 
@@ -342,24 +352,24 @@ const posthData = async (createData) => {
 const cardBank = (item) => {
     switch (item) {
         case 'sber':
-            return 'https://keepmoney.site//resources/js/assets/img/DebitCards/Sber.png'
+            return 'https://keepmoney.site/build/assets/DebitCards/Sber-ffacbedc.png'
         case 'vtb':
-            return 'https://keepmoney.site//resources/js/assets/img/DebitCards/Vtb.png'
+            return 'https://keepmoney.site/build/assets/DebitCards/Vtb-c7bf488a.png'
         case 'alfa':
-            return 'https://keepmoney.site//resources/js/assets/img/DebitCards/Alfabank.png'
+            return 'https://keepmoney.site/build/assets/DebitCards/Alfabank-6460d9a7.png'
         case 'tinkoff':
-            return 'https://keepmoney.site//resources/js/assets/img/DebitCards/Tinkofа.png'
+            return 'https://keepmoney.site/build/assets/DebitCards/Tinkofа-38afb85f.png'
     }
 }
 
 const cardType = (item) => {
     switch (item) {
         case 'mir':
-            return 'https://keepmoney.site//resources/js/assets/img/DebitCards/Mir.png'
+            return 'https://keepmoney.site/build/assets/DebitCards/Mir-8f8dd0d1.png'
         case 'visa':
-            return 'https://keepmoney.site//resources/js/assets/img/DebitCards/Visa.png'
+            return 'https://keepmoney.site/build/assets/DebitCards/Visa-f031699e.png'
         case 'mc':
-            return 'https://keepmoney.site//resources/js/assets/img/DebitCards/MC.png'
+            return 'https://keepmoney.site/build/assets/DebitCards/MC-36e980ef.png'
     }
 }
 
