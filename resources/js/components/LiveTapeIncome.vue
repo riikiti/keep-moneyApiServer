@@ -282,7 +282,7 @@ const fetchData = async (page) => {
         page = 1;
     }
     axios
-        .get('http://37.140.195.93/api/v1/income/' + id, {params: {page: page, paginate: true, per_page: 5}})
+        .get('https://keepmoney.site/api/v1/income/' + id, {params: {page: page, paginate: true, per_page: 5}})
         .then((response) => {
             data.value = response.data.data;
             links.value = response.data.meta
@@ -311,7 +311,7 @@ const posthData = async (create) => {
         console.log(selectBudget.id)
 
         axios
-            .post("http://37.140.195.93/api/v1/income", {
+            .post("https://keepmoney.site/api/v1/income", {
                 title: create.title,
                 price: create.price,
                 categories_id: selectCategories.value.id,
@@ -330,7 +330,7 @@ const posthData = async (create) => {
                 console.log(error);
             });
         axios
-            .put("http://37.140.195.93/api/v1/increase-budget/" +  selectBudget.value.id , {
+            .put("https://keepmoney.site/api/v1/increase-budget/" +  selectBudget.value.id , {
                 update_budget: create.price,
             })
             .then((response) => {
@@ -345,7 +345,7 @@ const posthData = async (create) => {
 
 const deleteData = async (id) => {
     axios
-        .delete(`http://37.140.195.93/api/v1/income/${id}`)
+        .delete(`https://keepmoney.site/api/v1/income/${id}`)
         .then((response) => {
             console.log(response.data);
             fetchData();
@@ -376,7 +376,7 @@ const updateData = async (item_id, item) => {
         selectBudget.name = item.budget.name
         console.log(selectCategories.id, item.category.id)
         axios
-            .put("http://37.140.195.93/api/v1/income/" + item.id, {
+            .put("https://keepmoney.site/api/v1/income/" + item.id, {
                 title: item.title,
                 price: item.price,
                 categories_id: selectCategories.value.id,
@@ -395,7 +395,7 @@ const updateData = async (item_id, item) => {
             });
 
         axios
-            .put("http://37.140.195.93/api/v1/reduse-budget/" +  selectBudget.value.id , {
+            .put("https://keepmoney.site/api/v1/reduse-budget/" +  selectBudget.value.id , {
                 update_budget: oldPrice[0],
             })
             .then((response) => {
@@ -405,7 +405,7 @@ const updateData = async (item_id, item) => {
                 console.log(error);
             });
         axios
-            .put("http://37.140.195.93/api/v1/increase-budget/" +  selectBudget.value.id , {
+            .put("https://keepmoney.site/api/v1/increase-budget/" +  selectBudget.value.id , {
                 update_budget: item.price,
             })
             .then((response) => {
@@ -419,7 +419,7 @@ const updateData = async (item_id, item) => {
     } else {
         console.log(selectCategories.id, item.category.id)
         axios
-            .put("http://37.140.195.93/api/v1/income/" + item.id, {
+            .put("https://keepmoney.site/api/v1/income/" + item.id, {
                 title: item.title,
                 price: item.price,
                 categories_id: selectCategories.value.id,
@@ -437,7 +437,7 @@ const updateData = async (item_id, item) => {
             });
 
         axios
-            .put("http://37.140.195.93/api/v1/reduse-budget/" + oldId, {
+            .put("https://keepmoney.site/api/v1/reduse-budget/" + oldId, {
                 update_budget: oldPrice[0],
             })
             .then((response) => {
@@ -447,7 +447,7 @@ const updateData = async (item_id, item) => {
                 console.log(error);
             });
         axios
-            .put("http://37.140.195.93/api/v1/increase-budget/" +  selectBudget.value.id , {
+            .put("https://keepmoney.site/api/v1/increase-budget/" +  selectBudget.value.id , {
                 update_budget: item.price,
             })
             .then((response) => {
@@ -465,7 +465,7 @@ fetchData();
 
 const fetchCategories = async () => {
     axios
-        .get('http://37.140.195.93/api/v1/income-categories')
+        .get('https://keepmoney.site/api/v1/income-categories')
         .then((response) => {
             categories.value = response.data.data;
             console.log(categories.value)
@@ -477,7 +477,7 @@ const fetchCategories = async () => {
 
 const fetchCategoriesBudget = async () => {
     axios
-        .get('http://37.140.195.93/api/v1/budget/' + id)
+        .get('https://keepmoney.site/api/v1/budget/' + id)
         .then((response) => {
             categoriesBudget.value = response.data.data;
             console.log(categoriesBudget.value)

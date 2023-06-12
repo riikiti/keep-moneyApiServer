@@ -106,7 +106,7 @@ const getPeriodExpenses = (item) => {
     console.log(44444444, finishDate.value)
     all.value = 0;
     axios
-        .get('http://37.140.195.93/api/v1/expenses/' + id, {
+        .get('https://keepmoney.site/api/v1/expenses/' + id, {
             params: {
                 start: finishDate.value,
             }
@@ -147,7 +147,7 @@ const getPeriodIncome = (item) => {
     }
     console.log(44444444, finishDate.value)
     axios
-        .get('http://37.140.195.93/api/v1/income/' + id, {
+        .get('https://keepmoney.site/api/v1/income/' + id, {
             params: {
                 start: finishDate.value,
             }

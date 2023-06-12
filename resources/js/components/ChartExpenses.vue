@@ -105,7 +105,7 @@ const getPeriod = (item) => {
     newData.value = [];
     all.value = 0;
     axios
-        .get('http://37.140.195.93/api/v1/expenses/' + id, {
+        .get('https://keepmoney.site/api/v1/expenses/' + id, {
             params: {
                 start: finishDate.value,
             }
@@ -172,7 +172,7 @@ const getPeriod = (item) => {
 
 const fetchData = async () => {
     axios
-        .get('http://37.140.195.93/api/v1/expenses/' + id)
+        .get('https://keepmoney.site/api/v1/expenses/' + id)
         .then((response) => {
             // console.log(response.data.data)
             data.value = response.data.data;

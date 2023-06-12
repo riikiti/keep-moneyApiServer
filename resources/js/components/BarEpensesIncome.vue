@@ -179,7 +179,7 @@ const getPeriodExpenses = (item) => {
             break;
     }
     axios
-        .get('http://37.140.195.93/api/v1/expenses/' + id, {
+        .get('https://keepmoney.site/api/v1/expenses/' + id, {
             params: {
                 start: finishDate.value,
             }
@@ -309,7 +309,7 @@ const getPeriodIncome = (item) => {
             break;
     }
     axios
-        .get('http://37.140.195.93/api/v1/income/' + id, {
+        .get('https://keepmoney.site/api/v1/income/' + id, {
             params: {
                 start: finishDate.value,
             }
@@ -411,7 +411,7 @@ const getPeriodIncome = (item) => {
 getPeriodExpenses(firstEnter)
 const fetchCategories = async () => {
     axios
-        .get('http://37.140.195.93/api/v1/expenses')
+        .get('https://keepmoney.site/api/v1/expenses')
         .then((response) => {
             period.value = response.data.data;
             let uniqueMonths = [];

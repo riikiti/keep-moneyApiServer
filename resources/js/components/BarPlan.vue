@@ -93,7 +93,7 @@ const fetchData = async () => {
     let periodsTitle = [];
     let periodValue = [];
     axios
-        .get('http://37.140.195.93/api/v1/plan-budget/' + id)
+        .get('https://keepmoney.site/api/v1/plan-budget/' + id)
         .then((response) => {
             // console.log(response.data.data)
             data.value = response.data.data;

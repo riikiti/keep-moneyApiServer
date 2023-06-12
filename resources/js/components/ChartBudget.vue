@@ -60,7 +60,7 @@ const id = localStorage.getItem('id');
 
 const fetchData = async () => {
     axios
-        .get('http://37.140.195.93/api/v1/budget/' + id)
+        .get('https://keepmoney.site/api/v1/budget/' + id)
         .then((response) => {
             // console.log(response.data.data)
             data.value = response.data.data;

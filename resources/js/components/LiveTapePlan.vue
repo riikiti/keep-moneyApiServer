@@ -240,7 +240,7 @@ const fetchData = async (page) => {
         page = 1;
     }
     axios
-        .get('http://37.140.195.93/api/v1/plan/' + id, {params: {page: page, per_page: 5}})
+        .get('https://keepmoney.site/api/v1/plan/' + id, {params: {page: page, per_page: 5}})
         .then((response) => {
             data.value = response.data.data;
             data.value.reverse();
@@ -272,7 +272,7 @@ const posthData = async (create) => {
         }
 
         axios
-            .post("http://37.140.195.93/api/v1/plan", {
+            .post("https://keepmoney.site/api/v1/plan", {
                 title: create.title,
                 max_price: create.price,
                 categories_id: selectCategories.value.id,
@@ -296,7 +296,7 @@ const posthData = async (create) => {
 
 const deleteData = async (id) => {
     axios
-        .delete(`http://37.140.195.93/api/v1/plan/${id}`)
+        .delete(`https://keepmoney.site/api/v1/plan/${id}`)
         .then((response) => {
             console.log(response.data);
             fetchData();
@@ -330,7 +330,7 @@ const updateData = async (item) => {
             }
 
             axios
-                .put("http://37.140.195.93/api/v1/plan/" + item.id, {
+                .put("https://keepmoney.site/api/v1/plan/" + item.id, {
                     title: item.title,
                     max_price: item.max_price,
                     categories_id: selectCategories.value.id,
@@ -365,7 +365,7 @@ const updateData = async (item) => {
             }
 
             axios
-                .put("http://37.140.195.93/api/v1/plan/" + item.id, {
+                .put("https://keepmoney.site/api/v1/plan/" + item.id, {
                     title: item.title,
                     max_price: item.max_price,
                     categories_id: selectCategories.value.id,
@@ -398,7 +398,7 @@ fetchData();
 
 const fetchCategories = async () => {
     axios
-        .get('http://37.140.195.93/api/v1/categories')
+        .get('https://keepmoney.site/api/v1/categories')
         .then((response) => {
             categories.value = response.data.data;
             console.log(categories.value)
