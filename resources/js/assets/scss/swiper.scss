@@ -4,6 +4,9 @@
     //margin-top: 30px;
     height: max-content;
     width: 100%;
+    @include vp-1450() {
+        height: 271px;
+    }
 }
 
 .swiper-horizontal > .swiper-pagination-bullets,
@@ -24,6 +27,9 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        @include vp-1450(){
+            height: 250px;
+        }
 
         span {
             font-family: 'Roboto', sans-serif;
@@ -78,7 +84,7 @@
         border-radius: 12px;
         padding: 10px;
         position: relative;
-        @include vp-768(){
+        @include vp-768() {
             width: 100%;
         }
     }
@@ -111,11 +117,13 @@
         width: 100%;
         text-align: center;
     }
-    &__empty{
+
+    &__empty {
         display: flex;
         flex-direction: column;
     }
 }
-.empty-img{
+
+.empty-img {
     display: none;
 }
