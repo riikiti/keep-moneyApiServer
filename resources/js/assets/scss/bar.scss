@@ -40,6 +40,9 @@
             padding: 0 30px;
 
             li {
+                @include vp-1279(){
+                    padding: 10px 0;
+                }
                 cursor: pointer;
             }
 
