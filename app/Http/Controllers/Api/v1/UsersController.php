@@ -15,7 +15,16 @@ class UsersController extends Controller
      */
     public function index()
     {
-        return UsersResource::collection(User::all());
+        if (empty($_GET['per_page'])) {
+            $per_page = 10;
+        } else {
+            $per_page = $_GET['per_page'];
+        }
+        return UsersResource::collection(User::where('id',"!=",null)
+            ->paginate($per_page));
+
+
+
     }
 
     /**
@@ -34,9 +43,15 @@ class UsersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($email)
+    public function show($id)
     {
-        return User::where('email',$email) -> first();
+        if (empty($_GET['per_page'])) {
+            $per_page = 1000;
+        } else {
+            $per_page = $_GET['per_page'];
+        }
+        return UsersResource::collection(User::where('id',"!=",null)
+            ->paginate($per_page));
     }
 
     /**

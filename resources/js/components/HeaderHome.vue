@@ -38,7 +38,7 @@
                         <div class="form__block">
                             <label class="title title--3">Почта</label>
                             <input
-                                type="mail"
+                                type="email"
                                 placeholder="Введите вашу почту"
                                 v-model="formDate.email"
                             />
@@ -162,7 +162,15 @@ const login = () => {
             console.log(JSON.parse(response.config.data).email);
             axios.get('https://keepmoney.site/api/v1/users/' + JSON.parse(response.config.data).email).then(response => {
                 console.log("id=",response.data.id);
+                console.log("admin=",response.data.admin);
                 localStorage.setItem('id', response.data.id);
+                if (response.data.admin===1){
+                    localStorage.setItem('admin',true);
+                }
+                else {
+                    localStorage.setItem('admin',false);
+                }
+
             })
             localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN']);
             router.push({name: 'profile'});

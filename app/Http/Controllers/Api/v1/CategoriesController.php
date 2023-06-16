@@ -14,7 +14,13 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        return CategoriesResource::collection(Categories::all());
+        if (empty($_GET['per_page'])) {
+            $per_page = 10;
+        } else {
+            $per_page = $_GET['per_page'];
+        }
+        return CategoriesResource::collection(Categories::where('id',"!=",null)
+            ->paginate($per_page));
     }
 
     /**
@@ -28,9 +34,15 @@ class CategoriesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Categories $categories)
+    public function show($id)
     {
-        return new CategoriesResource($categories);
+        if (empty($_GET['per_page'])) {
+            $per_page = 1000;
+        } else {
+            $per_page = $_GET['per_page'];
+        }
+        return CategoriesResource::collection(Categories::where('id',"!=",null)
+            ->paginate($per_page));
     }
 
     /**

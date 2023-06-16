@@ -14,7 +14,13 @@ class IncomeCategoriesController extends Controller
      */
     public function index()
     {
-        return IncomeCategoriesResource::collection(IncomeCategories::all());
+        if (empty($_GET['per_page'])) {
+            $per_page = 10;
+        } else {
+            $per_page = $_GET['per_page'];
+        }
+        return IncomeCategoriesResource::collection(IncomeCategories::where('id',"!=",null)
+            ->paginate($per_page));
     }
 
     /**
@@ -30,7 +36,13 @@ class IncomeCategoriesController extends Controller
      */
     public function show($id)
     {
-        return new IncomeCategoriesResource(IncomeCategories::findOrFail($id));
+        if (empty($_GET['per_page'])) {
+            $per_page = 1000;
+        } else {
+            $per_page = $_GET['per_page'];
+        }
+        return IncomeCategoriesResource::collection(IncomeCategories::where('id',"!=",null)
+            ->paginate($per_page));
     }
 
     /**

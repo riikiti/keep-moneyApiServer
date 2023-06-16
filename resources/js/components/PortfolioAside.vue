@@ -51,6 +51,13 @@
                     </router-link
                     >
                 </li>
+                <li v-if="admin">
+                    <router-link class="title title--4"
+                                 :to="{ name: 'admin' }"
+                    ><img src="../assets/img/svg/home.svg" alt="question"><span>Админка</span>
+                    </router-link
+                    >
+                </li>
             </ul>
         </div>
         <div>
@@ -62,11 +69,14 @@
 <script setup>
 import router from '../router/index'
 
+let admin = localStorage.getItem('admin');
+
 
 const logout = () => {
     axios.post('/logout').then(res => {
         localStorage.removeItem('x_xsrf_token')
         localStorage.removeItem('id')
+        localStorage.removeItem('admin')
         router.push({name: 'home'});
     })
 }

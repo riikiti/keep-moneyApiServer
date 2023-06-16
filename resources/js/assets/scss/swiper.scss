@@ -5,7 +5,7 @@
     height: max-content;
     width: 100%;
     @include vp-1450() {
-        height: 271px;
+        height: 350px;
     }
 }
 
@@ -17,6 +17,9 @@
     position: relative !important;
     top: 25px !important;
     height: 50px !important;
+    @include vp-1279(){
+        top: -15px!important;
+    }
 }
 
 .bank-card {
@@ -29,6 +32,10 @@
         align-items: center;
         @include vp-1450(){
             height: 250px;
+        }
+        @include vp-1279(){
+            height: 350px;
+            margin-top: 25px;
         }
 
         span {

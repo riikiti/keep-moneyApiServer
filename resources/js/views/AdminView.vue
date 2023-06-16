@@ -1,0 +1,291 @@
+<template>
+    <div class="profile" :class="{ 'profile-active': menu}">
+        <div class="profile__header-question">
+            <button class="profile__mobile-btn" @click="openMenu()"><img src="../assets/img/svg/arrowBlack.svg"
+                                                                         alt=""><img
+                src="../assets/img/svg/arrowBlack.svg" alt=""></button>
+            <h1 class="title title--2">Admin panel</h1>
+
+        </div>
+        <ProfileAside @openMenu="openMenu()"></ProfileAside>
+        <div class="profile__question">
+            <ul class="profile__question__navbar">
+                <li @click="getUsers()">
+                    <span>Пользователи</span>
+                </li>
+                <li @click="getCategories()">
+                    <span>Категории - Доходы</span>
+                </li>
+                <li @click="getCategoriesIncome()">
+                    <span>Категории - Расходы</span>
+                </li>
+            </ul>
+            <template v-if="refresh">
+                <template v-if="users">
+                    <ul class="profile__question-table">
+                        <li class="item" v-for="item in data" :key="item.id">
+                            <div class="item__content">
+                                <h3 class="title title--4">{{ item.name }}</h3>
+                                <div class="item-action">
+
+                                    <button @click="deleteUser(item.id,item)">
+                                        <img src="../assets/img/svg/trash.svg" alt="delete"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="profile__livetape-pagination" v-if="links && links.last_page>1">
+                        <div class="profile__livetape-pagination__wrap-item" v-if="current_page!==1"
+                             @click="fetchCategories(Number(current_page-1))"><img
+                            src="../assets/img/svg/arrowBlack.svg"
+                            alt="arrow">
+                        </div>
+                        <div class="profile__livetape-pagination__wrap" v-for="link in links.links" :key="link.label">
+                            <div class="profile__livetape-pagination__wrap-item"
+                                 v-if="Number(link.label)  && current_page -link.label <2 && current_page -link.label >-2"
+                                 @click="fetchCategories(Number(link.label))" :class="link.active?'active':''">{{
+                                    link.label
+                                }}
+                            </div>
+                        </div>
+                        <div
+                            class="profile__livetape-pagination__wrap-item  profile__livetape-pagination__wrap-item__next"
+                            v-if="current_page!== links.last_page"
+                            @click="fetchCategories(Number(current_page+1))">
+                            <img src="../assets/img/svg/arrowBlack.svg" alt="arrow">
+                        </div>
+                    </div>
+                </template>
+                <template v-if="categories">
+                    <ul class="profile__question-table">
+                        <li class="item" v-for="item in data" :key="item.id">
+                            <div class="item__content">
+                                <h3 class="title title--4">{{ item.name }}</h3>
+                                <div class="item-action">
+
+                                    <button @click="deleteCategoties(item.id,item)">
+                                        <img src="../assets/img/svg/trash.svg" alt="delete"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="profile__livetape-pagination" v-if="links && links.last_page>1">
+                        <div class="profile__livetape-pagination__wrap-item" v-if="current_page!==1"
+                             @click="fetchCategories(Number(current_page-1))"><img
+                            src="../assets/img/svg/arrowBlack.svg"
+                            alt="arrow">
+                        </div>
+                        <div class="profile__livetape-pagination__wrap" v-for="link in links.links" :key="link.label">
+                            <div class="profile__livetape-pagination__wrap-item"
+                                 v-if="Number(link.label)  && current_page -link.label <2 && current_page -link.label >-2"
+                                 @click="fetchCategories(Number(link.label))" :class="link.active?'active':''">{{
+                                    link.label
+                                }}
+                            </div>
+                        </div>
+                        <div
+                            class="profile__livetape-pagination__wrap-item  profile__livetape-pagination__wrap-item__next"
+                            v-if="current_page!== links.last_page"
+                            @click="fetchCategories(Number(current_page+1))">
+                            <img src="../assets/img/svg/arrowBlack.svg" alt="arrow">
+                        </div>
+                    </div>
+                </template>
+                <template v-if="categoriesIncome">
+                    <ul class="profile__question-table">
+                        <li class="item" v-for="item in data" :key="item.id">
+                            <div class="item__content">
+                                <h3 class="title title--4">{{ item.name }}</h3>
+                                <div class="item-action">
+
+                                    <button @click="deleteIncomeCategoties(item.id,item)">
+                                        <img src="../assets/img/svg/trash.svg" alt="delete"/>
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="profile__livetape-pagination" v-if="links && links.last_page>1">
+                        <div class="profile__livetape-pagination__wrap-item" v-if="current_page!==1"
+                             @click="fetchCategories(Number(current_page-1))"><img
+                            src="../assets/img/svg/arrowBlack.svg"
+                            alt="arrow">
+                        </div>
+                        <div class="profile__livetape-pagination__wrap" v-for="link in links.links" :key="link.label">
+                            <div class="profile__livetape-pagination__wrap-item"
+                                 v-if="Number(link.label)  && current_page -link.label <2 && current_page -link.label >-2"
+                                 @click="fetchCategories(Number(link.label))" :class="link.active?'active':''">{{
+                                    link.label
+                                }}
+                            </div>
+                        </div>
+                        <div
+                            class="profile__livetape-pagination__wrap-item  profile__livetape-pagination__wrap-item__next"
+                            v-if="current_page!== links.last_page"
+                            @click="fetchCategories(Number(current_page+1))">
+                            <img src="../assets/img/svg/arrowBlack.svg" alt="arrow">
+                        </div>
+                    </div>
+                </template>
+            </template>
+            <div v-else>
+                <preloader></preloader>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<script setup>
+import ProfileAside from "../components/PortfolioAside.vue";
+import LiveTape from "../components/LiveTapePlan.vue";
+import ChartsExpensesIncome from "../components/ChartExpensesIncome.vue";
+import BarPlanCategory from "../components/BarPlanCategory.vue";
+import Preloader from "../components/Preloader.vue";
+import BarExpensesIncome from "../components/BarEpensesIncome.vue";
+import {ref} from "vue";
+import axios from "axios";
+
+const menu = ref(ref(localStorage.getItem("is_expanded") === "true"));
+const refresh = ref(true);
+const links = ref(null);
+const current_page = ref(null);
+
+const users = ref(true);
+const categories = ref(false);
+const categoriesIncome = ref(false);
+
+const data = ref(null);
+
+const openMenu = () => {
+    menu.value = !menu.value
+    localStorage.setItem("is_expanded", menu.value)
+    console.log(menu.value)
+}
+const addPlan = () => {
+    refresh.value = false
+    setTimeout(() => {
+        refresh.value = true;
+    }, 400);
+}
+
+
+const getUsers = () => {
+    users.value = true;
+    categories.value = false;
+    categoriesIncome.value = false;
+    fetchCategories()
+    addPlan()
+}
+
+const getCategories = () => {
+    users.value = false;
+    categories.value = true;
+    categoriesIncome.value = false;
+    fetchCategories()
+    addPlan()
+}
+
+const getCategoriesIncome = () => {
+    users.value = false;
+    categories.value = false;
+    categoriesIncome.value = true;
+    fetchCategories()
+    addPlan()
+}
+
+const fetchCategories = async (page) => {
+    if (!page) {
+        page = 1;
+    }
+    if (users.value) {
+        axios
+            .get('https://keepmoney.site/api/v1/users', {params: {page: page, paginate: true, per_page: 8}})
+            .then((response) => {
+                data.value = response.data.data;
+                console.log(data.value)
+                links.value = response.data.meta
+                current_page.value = response.data.meta.current_page;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+    if (categories.value) {
+        axios
+            .get('https://keepmoney.site/api/v1/categories', {params: {page: page, paginate: true, per_page: 8}})
+            .then((response) => {
+                data.value = response.data.data;
+                console.log(data.value)
+                links.value = response.data.meta
+                current_page.value = response.data.meta.current_page;
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+    if (categoriesIncome.value) {
+        axios
+            .get('https://keepmoney.site/api/v1/income-categories', {params: {page: page, paginate: true, per_page: 8}})
+            .then((response) => {
+                data.value = response.data.data;
+                links.value = response.data.meta
+                current_page.value = response.data.meta.current_page;
+                console.log(data.value)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+
+};
+
+fetchCategories()
+
+
+const deleteUser = async (id, item) => {
+    axios
+        .delete(`https://keepmoney.site/api/v1/users/${id}`)
+        .then((response) => {
+            console.log(response.data);
+            fetchCategories()
+            addPlan()
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+};
+
+const deleteCategoties = async (id, item) => {
+    axios
+        .delete(`https://keepmoney.site/api/v1/categories/${id}`)
+        .then((response) => {
+            console.log(response.data);
+            fetchCategories()
+            addPlan()
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+};
+
+const deleteIncomeCategoties = async (id, item) => {
+    axios
+        .delete(`https://keepmoney.site/api/v1/income-categories/${id}`)
+        .then((response) => {
+            console.log(response.data);
+            fetchCategories()
+            addPlan()
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+};
+
+</script>
