@@ -57,8 +57,9 @@ class IncomeCategoriesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(IncomeCategories $incomeCategories)
+    public function destroy($id)
     {
+        $incomeCategories=IncomeCategories::findOrFail($id);;
         $incomeCategories->delete();
 
         return response(null);

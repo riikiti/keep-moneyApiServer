@@ -85,17 +85,6 @@ router.beforeEach((to, from, next) => {
     }
     next()
 
-
-    if (!admin) {
-        if (to.name === 'admin') {
-            return next({name: 'home'})
-        }
-    } else {
-        if (to.name === 'admin') {
-            return next({name: 'profile'})
-        }
-    }
-    next()
 })
 
 export default router

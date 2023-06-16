@@ -191,6 +191,7 @@
             flex-direction: row;
             padding: 0 20px;
             justify-content: center;
+            font-family: 'Roboto', sans-serif;
             @include vp-1279() {
                 margin-top: 20px;
             }
@@ -206,6 +207,9 @@
                     border-radius: 8px;
                     margin: 0 10px;
                     border: 1px solid $light-black;
+                    font-weight: 600;
+                    font-size: 18px;
+                    line-height: 24px;
 
                     img {
                         width: 20px;
@@ -286,7 +290,28 @@
                 width: 100%;
             }
         }
-        &-table{
+
+        .form{
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            .title{
+                margin: 0;
+            }
+        }
+        .form__btn{
+            width: 150px;
+            height: 50px;
+            margin: initial;
+        }
+        .form__block{
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+            margin: 0;
+        }
+
+        &-table {
             padding: 20px 0;
         }
 
@@ -294,7 +319,7 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-            padding: 20px 30px;
+            padding: 20px 0;
             width: 100%;
             height: 80px;
             align-items: center;
@@ -306,6 +331,7 @@
             @include vp-768 {
                 flex-direction: column;
                 gap: 20px;
+                height: max-content;
             }
         }
     }

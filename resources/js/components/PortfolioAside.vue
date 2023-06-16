@@ -51,7 +51,7 @@
                     </router-link
                     >
                 </li>
-                <li v-if="admin">
+                <li v-if="admin==='1'">
                     <router-link class="title title--4"
                                  :to="{ name: 'admin' }"
                     ><img src="../assets/img/svg/home.svg" alt="question"><span>Админка</span>

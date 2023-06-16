@@ -89,7 +89,7 @@ import axios from "axios";
 import router from '../router/index'
 
 const reg = ref(false);
-const error=ref(false);
+const error = ref(false);
 
 const registration = () => {
     reg.value = !reg.value;
@@ -136,7 +136,7 @@ const submitForm = async () => {
                 router.push({name: 'profile'});
 
                 axios.get('https://keepmoney.site/api/v1/users/' + JSON.parse(response.config.data).email).then(response => {
-                    console.log("id =",response.data.id);
+                    console.log("id =", response.data.id);
                     localStorage.setItem('id', response.data.id);
                 })
 
@@ -161,14 +161,13 @@ const login = () => {
 
             console.log(JSON.parse(response.config.data).email);
             axios.get('https://keepmoney.site/api/v1/users/' + JSON.parse(response.config.data).email).then(response => {
-                console.log("id=",response.data.id);
-                console.log("admin=",response.data.admin);
+                console.log("id=", response.data.id);
+                console.log("admin=", response.data.admin);
                 localStorage.setItem('id', response.data.id);
-                if (response.data.admin===1){
-                    localStorage.setItem('admin',true);
-                }
-                else {
-                    localStorage.setItem('admin',false);
+                if (response.data.admin === 1) {
+                    localStorage.setItem('admin', "1");
+                } else {
+                    localStorage.setItem('admin', "0");
                 }
 
             })
@@ -176,7 +175,7 @@ const login = () => {
             router.push({name: 'profile'});
         }).catch(err => {
             console.log(err.response)
-            error.value=true
+            error.value = true
         })
     });
 
