@@ -10,10 +10,7 @@
         <ProfileAside @openMenu="openMenu()"></ProfileAside>
         <div class="profile__question">
             <div class="profile__question-subheader">
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur assumenda commodi dicta eaque
-                    error
-                    fugit id incidunt iure laborum modi natus nobis, numquam officia praesentium quam, quod sit, unde
-                    voluptas.</p>
+                <p>Здесь собраны.</p>
             </div>
             <div class="accordions__wrap">
                 <accordion>

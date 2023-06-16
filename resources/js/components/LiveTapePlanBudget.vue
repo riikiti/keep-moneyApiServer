@@ -29,7 +29,7 @@
                                     <span v-show="v1$.id.$error">не выбрана карта</span>
                                 </div>
                                 <div class="form__block">
-                                    <label class="title title--3">На какой периуд</label>
+                                    <label class="title title--3">На какой период</label>
                                     <VueDatePicker
                                         v-model="createData.date"
                                         locale="ru"

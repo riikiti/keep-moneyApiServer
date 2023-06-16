@@ -10,7 +10,7 @@
                                      @getSelect="getAllPeriod"
                 >
                     <template v-slot:title>
-                        периуд
+                        период
                     </template>
                 </categories-selector>
             </ul>

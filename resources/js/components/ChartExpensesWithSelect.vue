@@ -17,7 +17,7 @@
                                  :id="1"
             >
                 <template v-slot:title>
-                    периуд
+                    период
                 </template>
             </categories-selector>
         </div>
