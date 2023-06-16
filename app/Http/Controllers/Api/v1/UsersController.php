@@ -42,10 +42,11 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UsersStoreRequest $request, User $users)
+    public function update(UsersStoreRequest $request, $id)
     {
-        $users->update($request->validated());
-        return new UsersResource($users);
+        $expenses = User::findOrFail($id);
+        $expenses->update($request->validated());
+        return new  UsersResource($expenses);
     }
 
     /**

@@ -12,6 +12,8 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <!-- Scripts And Style-->
     @vite(['resources/js/assets/scss/style.scss', 'resources/js/app.js'])
+
+
 </head>
 <body>
 <div id="app">

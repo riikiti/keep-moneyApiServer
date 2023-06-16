@@ -25,6 +25,7 @@ class UsersStoreRequest extends FormRequest
             'name'=>'required|max:255',
             'email'=>'required',
             'password'=>'required|max:255',
+            'admin'=>'required'
         ];
     }
 }
