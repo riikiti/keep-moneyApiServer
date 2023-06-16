@@ -398,7 +398,7 @@ fetchData();
 
 const fetchCategories = async () => {
     axios
-        .get('https://keepmoney.site/api/v1/categories')
+        .get('https://keepmoney.site/api/v1/categories',{params: {page: 1, paginate: true, per_page: 25}})
         .then((response) => {
             categories.value = response.data.data;
             console.log(categories.value)

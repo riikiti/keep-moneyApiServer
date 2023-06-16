@@ -10,34 +10,31 @@
         <ProfileAside @openMenu="openMenu()"></ProfileAside>
         <div class="profile__question">
             <div class="profile__question-subheader">
-                <p>Здесь собраны.</p>
+                <p>Здесь собраны самые популярные вопросы которые возникают у пользователей сервиса.</p>
             </div>
             <div class="accordions__wrap">
                 <accordion>
                     <template v-slot:title>
-                        Общий график
+                       Почему не получается добавить расходы?
                     </template>
                     <template v-slot:content>
-                        Общий график
+                        Скорее всего у вас не создана карта, с которой происходит взаимодействие при создание новой записи в разделе "расходы". Если созданая карта не отображается в разделе "Бюджет" попробуйте обновить страницу.
                     </template>
                 </accordion>
                 <accordion>
                     <template v-slot:title>
-                        Общий график
+                        Почему не получилось создать план по категории?
                     </template>
                     <template v-slot:content>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus aperiam, at autem ex
-                        explicabo
-                        fugit hic ipsam quisquam recusandae sint, temporibus unde? Dolores libero minus, nostrum officia
-                        pariatur suscipit voluptas.
+                        Проверьте существуют ли расходы за этот периуд в данной категории, если нет, то они и не отобразятся в разделе "Планы по категории"
                     </template>
                 </accordion>
                 <accordion>
                     <template v-slot:title>
-                        Общий график
+                        Почему при создание расходов, кнопка создать не активна?
                     </template>
                     <template v-slot:content>
-                        Общий график
+                        Кнопка создания становится доступной после добавления хотябы одного товара в "Список покупок"
                     </template>
                 </accordion>
             </div>

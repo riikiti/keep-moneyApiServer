@@ -152,6 +152,8 @@
                                     </div>
                                     <div class="form__block">
                                         <label class="title title--3">Категория</label>
+                                        {{item.category.id}}
+                                        {{ selectCategories}}
                                         <categories-selector :option="categories"
                                                              @getSelect="getSelect"
                                                              :id="item.category.id"
@@ -604,16 +606,18 @@ const updateData = async (item_id, item) => {
     } catch {
     }
     console.log(item);
-
-    if (!selectCategories.id) {
-        selectCategories.id = item.category.id
-        console.log(66666666)
+    console.log(66666666, selectCategories.id,selectCategories.value.id)
+    if (selectCategories.value.id === null) {
+        selectCategories.value.id = item.category.id
+        console.log(66666666, selectCategories.id,selectCategories.value.id)
     }
+
+
     closeCircle.value = true
     totalPriceSumUpdate()
 
     categories.value.forEach((el) => {
-        if (el.id === selectCategories.id) {
+        if (el.id === selectCategories.id || !selectCategories.value.id) {
             selectCategories.name = el.name;
         }
     })
@@ -623,8 +627,9 @@ const updateData = async (item_id, item) => {
     }
 
 
-    if (!selectBudget.value.id) {
+    if (!selectBudget.value.id ||  selectBudget.id) {
         selectBudget.value.id = item.budget.id
+        selectBudget.id = item.budget.id
         axios
             .put("https://keepmoney.site/api/v1/check/" + item.checks.id, {
                 title: item.checks.title,
@@ -673,13 +678,13 @@ const updateData = async (item_id, item) => {
                     }
                 })
                 console.log("item price", item.checks.total_price, "old price", oldPrice)
-                console.log(5555555, selectCategories.id, selectBudget.value.id)
+                console.log(5555555, selectCategories.value.id, selectBudget.value.id)
 
                 axios
                     .put("https://keepmoney.site/api/v1/expenses/" + item.id, {
                         user_id: id,
                         check_id: item.checks.id,
-                        categories_id: selectCategories.id,
+                        categories_id: selectCategories.value.id,
                         budget_id: selectBudget.value.id,
                         date: item.date,
                     })
@@ -771,7 +776,7 @@ const updateData = async (item_id, item) => {
                             });
                     }
                 })
-                console.log(5555555, selectCategories.id, selectBudget.value.id)
+                console.log(5555555, selectCategories.value.id, selectBudget.value.id)
 
                 console.log("item price", item.checks.total_price, "old price", oldPrice)
 
@@ -779,7 +784,7 @@ const updateData = async (item_id, item) => {
                     .put("https://keepmoney.site/api/v1/expenses/" + item.id, {
                         user_id: id,
                         check_id: item.checks.id,
-                        categories_id: selectCategories.id,
+                        categories_id: selectCategories.value.id,
                         budget_id: selectBudget.value.id,
                         date: item.date,
                     })
@@ -833,7 +838,7 @@ const updateData = async (item_id, item) => {
 fetchData();
 const fetchCategories = async () => {
     axios
-        .get('https://keepmoney.site/api/v1/categories')
+        .get('https://keepmoney.site/api/v1/categories',{params: {page: 1, paginate: true, per_page: 25}})
         .then((response) => {
             categories.value = response.data.data;
             console.log(categories.value)
