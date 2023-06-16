@@ -11,6 +11,7 @@
                                 <div class="form__block">
                                     <label class="title title--3">Название</label>
                                     <input type="text" v-model="createData.title"/>
+                                    <span class="form__block-info">если поле пустое, будет записано  "Категория дата"</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Список покупок</label>
@@ -122,6 +123,7 @@
                                     <div class="form__block">
                                         <label class="title title--3">Название</label>
                                         <input type="text" v-model="item.checks.title" required/>
+                                        <span class="form__block-info">если поле пустое, будет записано  "Категория дата"</span>
                                     </div>
                                     <div class="form__block">
                                         <label class="title title--3">Список покупок</label>
@@ -152,7 +154,6 @@
                                     </div>
                                     <div class="form__block">
                                         <label class="title title--3">Категория</label>
-                                        {{ item.category.id }}
                                         <categories-selector :option="categories"
                                                              @getSelect="getSelect"
                                                              :id="item.category.id"
@@ -441,7 +442,7 @@ const fetchData = async (page) => {
         .get('https://keepmoney.site/api/v1/expenses/' + id, {params: {page: page, paginate: true, per_page: 5}})
         .then((response) => {
             data.value = response.data.data;
-            data.value.reverse();
+           // data.value.reverse();
             links.value = response.data.meta
             current_page.value = response.data.meta.current_page;
             console.log(links.value)

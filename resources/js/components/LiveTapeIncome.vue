@@ -11,6 +11,7 @@
                                 <div class="form__block">
                                     <label class="title title--3">Название</label>
                                     <input type="text" v-model="createData.title"/>
+                                    <span class="form__block-info">если поле пустое, будет записано "категория дата"</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Цена</label>
@@ -98,6 +99,7 @@
                                     <div class="form__block">
                                         <label class="title title--3">Изаменение названия</label>
                                         <input type="text" v-model="item.title"/>
+                                        <span class="form__block-info">если поле пустое, будет записано "категория дата"</span>
                                     </div>
                                     <div class="form__block">
                                         <label class="title title--3">Изаменение цены</label>

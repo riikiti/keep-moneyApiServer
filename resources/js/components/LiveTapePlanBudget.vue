@@ -11,6 +11,7 @@
                                 <div class="form__block">
                                     <label class="title title--3">Комментарий</label>
                                     <input type="text" v-model="createData.title"/>
+                                    <span class="form__block-info">если поле пустое, будет записано  "карта - номер"</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Планируемое значение по карте</label>
@@ -92,6 +93,7 @@
                                         <div class="form__block">
                                             <label class="title title--3">Комментарий</label>
                                             <input type="text" v-model="item.title"/>
+                                            <span class="form__block-info">если поле пустое, будет записано  "карта - номер"</span>
                                         </div>
                                         <div class="form__block">
                                             <label class="title title--3">Изаменение цели</label>

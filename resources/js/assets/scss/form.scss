@@ -61,6 +61,13 @@
             color: $error-color;
         }
 
+        &-info{
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 5px;
+            color: $light-gray!important;
+        }
+
         &-radio {
             display: flex;
             flex-direction: row;
