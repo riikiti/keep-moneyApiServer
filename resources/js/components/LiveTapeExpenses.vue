@@ -116,7 +116,7 @@
                             <template v-if="!formSubmittedUpdated" v-slot:modalContent>
                                 {{ getItemsUpdate(item.checks.id) }}
                                 {{ totalPriceSumUpdate() }}
-                                {{ memberOldValue(totalPriceUpdate, item.budget.id) }}
+                                {{ memberOldValue(totalPriceUpdate, item.budget.id,item) }}
                                 <form class="form" @submit.prevent="modalOpen()">
                                     <h2 class="title title--2">Изаменение записи "{{ item.checks.title }}"</h2>
                                     <div class="form__block">
@@ -152,8 +152,7 @@
                                     </div>
                                     <div class="form__block">
                                         <label class="title title--3">Категория</label>
-                                        {{item.category.id}}
-                                        {{ selectCategories}}
+                                        {{ item.category.id }}
                                         <categories-selector :option="categories"
                                                              @getSelect="getSelect"
                                                              :id="item.category.id"
@@ -297,17 +296,17 @@ const rules1 = computed(() => {
 
 
 const isButtonDisabled = computed(() => {
-        return items.value.length === 0
+    return items.value.length === 0
 })
 
 const v$ = useVuelidate(rules, createData.value);
 const v1$ = useVuelidate(rules1, selectCategories.value);
 const v2$ = useVuelidate(rules1, selectBudget.value);
 
-const memberOldValue = (price, id) => {
+const memberOldValue = (price, id,item) => {
     if (closeCircle.value) {
         console.log(price, id)
-        oldPrice.push(Number(price));
+        oldPrice.push(Number(item.checks.total_price));
         oldId.push(Number(id));
     }
     closeCircle.value = false
@@ -501,7 +500,7 @@ const posthData = async (create) => {
                         });
                 })
 
-                console.log('log', id, checkId.value,  selectCategories.value.id, selectBudget.value.id, create.date)
+                console.log('log', id, checkId.value, selectCategories.value.id, selectBudget.value.id, create.date)
                 axios
                     .post("https://keepmoney.site/api/v1/expenses", {
                         user_id: id,
@@ -606,10 +605,10 @@ const updateData = async (item_id, item) => {
     } catch {
     }
     console.log(item);
-    console.log(66666666, selectCategories.id,selectCategories.value.id)
+    console.log(66666666, selectCategories.id, selectCategories.value.id)
     if (selectCategories.value.id === null) {
         selectCategories.value.id = item.category.id
-        console.log(66666666, selectCategories.id,selectCategories.value.id)
+        console.log(66666666, selectCategories.id, selectCategories.value.id)
     }
 
 
@@ -627,9 +626,12 @@ const updateData = async (item_id, item) => {
     }
 
 
-    if (!selectBudget.value.id ||  selectBudget.id) {
+    if (!selectBudget.value.id) {
         selectBudget.value.id = item.budget.id
-        selectBudget.id = item.budget.id
+        if (selectCategories.value.id === null) {
+            selectCategories.value.id = item.category.id
+            console.log(66666666, selectCategories.id, selectCategories.value.id)
+        }
         axios
             .put("https://keepmoney.site/api/v1/check/" + item.checks.id, {
                 title: item.checks.title,
@@ -677,8 +679,9 @@ const updateData = async (item_id, item) => {
                             });
                     }
                 })
+                oldPrice[0]=item.checks.total_price
                 console.log("item price", item.checks.total_price, "old price", oldPrice)
-                console.log(5555555, selectCategories.value.id, selectBudget.value.id)
+                console.log(77777777777, selectCategories.value.id, selectBudget.value.id)
 
                 axios
                     .put("https://keepmoney.site/api/v1/expenses/" + item.id, {
@@ -728,7 +731,14 @@ const updateData = async (item_id, item) => {
 
 
     } else {
-
+        if (selectCategories.value.id === null) {
+            selectCategories.value.id = item.category.id
+            console.log(666666665, selectCategories.id, selectCategories.value.id)
+        }
+        if (!selectCategories.value.id) {
+            selectCategories.value.id = item.category.id
+            console.log(666666667, selectCategories.id, selectCategories.value.id)
+        }
         axios
             .put("https://keepmoney.site/api/v1/check/" + item.checks.id, {
                 title: item.checks.title,
@@ -776,9 +786,12 @@ const updateData = async (item_id, item) => {
                             });
                     }
                 })
-                console.log(5555555, selectCategories.value.id, selectBudget.value.id)
-
-                console.log("item price", item.checks.total_price, "old price", oldPrice)
+                console.log(666666666666, selectCategories.value.id, selectCategories.id, selectBudget.value.id)
+                console.log(888888, oldId[0])
+                oldId[0] = item.budget.id;
+                oldPrice[0]=item.checks.total_price
+                console.log(888888, oldId[0])
+                console.log("item price", item.checks.total_price, "old price", oldPrice[0])
 
                 axios
                     .put("https://keepmoney.site/api/v1/expenses/" + item.id, {
@@ -838,7 +851,7 @@ const updateData = async (item_id, item) => {
 fetchData();
 const fetchCategories = async () => {
     axios
-        .get('https://keepmoney.site/api/v1/categories',{params: {page: 1, paginate: true, per_page: 25}})
+        .get('https://keepmoney.site/api/v1/categories', {params: {page: 1, paginate: true, per_page: 25}})
         .then((response) => {
             categories.value = response.data.data;
             console.log(categories.value)
