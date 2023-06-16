@@ -21,6 +21,11 @@
                                 <div class="item-action">
                                     <button @click="deleteUser(item.id,item)"><img src="../assets/img/svg/trash.svg"
                                                                                    alt="delete"/></button>
+                                    <button v-if="!item.admin" @click="upUser(item)"><img
+                                        src="../assets/img/svg/Add_Plus.svg"
+                                        alt="plus"/></button>
+                                    <button v-else @click="upUser(item)"><img src="../assets/img/svg/Add_Plus.svg"
+                                                                              alt="plus"/></button>
                                 </div>
                             </div>
                         </li>
@@ -270,4 +275,45 @@ const postCategoriesIncome = () => {
     }).catch((error) => {
         console.log(error);
     });
-} </script>
+}
+
+
+const upUser = (item) => {
+    if (item.admin === 1) {
+        axios
+            .put("https://keepmoney.site/api/v1/users/" + item.id, {
+                admin: 0,
+                email: item.email,
+                name: item.name,
+                password: item.password,
+
+            })
+            .then((response) => {
+                console.log(response.data)
+                addPlan()
+                fetchCategories()
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    } else {
+        axios
+            .put("https://keepmoney.site/api/v1/users/" + item.id, {
+                admin: 1,
+                email: item.email,
+                name: item.name,
+                password: item.password,
+
+            })
+            .then((response) => {
+                console.log(response.data)
+                addPlan()
+                fetchCategories()
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
+}
+</script>

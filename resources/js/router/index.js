@@ -68,7 +68,7 @@ router.beforeEach((to, from, next) => {
         if (to.name === 'profile' || to.name === 'expenses' || to.name === 'income' ||  to.name === 'setting' || to.name === 'question' || to.name === 'budget') {
             return next({name: 'home'})
         }
-        if (!admin) {
+        if (admin!=='1') {
             if (to.name === 'admin') {
                 return next({name: 'home'})
             }
@@ -77,7 +77,7 @@ router.beforeEach((to, from, next) => {
         if (to.name === 'home') {
             return next({name: 'profile'})
         }
-        if (!admin) {
+        if (admin!=='1') {
             if (to.name === 'admin') {
                 return next({name: 'profile'})
             }
