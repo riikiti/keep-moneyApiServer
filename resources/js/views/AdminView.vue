@@ -18,7 +18,7 @@
                         <li class="item" v-for="item in data" :key="item.id">
                             <div class="item__content"><h3 class="title title--4"> {{ item.name }} - {{ item.email }} -
                                 <span v-if="!item.admin">Пользователь</span><span v-else>Админ</span></h3>
-                                <div class="item-action">
+                                <div class="item-action" v-if="item.id!==1">
                                     <button @click="deleteUser(item.id,item)"><img src="../assets/img/svg/trash.svg"
                                                                                    alt="delete"/></button>
                                     <button v-if="!item.admin" @click="upUser(item)"><img

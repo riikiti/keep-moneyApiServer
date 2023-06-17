@@ -79,7 +79,7 @@
         <swiper-slide v-for="(item, index) in data" :key="item.id">
             <div class="bank-card__wrap">
                 <div class="bank-card__content" :style="{ color: item.bank.text_color , background: item.bank.color }">
-                    <img :src="cardBank(item.bank.name)" :alt="item.bank.name" class="bank-card__bank">
+                    <div class="bank-card__bank"   :class="{ 'sber': item.bank.name==='sber', 'alfa': item.bank.name==='alfa','vtb': item.bank.name==='vtb','tinkoff': item.bank.name==='tinkoff',}"></div>
                     <div class="bank-card__action">
                         <button @click="modalOpenPlus(item)">+</button>
                         <button @click="modalOpenMinus(item)">-</button>
@@ -92,7 +92,7 @@
                     </div>
                     <div class="bank-card__info">
                         <span> на счету: {{ item.budget }} р. </span>
-                        <img :src="cardType(item.type)" :alt="item.type" class="bank-card__type">
+                        <div  class="bank-card__type"   :class="{ 'mir': item.type==='mir', 'visa': item.type==='visa','mc': item.type==='mc'}"></div>
                     </div>
                 </div>
             </div>

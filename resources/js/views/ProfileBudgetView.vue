@@ -2,7 +2,8 @@
 
     <div class="profile" :class="{ 'profile-active': menu}">
         <div class="profile__header">
-            <button class="profile__mobile-btn" @click="openMenu()"><img src="../assets/img/svg/arrowBlack.svg" alt=""><img
+            <button class="profile__mobile-btn" @click="openMenu()"><img src="../assets/img/svg/arrowBlack.svg"
+                                                                         alt=""><img
                 src="../assets/img/svg/arrowBlack.svg" alt=""></button>
             <h1 class="title title--2">Бюджет</h1>
         </div>
@@ -13,25 +14,28 @@
                 <swiper @addBudget="addPlan()"></swiper>
             </div>
             <template v-if="refresh">
-            <div class="profile__content-item">
-                <charts-budget>
-                    <template v-slot:title>
-                        Количество денег на всех картах
-                    </template>
-                </charts-budget>
-            </div>
-            <div class="profile__content-item"><bar-plan>
-                <template v-slot:title>
-                    Планы по бюджету
-                </template>
-            </bar-plan></div>
+                <div class="profile__content-item">
+                    <charts-budget>
+                        <template v-slot:title>
+                            Количество денег на всех картах
+                        </template>
+                    </charts-budget>
+                </div>
+                <div class="profile__content-item">
+                    <bar-plan>
+                        <template v-slot:title>
+                            Планы по бюджету
+                        </template>
+                    </bar-plan>
+                </div>
             </template>
             <div v-else>
                 <preloader></preloader>
             </div>
         </div>
-
-        <live-tape @addPlan="addPlan()"></live-tape>
+        <template v-if="refresh">
+            <live-tape @addPlan="addPlan()"></live-tape>
+        </template>
     </div>
 </template>
 

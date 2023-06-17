@@ -36,10 +36,11 @@ class BankController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(BankStoreRequest $request, Bank $Bank)
+    public function update(BankStoreRequest $request, $id)
     {
-        $Bank->update($request->validated());
-        return new BankResource($Bank);
+        $budget = Bank::findOrFail($id);
+        $budget->update($request->validated());
+        return new BankResource($budget);
     }
 
     /**

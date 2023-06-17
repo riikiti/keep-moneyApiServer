@@ -10,7 +10,7 @@
         <ProfileAside @openMenu="openMenu()"></ProfileAside>
         <div class="profile__question">
             <div class="profile__question-subheader">
-                <p>Здесь собраны самые популярные вопросы которые возникают у пользователей сервиса.</p>
+                <p>Здесь собраны самые популярные вопросы которые, возникают у пользователей сервиса.</p>
             </div>
             <div class="accordions__wrap">
                 <accordion>
@@ -31,7 +31,7 @@
                 </accordion>
                 <accordion>
                     <template v-slot:title>
-                        Почему при создание расходов, кнопка создать не активна?
+                        Почему при создание расходов, кнопка "создать" не активна?
                     </template>
                     <template v-slot:content>
                         Кнопка создания становится доступной после добавления хотябы одного товара в "Список покупок"

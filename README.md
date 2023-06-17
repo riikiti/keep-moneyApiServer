@@ -12,6 +12,11 @@ php artisan serve
 ```
 npm run dev
 ```
+# Nginx refresh
+```
+sudo /etc/init.d/nginx reload
+```
+
 # Banks
 ```
 INSERT INTO `banks` (`id`, `name`, `color`, `text_color`, `created_at`, `updated_at`) VALUES

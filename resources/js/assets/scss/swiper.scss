@@ -17,8 +17,8 @@
     position: relative !important;
     top: 25px !important;
     height: 50px !important;
-    @include vp-1279(){
-        top: -15px!important;
+    @include vp-1279() {
+        top: -15px !important;
     }
 }
 
@@ -30,10 +30,10 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        @include vp-1450(){
+        @include vp-1450() {
             height: 250px;
         }
-        @include vp-1279(){
+        @include vp-1279() {
             height: 350px;
             margin-top: 25px;
         }
@@ -100,12 +100,15 @@
         width: 70px;
         height: 70px;
         object-fit: contain;
+
+
     }
 
     &__type {
         width: 70px;
         height: 70px;
         object-fit: contain;
+
     }
 
     &__numbers {
@@ -117,6 +120,8 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        align-items: center;
+        height: 70px;
         align-items: center;
     }
 
@@ -133,4 +138,45 @@
 
 .empty-img {
     display: none;
+}
+
+.sber {
+    background-size: contain;
+    background-image: url(/build/assets/Sber-ffacbedc.png);
+    width: 64px;
+}
+
+.vtb {
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-image:  url(/build/assets/Vtb-c7bf488a.png);
+}
+
+.alfa {
+    background-size: contain;
+    background-image: url(/build/assets/Alfabank-6460d9a7.png);
+}
+
+.tinkoff {
+    width: 59px;
+    background-size: contain;
+    background-image: url(/build/assets/Tinkofа-38afb85f.png);
+}
+
+.mir{
+    background-size: contain;
+    height: 20px;
+    background-image: url(/build/assets/Mir-8f8dd0d1.png);
+}
+.mc{
+    background-size: contain;
+    background-image: url(/build/assets/MC-36e980ef.png);
+    height: 43px;
+
+}
+.visa{
+    width: 64px;
+    height: 20px;
+    background-size: contain;
+    background-image: url(/build/assets/Visa-f031699e.png);
 }
