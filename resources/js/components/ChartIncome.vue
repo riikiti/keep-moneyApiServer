@@ -74,15 +74,9 @@ const option = ref({
                 show: false,
                 position: "center",
             },
-            emphasis: {
-                label: {
-                    show: true,
-                    fontSize: 40,
-                    fontWeight: "bold",
-                },
-            },
             labelLine: {
                 show: false,
+                position: "center",
             },
             data: [],
         },
@@ -152,15 +146,9 @@ const getPeriod = (item) => {
                             show: false,
                             position: "center",
                         },
-                        emphasis: {
-                            label: {
-                                show: true,
-                                fontSize: 40,
-                                fontWeight: "bold",
-                            },
-                        },
                         labelLine: {
                             show: false,
+                            position: "center",
                         },
 
                         data: newData.value,

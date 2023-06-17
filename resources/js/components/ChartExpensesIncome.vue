@@ -76,15 +76,10 @@ const option = ref({
                 show: false,
                 position: "center",
             },
-            emphasis: {
-                label: {
-                    show: true,
-                    fontSize: 40,
-                    fontWeight: "bold",
-                },
-            },
+
             labelLine: {
                 show: false,
+                position: "center",
             },
             data: [],
         },
@@ -214,15 +209,10 @@ const pushData = (item) => {
                     show: false,
                     position: "center",
                 },
-                emphasis: {
-                    label: {
-                        show: true,
-                        fontSize: 40,
-                        fontWeight: "bold",
-                    },
-                },
+
                 labelLine: {
                     show: false,
+                    position: "center",
                 },
 
                 data: item

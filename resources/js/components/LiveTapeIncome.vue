@@ -15,7 +15,7 @@
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Цена</label>
-                                    <input type="number" v-model="createData.price" required/>
+                                    <input type="number" placeholder="1000" min="0" v-model="createData.price" required/>
                                     <span v-show="v$.price.$error">укажите количество денег</span>
                                 </div>
                                 <div class="form__block">
@@ -103,7 +103,7 @@
                                     </div>
                                     <div class="form__block">
                                         <label class="title title--3">Изаменение цены</label>
-                                        <input type="number" v-model="item.price"/>
+                                        <input type="number" min="0" placeholder="1000" v-model="item.price"/>
                                     </div>
                                     <div class="form__block">
                                         <label class="title title--3">Изаменение категории</label>

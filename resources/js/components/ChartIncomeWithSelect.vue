@@ -82,13 +82,6 @@ const option = ref({
                 show: false,
                 position: "center",
             },
-            emphasis: {
-                label: {
-                    show: true,
-                    fontSize: 40,
-                    fontWeight: "bold",
-                },
-            },
             labelLine: {
                 show: false,
             },
@@ -167,15 +160,10 @@ const getPeriod = (item) => {
                             show: false,
                             position: "center",
                         },
-                        emphasis: {
-                            label: {
-                                show: true,
-                                fontSize: 40,
-                                fontWeight: "bold",
-                            },
-                        },
+
                         labelLine: {
                             show: false,
+                            position: "center",
                         },
 
                         data: newData.value,
@@ -239,15 +227,9 @@ const getSelect = (item) => {
                             show: false,
                             position: "center",
                         },
-                        emphasis: {
-                            label: {
-                                show: true,
-                                fontSize: 40,
-                                fontWeight: "bold",
-                            },
-                        },
                         labelLine: {
                             show: false,
+                            position: "center",
                         },
 
                         data: newData.value,

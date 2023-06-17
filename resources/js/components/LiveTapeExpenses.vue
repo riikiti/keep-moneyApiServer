@@ -18,10 +18,10 @@
                                     <ul class="form__block-lists">
                                         <li v-for="item in items" :key="item.id">
                                             <p>Название:</p> <input type="text" v-model="item.name">
-                                            <p>Цена:</p><input type="number" v-model="item.price"
+                                            <p>Цена:</p><input type="number" placeholder="1000" min="0" v-model="item.price"
                                                                @blur='totalPriceSum()'>
                                             <p>р.</p>
-                                            <p>Кол-во:</p> <input type="number" v-model="item.count"
+                                            <p>Кол-во:</p> <input type="number" placeholder="1" min="1" v-model="item.count"
                                                                   @blur='totalPriceSum()'>
                                             <p>шт.</p>
                                             <div class="form__block-lists__delete" @click="removeItem(item.id)">
@@ -131,10 +131,10 @@
 
                                             <li v-for="el in getItemsNew" :key="item.id">
                                                 <p>Название:</p> <input type="text" v-model="el.name">
-                                                <p>Цена:</p><input type="number" v-model="el.price"
+                                                <p>Цена:</p><input type="number" placeholder="1000" min="0" v-model="el.price"
                                                                    @blur='totalPriceSumUpdateItem()'>
                                                 <p>р.</p>
-                                                <p>Кол-во:</p> <input type="number" v-model="el.count"
+                                                <p>Кол-во:</p> <input type="number" placeholder="1" min="1" v-model="el.count"
                                                                       @blur='totalPriceSumUpdateItem()'>
                                                 <p>шт.</p>
                                                 <div class="form__block-lists__delete"

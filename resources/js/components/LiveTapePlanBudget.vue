@@ -10,12 +10,12 @@
                                 <h2 class="title title--2">Создание плана</h2>
                                 <div class="form__block">
                                     <label class="title title--3">Комментарий</label>
-                                    <input type="text" v-model="createData.title"/>
+                                    <input type="text" v-model="createData.title" />
                                     <span class="form__block-info">если поле пустое, будет записано  "карта - номер"</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Планируемое значение по карте</label>
-                                    <input type="number" v-model="createData.price" required/>
+                                    <input type="number" min="0" v-model="createData.price" placeholder="1000" required/>
                                     <span v-show="v$.price.$error">укажите количество денег</span>
                                 </div>
                                 <div class="form__block">
@@ -97,7 +97,7 @@
                                         </div>
                                         <div class="form__block">
                                             <label class="title title--3">Изаменение цели</label>
-                                            <input type="number" v-model="item.value"/>
+                                            <input type="number" min="0" placeholder="1000" v-model="item.value"/>
                                         </div>
                                         <div class="form__block">
                                             <label class="title title--3">Изаменение категории</label>

@@ -34,20 +34,23 @@
                     </div>
                     <div class="form__block">
                         <label class="title title--3">Последние 4 цифры</label>
-                        <input type="number" v-model="createData.numbers" required/>
+                        <input type="number" v-model="createData.numbers" required placeholder="0000" min="0" @blur="isButtonDisabled"/>
                         <span v-show="v$.numbers.$error">не введены последние 4 цифры карты</span>
                     </div>
                     <div class="form__block">
                         <label class="title title--3">Дата окончания карты</label>
-                        <input type="text" v-model="createData.last_date" required/>
+                        <input type="text" v-model="createData.last_date" required placeholder="1224" min="0"  @blur="isButtonDisabled"/>
                         <span v-show="v$.last_date.$error">не введен срок эксплуатации карты</span>
                     </div>
                     <div class="form__block">
                         <label class="title title--3">Количсетво денег на карте</label>
-                        <input type="number" v-model="createData.budget" required/>
+                        <input type="number" v-model="createData.budget" required placeholder="20000"/>
                         <span v-show="v$.budget.$error">не введено количсество денег на карте</span>
                     </div>
-                    <button class="form__btn" @click="posthData(createData)">
+                    <button v-if="isButtonDisabled" disabled class="form__btn" @click="posthData(createData)" >
+                        Создать
+                    </button>
+                    <button v-else class="form__btn" @click="posthData(createData)" >
                         Создать
                     </button>
                 </form>
@@ -79,7 +82,8 @@
         <swiper-slide v-for="(item, index) in data" :key="item.id">
             <div class="bank-card__wrap">
                 <div class="bank-card__content" :style="{ color: item.bank.text_color , background: item.bank.color }">
-                    <div class="bank-card__bank"   :class="{ 'sber': item.bank.name==='sber', 'alfa': item.bank.name==='alfa','vtb': item.bank.name==='vtb','tinkoff': item.bank.name==='tinkoff',}"></div>
+                    <div class="bank-card__bank"
+                         :class="{ 'sber': item.bank.name==='sber', 'alfa': item.bank.name==='alfa','vtb': item.bank.name==='vtb','tinkoff': item.bank.name==='tinkoff',}"></div>
                     <div class="bank-card__action">
                         <button @click="modalOpenPlus(item)">+</button>
                         <button @click="modalOpenMinus(item)">-</button>
@@ -92,7 +96,8 @@
                     </div>
                     <div class="bank-card__info">
                         <span> на счету: {{ item.budget }} р. </span>
-                        <div  class="bank-card__type"   :class="{ 'mir': item.type==='mir', 'visa': item.type==='visa','mc': item.type==='mc'}"></div>
+                        <div class="bank-card__type"
+                             :class="{ 'mir': item.type==='mir', 'visa': item.type==='visa','mc': item.type==='mc'}"></div>
                     </div>
                 </div>
             </div>
@@ -104,7 +109,7 @@
                             <h2 class="title title--2">Добавить на счет</h2>
                             <div class="form__block">
                                 <label class="title title--3">Значение</label>
-                                <input type="number" v-model="plus" min="0" required/>
+                                <input type="number" v-model="plus" min="0" required />
                             </div>
                             <button class="form__btn" @click="increase(modalItem)">
                                 Добавить
@@ -161,15 +166,15 @@
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Последние 4 цифры</label>
-                                <input type="number" v-model="item.numbers" required/>
+                                <input type="number" v-model="item.numbers" min="0" required/>
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Дата окончания карты</label>
-                                <input type="number" v-model="item.last_date" required/>
+                                <input type="number" v-model="item.last_date" min="0" required/>
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Количсетво денег на карте</label>
-                                <input type="number" v-model="item.budget" required/>
+                                <input type="number" v-model="item.budget" min="0" required/>
                             </div>
                             <button class="form__btn" @click="updateData(item)">
                                 Обновить
@@ -192,17 +197,17 @@
         </swiper-slide>
     </swiper>
     <div v-else>loading...</div>
-<div class="empty-img">
-    <img src="../assets/img/DebitCards/Alfabank.png" alt="">
-    <img src="../assets/img/DebitCards/Vtb.png" alt="">
-    <img src="../assets/img/DebitCards/Sber.png" alt="">
-    <img src="../assets/img/DebitCards/Tinkofа.png" alt="">
+    <div class="empty-img">
+        <img src="../assets/img/DebitCards/Alfabank.png" alt="">
+        <img src="../assets/img/DebitCards/Vtb.png" alt="">
+        <img src="../assets/img/DebitCards/Sber.png" alt="">
+        <img src="../assets/img/DebitCards/Tinkofа.png" alt="">
 
 
-    <img src="../assets/img/DebitCards/Mir.png" alt="">
-    <img src="../assets/img/DebitCards/MC.png" alt="">
-    <img src="../assets/img/DebitCards/Visa.png" alt="">
-</div>
+        <img src="../assets/img/DebitCards/Mir.png" alt="">
+        <img src="../assets/img/DebitCards/MC.png" alt="">
+        <img src="../assets/img/DebitCards/Visa.png" alt="">
+    </div>
 
 </template>
 
@@ -241,12 +246,27 @@ const formSubmittedUpdated = ref(false);
 const emit = defineEmits("addBudget");
 
 
+const isButtonDisabled = computed(() => {
+    if (createData.value.numbers.length > 4 ) {
+        if ( createData.value.last_date.length > 4){
+            return true;
+        }
+        else {
+            return false;
+        }
+
+    } else {
+        return false;
+    }
+})
+
+
 const rules = computed(() => {
     return {
         type: {required},
         numbers: {required, minLength: minLength(4)},
-        last_date:{required, minLength: minLength(4)},
-        budget:{required,  maxLength: 4}
+        last_date: {required, minLength: minLength(4)},
+        budget: {required, maxLength: 4}
     };
 });
 
@@ -324,7 +344,7 @@ const posthData = async (createData) => {
             .post("https://keepmoney.site/api/v1/budget", {
                 type: createData.type,
                 budget: createData.budget,
-                bank_id:   selectCategories.value.id ,
+                bank_id: selectCategories.value.id,
                 numbers: createData.numbers,
                 last_date: Number(createData.last_date),
                 user_id: id
@@ -332,9 +352,10 @@ const posthData = async (createData) => {
             .then((response) => {
                 formSubmitted.value = true;
                 selectCategories.value.id = null;
-                console.log(  selectCategories.value.id )
+                console.log(selectCategories.value.id)
                 console.log(response.data);
                 emit('addBudget')
+                createData.value=[]
                 fetchData();
 
                 //modalCreate();
@@ -413,12 +434,12 @@ const updateData = async (item) => {
     dataForUpdate.last_date = item.last_date;
     formSubmittedUpdated.value = true;
     console.log(2222, dataForUpdate.value.plus);
-    if (!  selectCategories.value.id ) {
+    if (!selectCategories.value.id) {
         selectCategories.value.id = item.bank.id
     }
     axios
         .put("https://keepmoney.site/api/v1/budget/" + item.id, {
-            bank_id:   selectCategories.value.id ,
+            bank_id: selectCategories.value.id,
             type: dataForUpdate.type,
             numbers: dataForUpdate.numbers,
             budget: parseFloat(dataForUpdate.budget),

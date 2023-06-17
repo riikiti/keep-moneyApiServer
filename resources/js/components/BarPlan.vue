@@ -118,7 +118,7 @@ const fetchData = async () => {
             keys.forEach((key, index) => {
                 console.log(`${key}: ${res[key]}`);
                 periodsTitle.push(key)
-                periodValue.push(res[key]);
+                periodValue.push((res[key]).toFixed(2));
             });
 
             setTimeout(() => {
