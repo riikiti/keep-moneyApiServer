@@ -38,9 +38,9 @@ class BankController extends Controller
      */
     public function update(BankStoreRequest $request, $id)
     {
-        $budget = Bank::findOrFail($id);
-        $budget->update($request->validated());
-        return new BankResource($budget);
+        $bank = Bank::findOrFail($id);
+        $bank->update($request->validated());
+        return new BankResource($bank);
     }
 
     /**
