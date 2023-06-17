@@ -1,6 +1,12 @@
 <template>
     <div class="bar">
-        <div class="bar-select">
+        <div v-if="data.length===0" class="bar__empty">
+            <h3 class="title title--3">
+                Затрат пока нет
+            </h3>
+            <p>добавьте расходы для отображения графика расходов.</p>
+        </div>
+        <div class="bar-select" v-else>
             <h2 class="title title--3">
                 <slot name="title"></slot>
             </h2>
@@ -15,12 +21,7 @@
                 </categories-selector>
             </ul>
         </div>
-        <div v-if="period.length===0" class="bar__empty">
-            <h3 class="title title--3">
-                Затрат пока нет
-            </h3>
-            <p>добавьте расходы для отображения графика расходов.</p>
-        </div>
+
         <div v-if="!data">
             <preloader></preloader>
         </div>

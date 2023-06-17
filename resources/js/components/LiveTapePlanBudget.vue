@@ -16,7 +16,7 @@
                                 <div class="form__block">
                                     <label class="title title--3">Планируемое значение по карте</label>
                                     <input type="number" min="0" v-model="createData.price" placeholder="1000" required/>
-                                    <span v-show="v$.price.$error">укажите количество денег</span>
+                                    <span v-show="v$.price.$error">укажите стоимость</span>
                                 </div>
                                 <div class="form__block">
                                     <label class="title title--3">Выбор карты</label>

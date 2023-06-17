@@ -15,7 +15,7 @@
                             <div class="form__block">
                                 <label class="title title--3">Максимальная планируемая цена</label>
                                 <input type="number" placeholder="1000" min="0" v-model="createData.price" required/>
-                                <span v-show="v$.price.$error">укажите количество денег</span>
+                                <span v-show="v$.price.$error">укажите стоимость</span>
                             </div>
                             <div class="form__block">
                                 <label class="title title--3">Категория</label>

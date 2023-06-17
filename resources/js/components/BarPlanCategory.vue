@@ -5,7 +5,8 @@
                 <slot name="title"></slot>
             </h2>
         </div>
-        <div v-if="data===null" class="bar__empty">
+
+        <div v-if="data.length===0" class="bar__empty">
             <h3 class="title title--3">
                 Графика планов пока нет
             </h3>

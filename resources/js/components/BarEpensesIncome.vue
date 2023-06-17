@@ -8,7 +8,7 @@
                 <li v-for="period in periods" :key="period.id" @click="getPeriodExpenses(period)">{{ period.name }}</li>
             </ul>
         </div>
-        <div v-if="period.length===0" class="bar__empty">
+        <div v-if="data.length===0" class="bar__empty">
             <h3 class="title title--3">
                 Записей пока нет
             </h3>

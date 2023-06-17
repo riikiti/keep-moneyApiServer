@@ -15,7 +15,7 @@
                 </categories-selector>
             </ul>
         </div>
-        <div v-if="period.length===0" class="bar__empty">
+        <div v-if="data.length===0" class="bar__empty">
             <h3 class="title title--3">
                 Доходов пока нет
             </h3>
