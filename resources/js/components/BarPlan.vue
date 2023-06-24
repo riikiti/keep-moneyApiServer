@@ -5,16 +5,19 @@
                 <slot name="title"></slot>
             </h2>
         </div>
-        <div v-if="data.length === 0" class="bar__empty">
-            <h3 class="title title--3">
-               Графика планов пока нет
-            </h3>
-            <p>добавьте план для отображения графика.</p>
-        </div>
         <div v-if="!data">
             <preloader></preloader>
         </div>
         <vue-echarts v-else :option="option" ref="bar"/>
+
+        <div v-if="data.length===0" class="bar__empty">
+            <h3 class="title title--3">
+                Графика планов пока нет
+            </h3>
+            <p>добавьте план для отображения графика.</p>
+        </div>
+
+
     </div>
 </template>
 
@@ -26,7 +29,9 @@ import axios from "axios";
 
 const data = ref(null);
 const bar = ref()
-
+const status = ref(false);
+let periodsTitle = [];
+let periodValue = [];
 
 const option = ref({
     tooltip: {
@@ -96,11 +101,11 @@ const id = localStorage.getItem('id');
 
 
 const fetchData = async () => {
-    let periodsTitle = [];
-    let periodValue = [];
+
     axios
         .get('https://keepmoney.site/api/v1/plan-budget/' + id)
         .then((response) => {
+            status.value=true;
             // console.log(response.data.data)
             data.value = response.data.data;
             const res = {};
@@ -163,11 +168,13 @@ const fetchData = async () => {
                         }
                     ]
                 }, 2000);
-
+                periodsTitle = [];
+                periodValue = [];
             })
         })
         .catch((error) => {
             console.log(error);
+            status.value=false;
         });
 };
 

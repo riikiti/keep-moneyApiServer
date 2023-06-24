@@ -224,6 +224,7 @@ import {minLength, required} from "@vuelidate/validators";
 import {useVuelidate} from "@vuelidate/core";
 
 
+
 const modules = [Pagination, Navigation, Scrollbar, A11y];
 const modalPlus = ref(false);
 const modalMinus = ref(false);

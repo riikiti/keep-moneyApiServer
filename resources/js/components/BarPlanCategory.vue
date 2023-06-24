@@ -5,13 +5,6 @@
                 <slot name="title"></slot>
             </h2>
         </div>
-
-        <div v-if="data.length===0" class="bar__empty">
-            <h3 class="title title--3">
-                Графика планов пока нет
-            </h3>
-            <p>добавьте план для отображения графика.</p>
-        </div>
         <div v-if="!data">
             <preloader></preloader>
         </div>
@@ -29,7 +22,7 @@ import axios from "axios";
 const data = ref(null);
 const bar = ref()
 const id = localStorage.getItem('id');
-
+const status = ref(false);
 const option = ref({
     tooltip: {
         trigger: 'axis',
@@ -82,6 +75,7 @@ const fetchData = async () => {
         .get('https://keepmoney.site/api/v1/plan/' + id)
         .then((response) => {
             console.log(response.data.data)
+            status.value=true;
             data.value = response.data.data;
             data.value.forEach((el) => {
                 plans.push({
@@ -181,6 +175,7 @@ const fetchData = async () => {
         })
         .catch((error) => {
             console.log(error);
+            status.value=false;
         });
 };
 

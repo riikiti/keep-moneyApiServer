@@ -90,3 +90,18 @@ aside {
         }
     }
 }
+
+.desktop__aside {
+    display: flex;
+    @include vp-1279() {
+        display: none;
+    }
+}
+
+.mobile_aside {
+    display: none;
+    @include vp-1279() {
+        display: flex;
+    }
+
+}
