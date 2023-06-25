@@ -11,10 +11,23 @@ php artisan serve
 # Project build
 ```
 npm run dev
+
+npm run build
 ```
 # Nginx refresh
 ```
 sudo /etc/init.d/nginx reload
+```
+# Resize dir
+```
+sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
+sudo /sbin/mkswap /var/swap.1
+sudo /sbin/swapon /var/swap.1
+```
+
+# Permission
+```
+chmod -R 777 /usr/local/bin/bot/
 ```
 
 # Banks
