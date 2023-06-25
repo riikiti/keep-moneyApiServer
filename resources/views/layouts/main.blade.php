@@ -6,7 +6,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <link rel="shortcut icon" href="/build/assets/logo-2edaf542.png" type="image/png">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">

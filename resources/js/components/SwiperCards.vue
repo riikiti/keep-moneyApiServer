@@ -207,6 +207,7 @@
         <img src="../assets/img/DebitCards/Mir.png" alt="">
         <img src="../assets/img/DebitCards/MC.png" alt="">
         <img src="../assets/img/DebitCards/Visa.png" alt="">
+        <img src="../assets/img/logo.png" alt="logo">
     </div>
 
 </template>

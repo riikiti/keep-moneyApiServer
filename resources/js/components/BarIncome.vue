@@ -15,16 +15,17 @@
                 </categories-selector>
             </ul>
         </div>
-        <div v-if="data.length===0" class="bar__empty">
-            <h3 class="title title--3">
-                Доходов пока нет
-            </h3>
-            <p>добавьте доходы для отображения графика доходов.</p>
-        </div>
+
         <div v-if="!data">
             <preloader></preloader>
         </div>
         <vue-echarts v-else :option="option" ref="bar"/>
+        <div v-if="data.length===0" class="bar__empty">
+            <h3 class="title title--3">
+                Доходов пока нет
+            </h3>
+            <p>добавьте доходы для отображения графика доходов или выберите другой периуд.</p>
+        </div>
 
     </div>
 </template>

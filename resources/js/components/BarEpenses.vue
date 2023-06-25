@@ -1,12 +1,6 @@
 <template>
     <div class="bar">
-        <div v-if="data.length===0" class="bar__empty">
-            <h3 class="title title--3">
-                Затрат пока нет
-            </h3>
-            <p>добавьте расходы для отображения графика расходов.</p>
-        </div>
-        <div class="bar-select" v-else>
+        <div class="bar-select" >
             <h2 class="title title--3">
                 <slot name="title"></slot>
             </h2>
@@ -26,7 +20,12 @@
             <preloader></preloader>
         </div>
         <vue-echarts v-else :option="option" ref="bar"/>
-
+        <div v-if="data.length===0" class="bar__empty">
+            <h3 class="title title--3">
+                Затрат пока нет
+            </h3>
+            <p>добавьте расходы для отображения графика расходов или выберите другой периуд.</p>
+        </div>
 
     </div>
 </template>

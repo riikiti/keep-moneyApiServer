@@ -8,17 +8,17 @@
                 <li v-for="period in periods" :key="period.id" @click="getPeriodExpenses(period)">{{ period.name }}</li>
             </ul>
         </div>
-        <div v-if="data.length===0" class="bar__empty">
-            <h3 class="title title--3">
-                Записей пока нет
-            </h3>
-            <p>добавьте расходы или доходы для отображения графика.</p>
-        </div>
+
         <div v-if="!data">
             <preloader></preloader>
         </div>
         <vue-echarts v-else :option="option" ref="bar"/>
-
+        <div v-if="data.length===0" class="bar__empty">
+            <h3 class="title title--3">
+                Записей пока нет
+            </h3>
+            <p>добавьте расходы или доходы для отображения графика или выберите другой периуд.</p>
+        </div>
 
     </div>
 </template>
